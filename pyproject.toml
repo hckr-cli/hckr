@@ -1,0 +1,66 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "devd-cli"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Ashish Patel", email = "ashishpatel0720@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "click",
+]
+
+[project.urls]
+Documentation = "https://github.com/Ashish Patel/devd-cli#readme"
+Issues = "https://github.com/Ashish Patel/devd-cli/issues"
+Source = "https://github.com/Ashish Patel/devd-cli"
+
+[project.scripts]
+devd-cli = "devd_cli.cli:devd_cli"
+
+[tool.hatch.version]
+path = "src/devd_cli/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/devd_cli tests}"
+
+[tool.coverage.run]
+source_pkgs = ["devd_cli", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/devd_cli/__about__.py",
+]
+
+[tool.coverage.paths]
+devd_cli = ["src/devd_cli", "*/devd-cli/src/devd_cli"]
+tests = ["tests", "*/devd-cli/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
