@@ -39,7 +39,7 @@ type = "virtual"
 path = ".venv"
 
 [project.scripts]
-devd = "devd.cli:hello"
+devd = "devd.cli:cli"
 
 [tool.hatch.version]
 path = "src/devd/__about__.py"
@@ -69,3 +69,13 @@ exclude_lines = [
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
 ]
+
+## STYLING ( commenting in favour of `hatch fmt`
+# creating an env for styling and use it to fix
+[tool.hatch.envs.style]
+dependencies = [
+  "black"
+]
+[tool.hatch.envs.style.scripts]
+lint = "black -v --check src/ tests/"
+fix = "black -v src/ tests/"

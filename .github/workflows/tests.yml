@@ -29,7 +29,8 @@ jobs:
 
 
     - name: Check lint
-      run : hatch run style:lint ${{ matrix.python-version }}
+      run: hatch fmt --check -py ${{ matrix.python-version }}
+#      run : hatch run style:lint ${{ matrix.python-version }}
 
     - name: Run Test
       run : hatch test -py ${{ matrix.python-version }}
