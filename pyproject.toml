@@ -77,5 +77,5 @@ dependencies = [
   "black"
 ]
 [tool.hatch.envs.style.scripts]
-lint = "black -v --check src/ tests/"
+lint = "black --check src/ tests/"
 fix = "black -v src/ tests/"

@@ -36,13 +36,13 @@ coverage: clean
 	hatch test --cover
 
 lint:
-	hatch fmt --check
-#	hatch run style:lint
+	hatch run style:lint
+#	hatch fmt --check
 
 checks:
 	hatch run types:check
 
 lint-fix:
-	hatch fmt -f
-	#hatch run style:fix
+	hatch run style:fix
+#	hatch fmt -f
 
