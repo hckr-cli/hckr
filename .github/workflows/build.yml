@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
     - uses: actions/checkout@v3
@@ -25,15 +25,15 @@ jobs:
       run: pip install hatch
 
     - name: Run MyPy Check
-      run :  hatch run types:check -py ${{ matrix.python-version }}
+      run :  hatch run types:check
 
 
     - name: Check lint
-      run: hatch fmt --check -py ${{ matrix.python-version }}
+      run: hatch fmt --check
 #      run : hatch run style:lint ${{ matrix.python-version }}
 
     - name: Run Test
-      run : hatch test -py ${{ matrix.python-version }}
+      run : hatch test
 
     - name: Run Coverage
-      run : hatch test --cover -py ${{ matrix.python-version }}
+      run : hatch test --cover
