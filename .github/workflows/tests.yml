@@ -22,7 +22,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install Hatch
-      uses: pypa/hatch@install
+      uses: pip install hatch
 
     - name: Run MyPy Check
       run :  hatch run types:check -py ${{ matrix.python-version }}
