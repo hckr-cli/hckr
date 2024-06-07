@@ -39,6 +39,9 @@ lint:
 	hatch fmt --check
 #	hatch run style:lint
 
+checks:
+	hatch run types:check
+
 lint-fix:
 	hatch fmt -f
 	#hatch run style:fix
