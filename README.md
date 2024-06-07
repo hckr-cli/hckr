@@ -1,7 +1,7 @@
-# devd-cli
+# devd
 
-[![PyPI - Version](https://img.shields.io/pypi/v/devd-cli.svg)](https://pypi.org/project/devd-cli)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/devd-cli.svg)](https://pypi.org/project/devd-cli)
+[![PyPI - Version](https://img.shields.io/pypi/v/devd.svg)](https://pypi.org/project/devd)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/devd.svg)](https://pypi.org/project/devd)
 
 -----
 
@@ -13,9 +13,9 @@
 ## Installation
 
 ```console
-pip install devd-cli
+pip install devd
 ```
 
 ## License
 
-`devd-cli` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+`devd` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.

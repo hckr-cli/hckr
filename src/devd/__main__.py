@@ -4,6 +4,6 @@
 import sys
 
 if __name__ == "__main__":
-    from devd_cli.cli import devd_cli
+    from devd.cli import hello
 
-    sys.exit(devd_cli())
+    sys.exit(hello())

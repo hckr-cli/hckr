@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "devd-cli"
+name = "devd"
 dynamic = ["version"]
 description = ''
 readme = "README.md"
@@ -29,25 +29,30 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/Ashish Patel/devd-cli#readme"
-Issues = "https://github.com/Ashish Patel/devd-cli/issues"
-Source = "https://github.com/Ashish Patel/devd-cli"
+Documentation = "https://github.com/pateash/devd#readme"
+Issues = "https://github.com/pateash/devd/issues"
+Source = "https://github.com/pateash/devd"
+
+# to make sure the default env is in same repo ( for Intellij to refer )
+[tool.hatch.envs.default]
+type = "virtual"
+path = ".venv"
 
 [project.scripts]
-devd-cli = "devd_cli.cli:devd_cli"
+devd = "devd.cli:hello"
 
 [tool.hatch.version]
-path = "src/devd_cli/__about__.py"
+path = "src/devd/__about__.py"
 
 [tool.hatch.envs.types]
 extra-dependencies = [
   "mypy>=1.0.0",
 ]
 [tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/devd_cli tests}"
+check = "mypy --install-types --non-interactive {args:src/devd tests}"
 
 [tool.coverage.run]
-source_pkgs = ["devd_cli", "tests"]
+source_pkgs = ["devd", "tests"]
 branch = true
 parallel = true
 omit = [
@@ -55,8 +60,8 @@ omit = [
 ]
 
 [tool.coverage.paths]
-devd_cli = ["src/devd_cli", "*/devd-cli/src/devd_cli"]
-tests = ["tests", "*/devd-cli/tests"]
+devd = ["src/devd", "*/devd/src/devd"]
+tests = ["tests", "*/devd/tests"]
 
 [tool.coverage.report]
 exclude_lines = [
