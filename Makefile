@@ -31,7 +31,7 @@ clean :
 	rm -f .coverage.*
 
 test:
-	hatch test
+	hatch test -- -v
 
 test-all:
 	hatch test -a -p -r

@@ -24,8 +24,6 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-[tool.hatch.build.targets.wheel]
-packages = ["src/hckr"]
 
 dependencies = [
   "click",
@@ -64,6 +62,7 @@ branch = true
 parallel = true
 omit = [
   "src/hckr/__about__.py",
+  "src/hckr/__main__.py",
 ]
 
 [tool.coverage.paths]
