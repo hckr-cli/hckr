@@ -8,3 +8,10 @@ repos:
         types: [python]  # Specify which file types to check
         # Optionally, use 'files' to specify patterns
         # files: '.*\.py$'
+      - id: mypy checks
+        name: Make Checks
+        entry: make checks
+        language: system
+        types: [python]  # Specify which file types to check
+        # Optionally, use 'files' to specify patterns
+        # files: '.*\.py$'
