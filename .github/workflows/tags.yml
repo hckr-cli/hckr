@@ -10,11 +10,6 @@ permissions:
 jobs:
   autotagging:
     runs-on: ubuntu-latest
-
-    environment: release
-    permissions:
-      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
