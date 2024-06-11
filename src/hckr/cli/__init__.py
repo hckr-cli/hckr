@@ -37,8 +37,13 @@ def hello(name):
 def info():
     click.secho("Version: devd", fg="magenta", bold=True, nl=False)
     click.secho(f"=={__version__}  ", fg="blue", bold=False, nl=True)
-    click.secho(f"Github: https://github.com/pateash/devd", fg="red", bold=True, nl=True)
-    click.secho(f"PyPi: https://pypi.org/project/devd/", fg="yellow", bold=True, nl=True)
+    click.secho(
+        f"Github: https://github.com/pateash/devd", fg="red", bold=True, nl=True
+    )
+    click.secho(
+        f"PyPi: https://pypi.org/project/devd/", fg="yellow", bold=True, nl=True
+    )
+
 
 cli.add_command(hello)
 cli.add_command(info)
