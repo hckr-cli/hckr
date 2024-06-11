@@ -2,7 +2,7 @@ name: Create Tags
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "auto-tags" ]
 
 permissions:
   contents: write
@@ -29,8 +29,8 @@ jobs:
 
     - name: create tag and increase version in hatch
       run: |
-        git config --global user.name 'autobump'
-        git config --global user.email 'autobump@markata.dev'
+        git config --global user.name 'pateash'
+        git config --global user.email 'ashishpatel0720@gmail.com'
         # current version
         VERSION=`hatch version`
         if [[ $VERSION == "*dev*" ]]; then
