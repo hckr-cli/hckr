@@ -12,7 +12,7 @@ env-show :
 
 # this will sync the dependencies automatically
 env-sync :
-	hatch shell
+	hatch run cowsay -t "Syncing Dependencies"
 
 # install cli in local for testing, change code an it will be automatically reflected in UI
 install:

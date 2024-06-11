@@ -30,7 +30,8 @@ dependencies = [
   "python-crontab",
   "cron-descriptor",
   "rich",
-  "cowsay"
+  "cowsay",
+  "pre-commit==3.7.0"
 ]
 
 [project.urls]
