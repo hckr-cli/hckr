@@ -36,9 +36,13 @@ jobs:
         if [[ $VERSION == "*dev*" ]]; then
           echo "This is a dev version: $VERSION"
           hatch version dev
-        if [[ $VERSION == "*rc*" ]]; then
+        elif [[ $VERSION == "*rc*" ]]; then
           echo "This is a RC version: $VERSION"
           hatch version rc
+        else
+          echo "This is a simple version: $VERSION"
+          hatch version patch
+        fi
         NEW_VERSION=`hatch version`
         git add src/hckr/__about__.py
         git commit -m "Bump version: $VERSION → $NEW_VERSION"
