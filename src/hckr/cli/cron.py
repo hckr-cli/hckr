@@ -1,6 +1,6 @@
 from .. import cli
 import click
-from cron_descriptor import get_description
+from cron_descriptor import get_description  # type: ignore
 from rich import print
 from ..utils.Message import *
 import subprocess
