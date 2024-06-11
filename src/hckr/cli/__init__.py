@@ -10,7 +10,7 @@ from ..__about__ import __version__
 #     context_settings={"help_option_names": ["-h", "--help"]},
 #     invoke_without_command=True,
 # )
-# @click.version_option(version=__version__, prog_name="devd")
+# @click.version_option(version=__version__, prog_name="hckr")
 # def cli():
 #     pass
 
@@ -19,13 +19,13 @@ from ..__about__ import __version__
     context_settings={"help_option_names": ["-h", "--help"]},
     invoke_without_command=True,
 )
-@click.version_option(version=__version__, prog_name="Devd")
+@click.version_option(version=__version__, prog_name="hckr")
 @click.pass_context
 def cli(ctx: click.Context):
-    if ctx.invoked_subcommand is None: # only devd is used then show help
-        click.secho("Devd ", fg="magenta", bold=True, nl=False)
-        click.secho(f"v{__version__}  ", fg="blue", bold=True, nl=True)
-        cli(["--help"])
+    click.secho("hckr ", fg="magenta", bold=True, nl=False)
+    click.secho(f"v{__version__}  ", fg="blue", bold=True, nl=False)
+    click.secho(f"https://github.com/pateash/hckr", fg="green", bold=True, nl=True)
+
 
 @click.command()
 @click.option("--name", help="Say hello to someone", required=False, default="World")
