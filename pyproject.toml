@@ -9,7 +9,7 @@ description = ''
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
-keywords = []
+keywords = ["cli", "hckr", "dev-tools"]
 authors = [
   { name = "Ashish Patel", email = "ashishpatel0720@gmail.com" },
 ]

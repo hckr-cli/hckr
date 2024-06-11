@@ -4,19 +4,11 @@ on:
   release:
     types: [published]
 
-#on:
-#  push:
-#    tags:
-#      - 0.1.*
-
 permissions:
   contents: read
-
 jobs:
   deploy:
-
     runs-on: ubuntu-latest
-
     environment: release
     permissions:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
