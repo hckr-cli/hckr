@@ -8,13 +8,8 @@ permissions:
   contents: write
 
 jobs:
-  deploy:
+  autotagging:
     runs-on: ubuntu-latest
-
-    environment: release
-    permissions:
-      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
@@ -29,16 +24,20 @@ jobs:
 
     - name: create tag and increase version in hatch
       run: |
-        git config --global user.name 'autobump'
-        git config --global user.email 'autobump@markata.dev'
+        git config --global user.name 'pateash'
+        git config --global user.email 'ashishpatel0720@gmail.com'
         # current version
         VERSION=`hatch version`
-        if [[ $VERSION == "*dev*" ]]; then
+        if [[ $VERSION == *dev* ]]; then
           echo "This is a dev version: $VERSION"
           hatch version dev
-        if [[ $VERSION == "*rc*" ]]; then
+        elif [[ $VERSION == *rc* ]]; then
           echo "This is a RC version: $VERSION"
           hatch version rc
+        else
+          echo "This is a simple version: $VERSION"
+          hatch version patch
+        fi
         NEW_VERSION=`hatch version`
         git add src/hckr/__about__.py
         git commit -m "Bump version: $VERSION → $NEW_VERSION"
