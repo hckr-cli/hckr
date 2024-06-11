@@ -11,8 +11,8 @@ env-show :
 	hatch env show
 
 # this will sync the dependencies automatically
-env-sync :
-	hatch run cowsay -t "Syncing Dependencies"
+sync :
+	hatch run cowsay -t "Syncing Dependencies" && echo "Synced.\n============="
 
 # install cli in local for testing, change code an it will be automatically reflected in UI
 install:
@@ -43,8 +43,8 @@ lint:
 	hatch run dev:lint
 #	hatch fmt --check
 
-checks:
-	hatch run types:check
+checks: lint
+	hatch run dev:check
 
 lint-fix:
 	hatch run dev:fix

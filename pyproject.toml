@@ -48,12 +48,6 @@ hckr = "hckr.cli:cli"
 [tool.hatch.version]
 path = "src/hckr/__about__.py"
 
-[tool.hatch.envs.types]
-extra-dependencies = [
-  "mypy>=1.0.0",
-]
-[tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/hckr tests}"
 
 [tool.coverage.run]
 source_pkgs = ["hckr", "tests"]
@@ -81,9 +75,10 @@ exclude_lines = [
 dependencies = [
   "black",
   "cowsay",
-  "pre-commit"
-
+  "pre-commit",
+  "mypy>=1.0.0",
 ]
 [tool.hatch.envs.dev.scripts]
 lint = "black --check src/ tests/"
 fix = "black -v src/ tests/"
+check = "mypy --install-types --non-interactive {args:src/hckr tests}"
