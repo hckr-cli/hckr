@@ -10,6 +10,10 @@ env-clean :
 env-show :
 	hatch env show
 
+# this will sync the dependencies automatically
+env-sync :
+	hatch shell
+
 # install cli in local for testing, change code an it will be automatically reflected in UI
 install:
 	pip install -e .
@@ -46,3 +50,5 @@ lint-fix:
 	hatch run style:fix
 #	hatch fmt -f
 
+show-deps:
+	hatch dep show table

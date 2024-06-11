@@ -24,8 +24,15 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
+[tool.hatch.build.targets.wheel]
+packages = ["src/hckr"]
+
 dependencies = [
   "click",
+  "python-crontab",
+  "cron-descriptor",
+  "rich",
+  "cowsay"
 ]
 
 [project.urls]
