@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  deploy:
+  autotagging:
     runs-on: ubuntu-latest
 
     environment: release
@@ -33,10 +33,10 @@ jobs:
         git config --global user.email 'ashishpatel0720@gmail.com'
         # current version
         VERSION=`hatch version`
-        if [[ $VERSION == "*dev*" ]]; then
+        if [[ $VERSION == *dev* ]]; then
           echo "This is a dev version: $VERSION"
           hatch version dev
-        elif [[ $VERSION == "*rc*" ]]; then
+        elif [[ $VERSION == *rc* ]]; then
           echo "This is a RC version: $VERSION"
           hatch version rc
         else
