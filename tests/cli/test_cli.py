@@ -1,6 +1,6 @@
 from click.testing import CliRunner
 
-from devd.cli import hello
+from hckr.cli import hello
 
 
 def test_hello_world():
