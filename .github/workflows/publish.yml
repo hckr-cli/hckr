@@ -1,12 +1,13 @@
 name: Publish to PyPI
 
-#on:
-#  release:
-#    types: [published]
 on:
-  push:
-    tags:
-      - 0.1.*
+  release:
+    types: [published]
+
+#on:
+#  push:
+#    tags:
+#      - 0.1.*
 
 permissions:
   contents: read
