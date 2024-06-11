@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "devd"
+name = "hckr"
 dynamic = ["version"]
 description = ''
 readme = "README.md"
@@ -29,9 +29,9 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/pateash/devd#readme"
-Issues = "https://github.com/pateash/devd/issues"
-Source = "https://github.com/pateash/devd"
+Documentation = "https://github.com/pateash/hckr#readme"
+Issues = "https://github.com/pateash/hckr/issues"
+Source = "https://github.com/pateash/hckr"
 
 # to make sure the default env is in same repo ( for Intellij to refer )
 [tool.hatch.envs.default]
@@ -39,29 +39,29 @@ type = "virtual"
 path = ".venv"
 
 [project.scripts]
-devd = "devd.cli:cli"
+hckr = "hckr.cli:cli"
 
 [tool.hatch.version]
-path = "src/devd/__about__.py"
+path = "src/hckr/__about__.py"
 
 [tool.hatch.envs.types]
 extra-dependencies = [
   "mypy>=1.0.0",
 ]
 [tool.hatch.envs.types.scripts]
-check = "mypy --install-types --non-interactive {args:src/devd tests}"
+check = "mypy --install-types --non-interactive {args:src/hckr tests}"
 
 [tool.coverage.run]
-source_pkgs = ["devd", "tests"]
+source_pkgs = ["hckr", "tests"]
 branch = true
 parallel = true
 omit = [
-  "src/devd_cli/__about__.py",
+  "src/hckr/__about__.py",
 ]
 
 [tool.coverage.paths]
-devd = ["src/devd", "*/devd/src/devd"]
-tests = ["tests", "*/devd/tests"]
+hckr = ["src/hckr", "*/hckr/src/hckr"]
+tests = ["tests", "*/hckr/tests"]
 
 [tool.coverage.report]
 exclude_lines = [

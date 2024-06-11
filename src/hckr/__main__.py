@@ -4,6 +4,6 @@
 import sys
 
 if __name__ == "__main__":
-    from devd.cli import cli
+    from hckr.cli import cli
 
     sys.exit(cli())
