@@ -27,9 +27,10 @@ classifiers = [
 
 dependencies = [
   "click",
-  "python-crontab",
+  "croniter",
   "cron-descriptor",
   "rich",
+  "apscheduler"
 ]
 
 [project.urls]
