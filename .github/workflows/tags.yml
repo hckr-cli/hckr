@@ -2,7 +2,7 @@ name: Create Tags
 
 on:
   push:
-    branches: [ "auto-tags" ]
+    branches: [ "main" ]
 
 permissions:
   contents: write
