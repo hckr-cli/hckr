@@ -33,7 +33,9 @@ def info_emoji():
 
 
 def success_emoji():
-    emoji = random.choice(["sparkles", "money_with_wings", "white_check_mark", "party_popper", "tada"])
+    emoji = random.choice(
+        ["sparkles", "money_with_wings", "white_check_mark", "party_popper", "tada"]
+    )
     return f":{emoji}:"
 
 

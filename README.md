@@ -21,3 +21,10 @@ pip install hckr
 ## License
 
 `hckr` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+
+## Contributing
+Please find contributing guide here [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## Sponsors
+> Built using Jetbrains Products
+![Jetbrains](https://www.jetbrains.com/company/brand/img/jetbrains_logo.png)

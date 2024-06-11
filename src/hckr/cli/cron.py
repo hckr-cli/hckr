@@ -6,7 +6,7 @@ from ..utils.Message import *
 import subprocess
 
 # Example of running a simple ls command
-result = subprocess.run(['ls', '-l'], text=True, capture_output=True)
+result = subprocess.run(["ls", "-l"], text=True, capture_output=True)
 
 # Print the output
 print("Output:")
@@ -17,6 +17,7 @@ if result.returncode == 0:
     print("Command executed successfully!")
 else:
     print("Error in command execution.")
+
 
 @click.group(
     help="cron related utiltities",
@@ -38,7 +39,9 @@ def desc(expr):
 
 
 @click.option("-e", "--expr", help="Cron expression", required=True)
-@click.option("-c", "--cmd", help="Command to run as per cron expression", required=True)
+@click.option(
+    "-c", "--cmd", help="Command to run as per cron expression", required=True
+)
 @cron.command(help="run a command using given cron expression")
 def run(expr, cmd):
     try:
