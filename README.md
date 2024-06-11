@@ -11,6 +11,7 @@ hckr - Awesome CLI for devs
 
 - [Installation](#installation)
 - [License](#license)
+- [Sponsors](#sponsors)
 
 ## Installation
 

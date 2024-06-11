@@ -1,4 +1,4 @@
-# hckr - Contributing Guide
+# hckr - Contributor's Guide
 
 This Project is created and managed by [Ashish Patel](http://pateash.in/)
 
@@ -6,7 +6,7 @@ This Project is created and managed by [Ashish Patel](http://pateash.in/)
 
 - [Releasing Version/Tag](#releasing-versiontag)
 - [Publishing to PyPi](#publishing-to-pypi)
-- [Pre-commitc Checks](#pre-commits)
+- [Pre-commit Checks](#pre-commits)
 
 Please Contribute to this project by forking [hckr](https://github.com/pateash/hckr/)
 
@@ -18,7 +18,7 @@ Please feel free to provide any suggestion for new utility in [Issues](https://g
 ## Publishing to Pypi
 * Once we publish a release, Publish workflow [publish.yml](.github%2Fworkflows%2Fpublish.yml) automatically publishes a version to  [PyPi](https://pypi.org/p/hckr)
 
-### Pre-commits
+## Pre-commits
 * we use pre-commits to make sure we only pushes if lint and other checks are passed.
 * Install `pre-commit` from pypi and install in Git to enable this.
 ```bash 
