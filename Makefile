@@ -40,14 +40,14 @@ coverage: clean
 	hatch test --cover
 
 lint:
-	hatch run style:lint
+	hatch run dev:lint
 #	hatch fmt --check
 
 checks:
 	hatch run types:check
 
 lint-fix:
-	hatch run style:fix
+	hatch run dev:fix
 #	hatch fmt -f
 
 show-deps:

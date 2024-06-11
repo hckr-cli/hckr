@@ -30,8 +30,6 @@ dependencies = [
   "python-crontab",
   "cron-descriptor",
   "rich",
-  "cowsay",
-  "pre-commit"
 ]
 
 [project.urls]
@@ -79,10 +77,13 @@ exclude_lines = [
 
 ## STYLING ( commenting in favour of `hatch fmt`
 # creating an env for styling and use it to fix
-[tool.hatch.envs.style]
+[tool.hatch.envs.dev]
 dependencies = [
-  "black"
+  "black",
+  "cowsay",
+  "pre-commit"
+
 ]
-[tool.hatch.envs.style.scripts]
+[tool.hatch.envs.dev.scripts]
 lint = "black --check src/ tests/"
 fix = "black -v src/ tests/"
