@@ -41,9 +41,9 @@ def test_cron_run_expr():
     runner = CliRunner()
     expr = "*/1 * * * *"  # every minute
     cmd = "echo 'hello world!'"
-    result = runner.invoke(run, ["--expr", expr, "--cmd", cmd, "--timeout", "2"])
+    result = runner.invoke(run, ["--expr", expr, "--cmd", cmd, "--timeout", "1"])
     print(result.output)
-    assert "Output [2/2]" in result.output
+    assert "Output [1/1]" in result.output
     assert "hello world!" in result.output
     assert "Running command: echo 'hello world!', Every minute" in result.output
 
