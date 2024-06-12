@@ -28,7 +28,8 @@ clean :
 	rm -rf dist \
 	rm -rf docs/build \
 	rm -rf *.egg-info \
-	rm -f .coverage.*
+	rm -f .coverage.* \
+	rm -f coverage.xml
 
 test:
 	hatch test -- -v
@@ -38,6 +39,7 @@ test-all:
 
 coverage: clean
 	hatch test --cover
+	hatch run dev:cov-xml
 
 lint:
 	hatch run dev:lint

@@ -11,25 +11,25 @@ requires-python = ">=3.8"
 license = "MIT"
 keywords = ["cli", "hckr", "dev-tools"]
 authors = [
-  { name = "Ashish Patel", email = "ashishpatel0720@gmail.com" },
+    { name = "Ashish Patel", email = "ashishpatel0720@gmail.com" },
 ]
 classifiers = [
-  "Development Status :: 4 - Beta",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
 ]
 
 dependencies = [
-  "click",
-  "croniter",
-  "cron-descriptor",
-  "rich",
+    "click",
+    "croniter",
+    "cron-descriptor",
+    "rich",
 ]
 
 [project.urls]
@@ -54,8 +54,8 @@ source_pkgs = ["hckr", "tests"]
 branch = true
 parallel = true
 omit = [
-  "src/hckr/__about__.py",
-  "src/hckr/__main__.py",
+    "src/hckr/__about__.py",
+    "src/hckr/__main__.py",
 ]
 
 [tool.coverage.paths]
@@ -64,22 +64,24 @@ tests = ["tests", "*/hckr/tests"]
 
 [tool.coverage.report]
 exclude_lines = [
-  "no cov",
-  "if __name__ == .__main__.:",
-  "if TYPE_CHECKING:",
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
 ]
 
 ## STYLING ( commenting in favour of `hatch fmt`
 # creating an env for styling and use it to fix
 [tool.hatch.envs.dev]
 dependencies = [
-  "black",
-  "cowsay",
-  "pre-commit",
-  "mypy>=1.0.0",
-  "pytest"
+    "black",
+    "cowsay",
+    "pre-commit",
+    "mypy>=1.0.0",
+    "coverage[toml]>=6.2",
+    "pytest"
 ]
 [tool.hatch.envs.dev.scripts]
 lint = "black --check src/ tests/"
 fix = "black -v src/ tests/"
 check = "mypy --install-types --non-interactive {args:src/hckr tests}"
+cov-xml = "coverage xml"
