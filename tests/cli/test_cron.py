@@ -3,6 +3,7 @@ from click.testing import CliRunner
 from hckr.cli.cron import *
 
 
+# CRON DESC
 def test_cron_desc():
     runner = CliRunner()
     expr = "* 2 3 * *"
@@ -22,6 +23,34 @@ def test_cron_desc_invalid():
     assert f"Invalid cron expression" in result.output
 
 
+# CRON RUN POSITIVE
+
+
+def test_cron_run_seconds():
+    runner = CliRunner()
+    expr = "*/1 * * * *"  # invalid command
+    cmd = "echo 'hello world!'"
+    result = runner.invoke(run, ["--seconds", "2", "--cmd", cmd, "--timeout", "3"])
+    print(result.output)
+    assert "Output [3/3]" in result.output
+    assert "hello world!" in result.output
+    assert "Running command: echo 'hello world!', Every 2 seconds" in result.output
+
+
+def test_cron_run_expr():
+    runner = CliRunner()
+    expr = "*/1 * * * *"  # every minute
+    cmd = "echo 'hello world!'"
+    result = runner.invoke(run, ["--expr", expr, "--cmd", cmd, "--timeout", "2"])
+    print(result.output)
+    assert "Output [2/2]" in result.output
+    assert "hello world!" in result.output
+    assert "Running command: echo 'hello world!', Every minute" in result.output
+
+
+# CRON RUN INVALID
+
+
 def test_cron_run_invalid_cmd():
     runner = CliRunner()
     expr = "*/1 * * * *"  # invalid command
@@ -30,6 +59,15 @@ def test_cron_run_invalid_cmd():
     assert (
         "Error in command execution /bin/sh: lsdf: command not found" in result.output
     )
+
+
+def test_cron_run_invalid_expr():
+    runner = CliRunner()
+    expr = "*/1 * * * * *"  # invalid command
+    cmd = "ls -la"
+    result = runner.invoke(run, ["--expr", expr, "--cmd", cmd])
+    assert "Invalid cron Expression: */1 * * * * *" in result.output
+    assert "cron expression must have 5 places" in result.output
 
 
 def test_cron_run_no_schedule():
@@ -51,20 +89,3 @@ def test_cron_run_both_schedule():
         "Please use either --expr or --seconds to pass schedule, can't use both"
         in result.output
     )
-
-
-def test_test():
-    from rich.console import Console
-    from rich.box import Box
-    from rich import box
-    from rich.text import Text
-
-    def print_in_rich_box(text, style="bold blue"):
-        console = Console()
-        # Create a Text instance with the desired style
-        text = Text(text, style=style)
-        # Print the text in a box
-        console.print(text)
-
-    # Example usage
-    print_in_rich_box("Hello, World!\nThis is text inside a rich box.")

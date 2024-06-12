@@ -1,11 +1,12 @@
 import subprocess
 
-import click
 import rich
 from apscheduler.schedulers.blocking import BlockingScheduler  # type: ignore
 from apscheduler.triggers.cron import CronTrigger  # type: ignore
 from cron_descriptor import get_description  # type: ignore
 from hckr.utils.CronUtils import *
+from rich.panel import Panel
+
 from ..utils.MessageUtils import *
 
 
@@ -39,8 +40,15 @@ def desc(expr):
     required=False,
     default=None,
 )
+@click.option(
+    "-t",
+    "--timeout",
+    help="Max number of times this command should run",
+    required=False,
+    default=100,
+)
 @cron.command(help="run a command using given cron expression")
-def run(cmd, expr, seconds):
+def run(cmd, expr, seconds, timeout):
     if seconds and expr:
         error("Please use either --expr or --seconds to pass schedule, can't use both")
         exit(1)
@@ -57,14 +65,23 @@ def run(cmd, expr, seconds):
             info(
                 f"Running command: {colored(cmd, 'yellow')}, {colored(f"Every {seconds} seconds", 'blue')}"
             )
-        while True:
+        i = 1
+        while i <= timeout:
             result = subprocess.run(cmd, shell=True, text=True, capture_output=True)
             if result.returncode != 0:
                 raise Exception(f"Error in command execution {result.stderr}")
-            rich.print(result.stdout)
-
+            rich.print(
+                Panel(
+                    result.stdout,
+                    expand=True,
+                    subtitle="End",
+                    title=f"Output [{i}/{timeout}]",
+                )
+            )
+            # rich.print(result.stdout)
             sleep_duration = calculate_sleep_duration(expr) if expr else int(seconds)
             run_progress_barV2(sleep_duration)
+            i += 1
     except Exception as e:
         error(f"{e}")
         # raise e
