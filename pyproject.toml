@@ -30,7 +30,6 @@ dependencies = [
   "croniter",
   "cron-descriptor",
   "rich",
-  "apscheduler"
 ]
 
 [project.urls]
