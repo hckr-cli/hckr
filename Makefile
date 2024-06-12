@@ -10,6 +10,10 @@ env-clean :
 env-show :
 	hatch env show
 
+# this will sync the dependencies automatically
+sync :
+	hatch run cowsay -t "Syncing Dependencies" && echo "Synced.\n============="
+
 # install cli in local for testing, change code an it will be automatically reflected in UI
 install:
 	pip install -e .
@@ -27,7 +31,7 @@ clean :
 	rm -f .coverage.*
 
 test:
-	hatch test
+	hatch test -- -v
 
 test-all:
 	hatch test -a -p -r
@@ -36,13 +40,18 @@ coverage: clean
 	hatch test --cover
 
 lint:
-	hatch run style:lint
+	hatch run dev:lint
 #	hatch fmt --check
 
-checks:
-	hatch run types:check
+check:
+	hatch run dev:check
 
-lint-fix:
-	hatch run style:fix
+# all checks
+checks: lint check test
+
+fix:
+	hatch run dev:fix
 #	hatch fmt -f
 
+deps:
+	hatch dep show table

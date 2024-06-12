@@ -1,0 +1,17 @@
+repos:
+  - repo: local
+    hooks:
+      - id: mypy check
+        name: Make check
+        entry: make check
+        language: system
+        types: [python]  # Specify which file types to check
+        # Optionally, use 'files' to specify patterns
+        # files: '.*\.py$'
+      - id: lint
+        name: Make lint
+        entry: make lint
+        language: system
+        types: [python]  # Specify which file types to check
+        # Optionally, use 'files' to specify patterns
+        # files: '.*\.py$'
