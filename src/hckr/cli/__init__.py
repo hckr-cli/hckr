@@ -23,13 +23,13 @@ def cli(ctx: click.Context):
         cli(["-h"])
 
 
-@cli.command()
+@cli.command(help="Showing Hello message")
 @click.option("--name", help="Say hello to someone", required=False, default="World")
 def hello(name):
     click.secho(f"Hello {name}!", fg="green", nl=True)
 
 
-@cli.command(help="Showing cli information information")
+@cli.command(help="Showing cli information")
 def info():
     click.secho("Version: devd", fg="magenta", bold=True, nl=False)
     click.secho(f"=={__version__}  ", fg="blue", bold=False, nl=True)

@@ -23,3 +23,9 @@ workflow will automatically create next tag using dynamic version defined in [__
 pip install pre-commit
 pre-commit install
 ```
+
+## Dev versions cleanup
+* we can easily clean up all the dev version using this command.
+```shell
+ make pypi-clean
+```

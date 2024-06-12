@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := install # default command to run with just `make`
-.PHONY: build publish package coverage test lint
+.PHONY: build publish package coverage test lint docs
 
 env-default :
 	hatch shell default
@@ -57,3 +57,13 @@ fix:
 
 deps:
 	hatch dep show table
+
+pypi-clean:
+	hatch run dev:pypi-clean
+
+docs-build:
+	cd docs/ && make clean && make html && cd ..
+
+docs:
+	hatch run dev:docs
+
