@@ -1,8 +1,6 @@
 import subprocess
 
 import rich
-from apscheduler.schedulers.blocking import BlockingScheduler  # type: ignore
-from apscheduler.triggers.cron import CronTrigger  # type: ignore
 from cron_descriptor import get_description  # type: ignore
 from hckr.utils.CronUtils import *
 from rich.panel import Panel
