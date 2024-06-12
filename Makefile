@@ -49,7 +49,7 @@ check:
 # all checks
 checks: lint check test
 
-lint-fix:
+fix:
 	hatch run dev:fix
 #	hatch fmt -f
 

@@ -2,6 +2,13 @@ from rich import print
 import random
 
 
+def colored(msg, color, bold=True):
+    if bold:
+        return f"[bold {color}]{msg}[/bold {color}]"
+    else:
+        return f"[{color}]{msg}[/{color}]"
+
+
 def success(msg):
     print(f"{success_emoji()} [bold green] {msg}[/bold green]")
 
