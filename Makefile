@@ -57,3 +57,6 @@ fix:
 
 deps:
 	hatch dep show table
+
+pypi-clean:
+	hatch run dev:pypi-clean
