@@ -22,6 +22,9 @@ jobs:
         python -m pip install --upgrade pip 
         pip install hatch
 
+    - name: Run Checks
+      run: make checks
+
     - name: create tag and increase version in hatch
       run: |
         git config --global user.name 'pateash'

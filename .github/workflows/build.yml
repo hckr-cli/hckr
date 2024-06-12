@@ -24,17 +24,11 @@ jobs:
     - name: Install Hatch
       run: pip install hatch
 
-    - name: Run Tests
-      run: make test
-
-    - name: Check lint
-      run: make lint
+    - name: Run Checks
+      run: make checks
 
     - name: Run Coverage
       run: make coverage
-
-    - name: Run MyPy Check
-      run : make check
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
