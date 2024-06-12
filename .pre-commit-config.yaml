@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: mypy check
         name: Make check
-        entry: make checks
+        entry: make check
         language: system
         types: [python]  # Specify which file types to check
         # Optionally, use 'files' to specify patterns
