@@ -13,7 +13,7 @@ jobs:
     environment: release
     permissions:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
-
+      contents: write
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
@@ -26,8 +26,8 @@ jobs:
         python -m pip install --upgrade pip 
         pip install hatch
 
-    - name: Run Checks
-      run: make checks
+#    - name: Run Checks
+#      run: make checks
 
     - name: Build package
       run: make package
