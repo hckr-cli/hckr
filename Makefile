@@ -43,8 +43,10 @@ lint:
 	hatch run dev:lint
 #	hatch fmt --check
 
-checks: lint
+check:
 	hatch run dev:check
+
+checks: lint check test
 
 lint-fix:
 	hatch run dev:fix
