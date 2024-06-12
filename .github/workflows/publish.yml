@@ -34,7 +34,7 @@ jobs:
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
 
-    - name: create tag in Github and increase version in repository
+    - name: Create tag in Github from repository and increase version in repository
       run: |
         git config --global user.name 'pateash'
         git config --global user.email 'ashishpatel0720@gmail.com'
