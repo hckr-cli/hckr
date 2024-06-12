@@ -15,7 +15,6 @@ author = 'Ashish'
 
 extensions = [
     'sphinx_click',
-    'sphinx_typo3_theme'
     # other extensions...
 ]
 
