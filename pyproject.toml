@@ -30,6 +30,10 @@ dependencies = [
     "croniter",
     "cron-descriptor",
     "rich",
+    #    "sphinx",
+    #    "sphinx-click",
+    #    "shibuya",
+    #    "sphinx-autobuild"
 ]
 
 [project.urls]
@@ -81,7 +85,10 @@ dependencies = [
     "pytest",
     "pypi-cleanup",
     "sphinx",
-    "sphinx-click"
+    "sphinx-click",
+    "shibuya",
+    "sphinx-autobuild"
+
 ]
 [tool.hatch.envs.dev.scripts]
 lint = "black --check src/ tests/"
@@ -89,4 +96,4 @@ fix = "black -v src/ tests/"
 check = "mypy --install-types --non-interactive {args:src/hckr tests}"
 cov-xml = "coverage xml"
 pypi-clean = "pypi-cleanup -u pateash -p hckr --do-it"
-docs = "make html"
+docs = "sphinx-autobuild -a docs/source docs/build"

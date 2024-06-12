@@ -61,5 +61,9 @@ deps:
 pypi-clean:
 	hatch run dev:pypi-clean
 
-docs:
+docs-build:
 	cd docs/ && make clean && make html && cd ..
+
+docs:
+	hatch run dev:docs
+
