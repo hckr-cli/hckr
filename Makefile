@@ -46,11 +46,12 @@ lint:
 check:
 	hatch run dev:check
 
+# all checks
 checks: lint check test
 
 lint-fix:
 	hatch run dev:fix
 #	hatch fmt -f
 
-show-deps:
+deps:
 	hatch dep show table
