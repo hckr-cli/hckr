@@ -78,6 +78,7 @@ dependencies = [
   "cowsay",
   "pre-commit",
   "mypy>=1.0.0",
+  "pytest"
 ]
 [tool.hatch.envs.dev.scripts]
 lint = "black --check src/ tests/"

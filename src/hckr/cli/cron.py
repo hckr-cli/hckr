@@ -1,13 +1,12 @@
 import subprocess
-from datetime import datetime, timezone
 
 import click
 import rich
 from apscheduler.schedulers.blocking import BlockingScheduler  # type: ignore
 from apscheduler.triggers.cron import CronTrigger  # type: ignore
 from cron_descriptor import get_description  # type: ignore
-import time
-from ..utils.Message import *
+from hckr.utils.CronUtils import *
+from ..utils.MessageUtils import *
 
 
 @click.group(
@@ -29,55 +28,43 @@ def desc(expr):
         error(f"Invalid cron expression\n {e}")
 
 
-@click.option("-e", "--expr", help="Cron expression", required=True)
 @click.option(
     "-c", "--cmd", help="Command to run as per cron expression", required=True
 )
+@click.option("-e", "--expr", help="Cron expression", required=False, default=None)
+@click.option(
+    "-s",
+    "--seconds",
+    help="Interval in number of seconds to run command",
+    required=False,
+    default=None,
+)
 @cron.command(help="run a command using given cron expression")
-def run(expr, cmd):
-    def run_progress_bar(duration):
-        """
-        Run a progress bar for the specified duration in seconds.
-        """
-        with click.progressbar(length=duration, label="Next job will run in") as bar:
-            step = 2
-            for i in range(0, duration, step):
-                time.sleep(step)  # Sleep for a second
-                bar.update(step)  # Update the progress bar by one step
-
-    def calculate_sleep_duration(cron_expression):
-        # Create a cron iterator based on the cron expression and the current time
-        now = datetime.now()
-        from croniter import croniter
-
-        cron = croniter(cron_expression, now)
-        if not cron.is_valid(cron_expression) or len(cron_expression.split(" ")) != 5:
-            error(
-                f"Invalid cron Expression: {cron_expression}\n cron expression must have 5 places"
-            )
-            exit(1)
-        # Get the next scheduled time
-        next_time = cron.get_next(datetime)
-        # Calculate the duration in seconds between now and the next scheduled time
-        duration_seconds = (next_time - now).total_seconds()
-        return round(duration_seconds)
-
+def run(cmd, expr, seconds):
+    if seconds and expr:
+        error("Please use either --expr or --seconds to pass schedule, can't use both")
+        exit(1)
+    if not seconds and not expr:
+        error("Please provide either --expr or --seconds to pass schedule")
+        exit(1)
     try:
-        description = get_description(expr)
-        info(
-            f"Running command: {colored(cmd, 'yellow')}, {colored(description, 'blue')}"
-        )
-
+        if expr:
+            description = get_description(expr)
+            info(
+                f"Running command: {colored(cmd, 'yellow')}, {colored(description, 'blue')}"
+            )
+        elif seconds:
+            info(
+                f"Running command: {colored(cmd, 'yellow')}, {colored(f"Every {seconds} seconds", 'blue')}"
+            )
         while True:
-            sleep_duration = calculate_sleep_duration(expr)
-            run_progress_bar(sleep_duration)
             result = subprocess.run(cmd, shell=True, text=True, capture_output=True)
-            success("Output:\n" + ("-" * 50))
+            if result.returncode != 0:
+                raise Exception(f"Error in command execution {result.stderr}")
             rich.print(result.stdout)
-            # Check if the command was successful
-            if result.returncode == 0:
-                success(("-" * 50))
-            else:
-                raise Exception("Error in command execution")
+
+            sleep_duration = calculate_sleep_duration(expr) if expr else int(seconds)
+            run_progress_barV2(sleep_duration)
     except Exception as e:
-        error(f"Error occured:\n {e}")
+        error(f"{e}")
+        # raise e
