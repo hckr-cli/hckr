@@ -25,16 +25,7 @@ jobs:
         python -m pip install --upgrade pip 
         pip install hatch
 
-    - name: Run Checks
-      run: make checks
-
-    - name: Build package
-      run: make package
-
-    - name: Publish package distributions to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-
-    - name: create next tag and increase version in hatch
+    - name: creating current tag and increasing version in hatch
       run: |
         git config --global user.name 'pateash'
         git config --global user.email 'ashishpatel0720@gmail.com'
@@ -52,8 +43,20 @@ jobs:
         fi
         NEW_VERSION=`hatch version`
         git add src/hckr/__about__.py
+        echo "========================================"
         git commit -m "Bump version: $VERSION → $NEW_VERSION"
+        echo "========================================"
         git tag $VERSION
         echo "Pushing changes"
         git push
         git push --tags
+
+    - name: Run Checks
+      run: make checks
+
+    - name: Build package
+      run: make package
+
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+
