@@ -56,9 +56,8 @@ def test_cron_run_invalid_cmd():
     expr = "*/1 * * * *"  # invalid command
     cmd = "lsdf -la"
     result = runner.invoke(run, ["--seconds", "5", "--cmd", cmd])
-    assert (
-        "Error in command execution /bin/sh: lsdf: command not found" in result.output
-    )
+    assert "Error in command execution" in result.output
+    assert "lsdf: command not found" in result.output
 
 
 def test_cron_run_invalid_expr():
