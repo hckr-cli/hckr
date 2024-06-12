@@ -2,7 +2,7 @@ name: Publish to PyPI
 
 on:
   push:
-    branches: [ "push-test" ]
+    branches: [ "main" ]
 
 permissions:
   contents: write
@@ -26,14 +26,14 @@ jobs:
         python -m pip install --upgrade pip 
         pip install hatch
 
-#    - name: Run Checks
-#      run: make checks
+    - name: Run Checks
+      run: make checks
 
-#    - name: Build package
-#      run: make package
+    - name: Build package
+      run: make package
 
-#    - name: Publish package distributions to PyPI
-#      uses: pypa/gh-action-pypi-publish@release/v1
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
 
     - name: Create tag in Github from repository and increase version in repository
       run: |
