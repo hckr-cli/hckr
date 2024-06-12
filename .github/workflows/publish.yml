@@ -1,8 +1,8 @@
 name: Publish to PyPI
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [ "main" ]
 
 permissions:
   contents: read
@@ -34,7 +34,7 @@ jobs:
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
 
-    - name: creating published tag in Github and increasing version in hatch
+    - name: create tag in Github and increase version in repository
       run: |
         git config --global user.name 'pateash'
         git config --global user.email 'ashishpatel0720@gmail.com'
