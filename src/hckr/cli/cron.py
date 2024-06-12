@@ -63,7 +63,7 @@ def run(cmd, expr, seconds, timeout):
             )
         elif seconds:
             info(
-                f"Running command: {colored(cmd, 'yellow')}, {colored(f"Every {seconds} seconds", 'blue')}"
+                f"Running command: {colored(cmd, 'yellow')}, {colored(f'Every {seconds} seconds', 'blue')}"
             )
         i = 1
         while i <= timeout:
