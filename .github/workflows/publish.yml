@@ -3,7 +3,11 @@ name: Publish to PyPI
 on:
   push:
     branches: [ "main" ]
-
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'pyproject.toml'
+      - '.github/**'
 permissions:
   contents: write
 

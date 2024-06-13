@@ -15,7 +15,7 @@ author = 'Ashish'
 
 extensions = [
     'sphinx_click',
-    # other extensions...
+    'notfound.extension'
 ]
 
 templates_path = ['_templates']
