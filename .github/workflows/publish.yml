@@ -49,11 +49,14 @@ jobs:
           echo "This is a dev version: $VERSION"
           hatch version dev
         elif [[ $VERSION == *rc* ]]; then
-          echo "This is a RC version: $VERSION"
-          hatch version rc
+          echo "This is a RC version: $VERSION,\n only use dev and release ones"
+          exit 1
+#          hatch version rc
         else
-          echo "This is a simple version: $VERSION"
+        # simple version are created manually from code edits.
+          echo "This is a simple version: $VERSION, we have released it, converting into next dev."
           hatch version patch
+          hatch version dev
         fi
         NEW_VERSION=`hatch version`
         git add src/hckr/__about__.py
