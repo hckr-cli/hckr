@@ -30,9 +30,12 @@ dependencies = [
     "croniter",
     "cron-descriptor",
     "rich",
+
+    # docs
     "sphinx",
     "sphinx-click",
     "shibuya",
+    "sphinx-notfound-page"
 ]
 
 [project.urls]
