@@ -11,6 +11,7 @@ Welcome to hckr's documentation!
    :caption: Contents:
 
    cron
+   hash
    info
    hello
 
