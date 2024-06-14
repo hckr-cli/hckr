@@ -29,6 +29,7 @@ def _get_hash_command(method) -> Any:
         raise Exception(f"Invalid Hash method {method}")
 
 
+# POSITIVE CASES
 def test_string_hashes():
     runner = CliRunner()
     for hash_type in EXPECTED_HASHES.keys():
@@ -46,4 +47,50 @@ def test_file_hashes():
         result = runner.invoke(_get_hash_command(hash_type), ["--file", HASH_FILE])
         print(result.output)
         assert result.exit_code == 0
+        assert "Using chunk size: 4.00 KB" in result.output
         assert EXPECTED_HASHES[hash_type] in result.output.replace("\n", "")
+
+
+def test_file_hash_with_chunk_size():
+    runner = CliRunner()
+    # check for all the types
+    for hash_type in EXPECTED_HASHES.keys():
+        print(f"\n{'-' * 50}\n")
+        result = runner.invoke(
+            _get_hash_command(hash_type), ["--file", HASH_FILE, "--chunk-size", 1024]
+        )
+        print(f"{hash_type}: {result.output}")
+        assert result.exit_code == 0
+        assert "Using chunk size: 1.00 KB" in result.output
+        assert EXPECTED_HASHES[hash_type] in result.output.replace("\n", "")
+
+
+def test_file_hash_invalid_path():
+    runner = CliRunner()
+    # check for all the types
+    for hash_type in EXPECTED_HASHES.keys():
+        print(f"\n{'-' * 50}\n")
+        result = runner.invoke(
+            _get_hash_command(hash_type), ["--file", "/invalid/path/file"]
+        )
+        print(f"{hash_type}: {result.output}")
+        assert result.exit_code == 0
+        assert (
+            "Some error occurred File not found, Please verify file path"
+            in result.output.replace("\n", "")
+        )
+
+
+def test_file_hash_is_dir():
+    runner = CliRunner()
+    # check for all the types
+    for hash_type in EXPECTED_HASHES.keys():
+        print(f"\n{'-' * 50}\n")
+        result = runner.invoke(
+            _get_hash_command(hash_type), ["--file", current_directory]
+        )
+        print(f"{hash_type}: {result.output}")
+        assert result.exit_code == 0
+        assert "Path is directory, please pass file path" in result.output.replace(
+            "\n", ""
+        )

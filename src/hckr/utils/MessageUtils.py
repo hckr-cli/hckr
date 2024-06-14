@@ -31,7 +31,7 @@ def info(msg, color=None):
     if color:
         print(f"{info_emoji()} [bold {color}] {msg}[/bold {color}]")
     else:
-        print(f"{info_emoji()} [bold magenta] {msg}[/bold magenta]")
+        print(f"{info_emoji()} [bold blue] {msg}[/bold blue]")
 
 
 def info_emoji():

@@ -22,8 +22,7 @@ def hash():
 )
 @hash.command(help="hash using MD5 algorithm")
 def md5(string, file, chunk_size):
-    digest = hashStringOrFile(string, file, HashType.MD5, chunk_size)
-    success(f"MD5: {digest}")
+    hashStringOrFile(string, file, HashType.MD5, chunk_size)
 
 
 @click.option("-s", "--string", help="String to be hashed", required=False)
@@ -37,8 +36,7 @@ def md5(string, file, chunk_size):
 )
 @hash.command(help="hash using SHA1 algorithm")
 def sha1(string, file, chunk_size):
-    digest = hashStringOrFile(string, file, HashType.SHA1, chunk_size)
-    success(f"SHA1: {digest}")
+    hashStringOrFile(string, file, HashType.SHA1, chunk_size)
 
 
 @click.option("-s", "--string", help="String to be hashed", required=False)
@@ -52,8 +50,7 @@ def sha1(string, file, chunk_size):
 )
 @hash.command(help="hash using SHA256 algorithm")
 def sha256(string, file, chunk_size):
-    digest = hashStringOrFile(string, file, HashType.SHA256, chunk_size)
-    success(f"SHA256: {digest}")
+    hashStringOrFile(string, file, HashType.SHA256, chunk_size)
 
 
 @click.option("-s", "--string", help="String to be hashed", required=False)
@@ -67,5 +64,4 @@ def sha256(string, file, chunk_size):
 )
 @hash.command(help="hash using SHA512 algorithm")
 def sha512(string, file, chunk_size):
-    digest = hashStringOrFile(string, file, HashType.SHA512, chunk_size)
-    success(f"SHA512: {digest}")
+    hashStringOrFile(string, file, HashType.SHA512, chunk_size)
