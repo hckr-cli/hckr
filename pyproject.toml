@@ -30,7 +30,7 @@ dependencies = [
     "croniter",
     "cron-descriptor",
     "rich",
-
+    "cryptography",
     # docs
     "sphinx",
     "sphinx-click",

@@ -6,6 +6,7 @@ import time
 import click
 from ..__about__ import __version__
 from ..cli.cron import cron
+from ..cli.crypto import crypto
 from ..cli.hash import hash
 import webbrowser
 
@@ -56,6 +57,7 @@ def docs():
 
 cli.add_command(cron)
 cli.add_command(hash)
+cli.add_command(crypto)
 
 # implementing this so that if user just uses `devd` we show them something
 if __name__ == "__main__":
