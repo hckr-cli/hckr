@@ -1,10 +1,13 @@
 # SPDX-FileCopyrightText: 2024-present Ashish Patel <ashishpatel0720@gmail.com>
 #
 # SPDX-License-Identifier: MIT
+import time
+
 import click
 from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.hash import hash
+import webbrowser
 
 
 @click.group(
@@ -39,6 +42,16 @@ def info():
     click.secho(
         f"PyPi: https://pypi.org/project/devd/", fg="yellow", bold=True, nl=True
     )
+
+
+@cli.command(help="Opens docs for hckr cli in browser")
+def docs():
+    url = "https://hckr.readthedocs.io/"
+    click.secho("Version: devd", fg="yellow", bold=True, nl=False)
+    click.secho(f"=={__version__}  ", fg="blue", bold=False, nl=True)
+    click.secho(f"Opening Docs in browser: {url}", fg="red", bold=True, nl=True)
+    time.sleep(1)
+    webbrowser.open(url)
 
 
 cli.add_command(cron)

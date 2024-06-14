@@ -13,6 +13,7 @@ Welcome to hckr's documentation!
    cron
    hash
    info
+   docs
    hello
 
 Indices and tables
