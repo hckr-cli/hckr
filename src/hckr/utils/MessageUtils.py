@@ -54,3 +54,12 @@ def error_emoji():
 def warn_emoji():
     emoji = random.choice(["warning", "children_crossing"])
     return f":{emoji}:"
+
+
+def checkOnlyOnePassed(name1, val1, name2, val2):
+    if val1 and val2:
+        error(f"Please use either --{name1} or --{name2}, can't use both")
+        exit(1)
+    if not val1 and not val2:
+        error(f"Please provide either --{name1} or --{name2}")
+        exit(1)

@@ -9,7 +9,7 @@ from ..utils.MessageUtils import *
 
 
 @click.group(
-    help="cron related utiltities",
+    help="cron commands",
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 def cron():
@@ -47,12 +47,7 @@ def desc(expr):
 )
 @cron.command(help="run a command using given cron expression")
 def run(cmd, expr, seconds, timeout):
-    if seconds and expr:
-        error("Please use either --expr or --seconds to pass schedule, can't use both")
-        exit(1)
-    if not seconds and not expr:
-        error("Please provide either --expr or --seconds to pass schedule")
-        exit(1)
+    checkOnlyOnePassed("seconds", seconds, "expr", expr)
     try:
         if expr:
             description = get_description(expr)
