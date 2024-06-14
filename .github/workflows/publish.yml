@@ -2,7 +2,7 @@ name: Publish to PyPI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "hash-utilities" ]
     paths:
       - 'src/**'
       - 'tests/**'
