@@ -3,10 +3,8 @@ from datetime import datetime
 
 import click
 from croniter import croniter
-
-from .MessageUtils import *
+from hckr.utils.MessageUtils import error
 from rich.progress import track
-from time import sleep
 
 
 def _get_step(duration):

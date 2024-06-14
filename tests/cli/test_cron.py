@@ -78,7 +78,7 @@ def test_cron_run_no_schedule():
     cmd = "echo 'hello world!'"
     result = runner.invoke(run, ["--cmd", cmd])
     print(result.output)
-    assert "Please provide either --expr or --seconds to pass schedule" in result.output
+    assert "Please provide either --seconds or --expr" in result.output
 
 
 def test_cron_run_both_schedule():
@@ -88,7 +88,4 @@ def test_cron_run_both_schedule():
 
     result = runner.invoke(run, ["--cmd", cmd, "--expr", expr, "--seconds", "10"])
     print(result.output)
-    assert (
-        "Please use either --expr or --seconds to pass schedule, can't use both"
-        in result.output
-    )
+    assert "Please use either --seconds or --expr, can't use both" in result.output

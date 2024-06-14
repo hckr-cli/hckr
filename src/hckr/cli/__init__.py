@@ -2,9 +2,9 @@
 #
 # SPDX-License-Identifier: MIT
 import click
-from rich import print
-from ..cli.cron import cron
 from ..__about__ import __version__
+from ..cli.cron import cron
+from ..cli.hash import hash
 
 
 @click.group(
@@ -42,6 +42,7 @@ def info():
 
 
 cli.add_command(cron)
+cli.add_command(hash)
 
 # implementing this so that if user just uses `devd` we show them something
 if __name__ == "__main__":

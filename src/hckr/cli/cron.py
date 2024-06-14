@@ -2,14 +2,16 @@ import subprocess
 
 import rich
 from cron_descriptor import get_description  # type: ignore
-from hckr.utils.CronUtils import *
 from rich.panel import Panel
+from ..utils.CronUtils import calculate_sleep_duration, run_progress_barV2
 
-from ..utils.MessageUtils import *
+# from ..utils.MessageUtils import *
+import click
+from ..utils.MessageUtils import success, error, info, checkOnlyOnePassed, colored
 
 
 @click.group(
-    help="cron related utiltities",
+    help="cron commands",
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 def cron():
@@ -47,12 +49,7 @@ def desc(expr):
 )
 @cron.command(help="run a command using given cron expression")
 def run(cmd, expr, seconds, timeout):
-    if seconds and expr:
-        error("Please use either --expr or --seconds to pass schedule, can't use both")
-        exit(1)
-    if not seconds and not expr:
-        error("Please provide either --expr or --seconds to pass schedule")
-        exit(1)
+    checkOnlyOnePassed("seconds", seconds, "expr", expr)
     try:
         if expr:
             description = get_description(expr)
