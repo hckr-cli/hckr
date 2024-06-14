@@ -32,7 +32,7 @@ def _get_hash_command(method) -> Any:
 # POSITIVE CASES
 def test_string_hashes():
     runner = CliRunner()
-    for hash_type in EXPECTED_HASHES.keys():
+    for hash_type in EXPECTED_HASHES:
         print(f"\n{'-' * 50}\n")
         result = runner.invoke(_get_hash_command(hash_type), ["--string", HASH_STRING])
         print(result.output)
@@ -42,7 +42,7 @@ def test_string_hashes():
 
 def test_file_hashes():
     runner = CliRunner()
-    for hash_type in EXPECTED_HASHES.keys():
+    for hash_type in EXPECTED_HASHES:
         print(f"\n{'-' * 50}\n")
         result = runner.invoke(_get_hash_command(hash_type), ["--file", HASH_FILE])
         print(result.output)
@@ -54,7 +54,7 @@ def test_file_hashes():
 def test_file_hash_with_chunk_size():
     runner = CliRunner()
     # check for all the types
-    for hash_type in EXPECTED_HASHES.keys():
+    for hash_type in EXPECTED_HASHES:
         print(f"\n{'-' * 50}\n")
         result = runner.invoke(
             _get_hash_command(hash_type), ["--file", HASH_FILE, "--chunk-size", 1024]
@@ -68,7 +68,7 @@ def test_file_hash_with_chunk_size():
 def test_file_hash_invalid_path():
     runner = CliRunner()
     # check for all the types
-    for hash_type in EXPECTED_HASHES.keys():
+    for hash_type in EXPECTED_HASHES:
         print(f"\n{'-' * 50}\n")
         result = runner.invoke(
             _get_hash_command(hash_type), ["--file", "/invalid/path/file"]
@@ -84,7 +84,7 @@ def test_file_hash_invalid_path():
 def test_file_hash_is_dir():
     runner = CliRunner()
     # check for all the types
-    for hash_type in EXPECTED_HASHES.keys():
+    for hash_type in EXPECTED_HASHES:
         print(f"\n{'-' * 50}\n")
         result = runner.invoke(
             _get_hash_command(hash_type), ["--file", current_directory]

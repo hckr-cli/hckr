@@ -2,10 +2,9 @@
 #
 # SPDX-License-Identifier: MIT
 import click
-from rich import print
+from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.hash import hash
-from ..__about__ import __version__
 
 
 @click.group(

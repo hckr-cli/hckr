@@ -1,9 +1,8 @@
-from enum import StrEnum
 import hashlib
-from pathlib import Path
+import os
+from enum import StrEnum
 
 from hckr.utils.MessageUtils import *
-import os
 
 
 class HashType(StrEnum):
