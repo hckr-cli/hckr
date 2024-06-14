@@ -1,11 +1,11 @@
 import hashlib
 import os
-from enum import StrEnum
+from enum import Enum
 
 from hckr.utils.MessageUtils import colored, info, checkOnlyOnePassed, error, success
 
 
-class HashType(StrEnum):
+class HashType(str, Enum):
     MD5 = ("md5",)
     SHA1 = ("sha1",)
     SHA256 = ("sha256",)
