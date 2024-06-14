@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Any
 
 from click.testing import CliRunner
-from hckr.cli.hash import *
+from hckr.cli.hash import sha1, sha256, sha512, md5
 from hckr.utils.HashUtils import HashType
 
 current_directory = Path(__file__).parent

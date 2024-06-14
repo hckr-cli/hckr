@@ -1,6 +1,6 @@
+import click
 from cron_descriptor import get_description  # type: ignore
-from hckr.utils.CronUtils import *
-from hckr.utils.HashUtils import *
+from hckr.utils.HashUtils import hashStringOrFile, HashType
 
 
 @click.group(
