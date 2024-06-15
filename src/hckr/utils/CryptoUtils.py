@@ -7,13 +7,13 @@ def generate_key():
 
 
 # Save the key to a file
-def save_key(key, file_path):
+def save_file(key, file_path):
     with open(file_path, "wb") as key_file:
         key_file.write(key)
 
 
 # Load the key from a file
-def load_key(file_path):
+def load_file(file_path):
     with open(file_path, "rb") as key_file:
         key = key_file.read()
     return key
