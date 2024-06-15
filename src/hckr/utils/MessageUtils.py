@@ -1,3 +1,5 @@
+import logging
+
 from rich import print
 import random
 
@@ -58,8 +60,10 @@ def warn_emoji():
 
 def checkOnlyOnePassed(name1, val1, name2, val2):
     if val1 and val2:
+        logging.debug(f"Both values  --{name1} and --{name2} are not None")
         error(f"Please use either --{name1} or --{name2}, can't use both")
         exit(1)
     if not val1 and not val2:
+        logging.debug(f"Both values --{name1} and --{name2} are None")
         error(f"Please provide either --{name1} or --{name2}")
         exit(1)

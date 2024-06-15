@@ -39,7 +39,12 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
     context_settings={"help_option_names": ["-h", "--help"]},
     invoke_without_command=True,
 )
-@click.option("--verbose", "-v", count=True, help="Enable verbose output.")
+@click.option(
+    "--verbose",
+    "-v",
+    count=True,
+    help="Enable verbose output, use -v for INFO and -vv for DEBUG",
+)
 @click.version_option(version=__version__, prog_name="hckr")
 @click.pass_context
 @pass_info
@@ -56,7 +61,8 @@ def cli(
             format="[%(levelname)s]: %(message)s",
         )
         warning(
-            f"Verbose logging (LEVEL={'INFO' if verbose == 1 else 'DEBUG'}) is enabled."
+            f"Verbose logging (LEVEL={'INFO' if verbose == 1 else 'DEBUG'}) is enabled. "
+            "Use -v for INFO, -vv for DEBUG logs"
         )
     _info.verbose = verbose
     if ctx.invoked_subcommand is None:

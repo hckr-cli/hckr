@@ -1,3 +1,4 @@
+import logging
 import subprocess
 
 import rich
@@ -21,12 +22,15 @@ def cron():
 @click.option("-e", "--expr", help="Cron expression", required=True)
 @cron.command(help="describe the cron command in human readable terms")
 def desc(expr):
-    click.echo(f"Describing cron expression: {expr}")
+    info(f"Describing cron expression: {colored(expr,'magenta')}")
     try:
         description = get_description(expr)
         success(description)
     except Exception as e:
-        error(f"Invalid cron expression\n {e}")
+        logging.debug(
+            "Some exception occurred while getting description from Croniter."
+        )
+        error(f"Invalid cron expression\n '{e}'")
 
 
 @click.option(
