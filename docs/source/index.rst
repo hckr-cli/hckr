@@ -8,15 +8,6 @@ Welcome to hckr's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: General
-   :hidden:
-
-   hello
-   info
-   docs
-
-.. toctree::
-   :maxdepth: 2
    :caption: Hash
    :hidden:
 
@@ -35,6 +26,13 @@ Welcome to hckr's documentation!
    :hidden:
 
    crypto/index
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Info
+   :hidden:
+
+   info
 
 
 .. click:: hckr.cli:cli

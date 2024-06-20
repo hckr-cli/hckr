@@ -38,7 +38,7 @@ test-all:
 	hatch test -a -p -r
 
 coverage: clean
-	hatch test --cover
+	hatch test --cover -vvv -- --capture=no
 	hatch run dev:cov-xml
 
 lint:

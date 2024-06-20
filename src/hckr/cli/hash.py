@@ -11,9 +11,6 @@ def hash():
     pass
 
 
-# TODO: check if we can replace all of these methods with just one using @click.argument which takes type of hash
-
-
 @click.option("-s", "--string", help="String to be hashed", required=False)
 @click.option("-f", "--file", help="File to be hashed", required=False)
 @click.option(

@@ -33,9 +33,11 @@ dependencies = [
     "cryptography",
     # docs
     "sphinx",
+    "sphinx-docsearch",
     "sphinx-click",
     "shibuya",
-    "sphinx-notfound-page"
+    "sphinx-notfound-page",
+    "sphinx-copybutton"
 ]
 
 [project.urls]
@@ -92,7 +94,7 @@ dependencies = [
     "coverage[toml]>=6.2",
     "pytest",
     "pypi-cleanup",
-    "sphinx-autobuild"
+    "sphinx-autobuild",
 ]
 [tool.hatch.envs.dev.scripts]
 lint = "black --check src/ tests/"

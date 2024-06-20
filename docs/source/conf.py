@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'hckr'
-copyright = '2024, Ashish'
+copyright = '2024, Opensource'
 author = 'Ashish'
 
 # -- General configuration ---------------------------------------------------
@@ -16,7 +16,13 @@ author = 'Ashish'
 extensions = [
     'sphinx_click',
     'notfound.extension',
+    'sphinx_docsearch',
+    'sphinx_copybutton'
 ]
+
+docsearch_app_id = "UM5HRVXATR"
+docsearch_api_key = "21a390a684536b73f0aee9a20c708c4b"
+docsearch_index_name = "hckr"
 
 templates_path = ['_templates']
 exclude_patterns = []
