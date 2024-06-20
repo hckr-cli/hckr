@@ -100,4 +100,5 @@ fix = "black -v src/ tests/"
 check = "mypy --install-types --non-interactive {args:src/hckr tests}"
 cov-xml = "coverage xml"
 pypi-clean = "pypi-cleanup -u pateash -p hckr --do-it"
-docs = "sphinx-autobuild -a --port=0 --open-browser docs/source docs/build"
+# --pre-build makes sure we get latest changes even if we modify something in
+docs = "sphinx-autobuild -a --port=0 --open-browser docs/source docs/build --watch src/hckr --pre-build 'rm -rf docs/build'"

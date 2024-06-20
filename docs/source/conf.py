@@ -15,7 +15,7 @@ author = 'Ashish'
 
 extensions = [
     'sphinx_click',
-    'notfound.extension'
+    'notfound.extension',
 ]
 
 templates_path = ['_templates']
@@ -29,7 +29,6 @@ html_theme = 'shibuya'
 html_static_path = ['_static']
 
 # TODO: enhance it https://shibuya.lepture.com/install/
-
 html_theme_options = {
     # "announcement": "The content of the announcement",
     "color_mode": "light",  # light or dark
@@ -42,5 +41,5 @@ html_context = {
     "source_user": "pateash",
     "source_repo": "hckr",
     "source_version": "main",  # Optional
-    "source_docs_path": "/docs/source",  # Optional
+    "source_docs_path": "/docs/source/",  # Optional
 }

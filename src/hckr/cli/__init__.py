@@ -74,16 +74,53 @@ def cli(
         cli(["-h"])
 
 
-@cli.command(help="Showing Hello message")
+# NOTE - keep command() empty to provide docstr
+@cli.command()
 @click.option("--name", help="Say hello to someone", required=False, default="World")
 def hello(name):
+    """
+    Greets a person with the given name.
+
+    This command outputs a greeting message to the person specified by the `name` option.
+
+    **Example Usage**:
+
+    * Say hello
+
+    .. code-block:: shell
+
+        $ hckr hello
+        Hello World!
+
+    * Say hello to *Alice*
+
+    .. code-block:: shell
+
+        $ hckr hello --name Alice
+        Hello Alice!
+    **Command Reference**:
+    """
     logging.debug("Hello debug")
     logging.info("Hello info")
     click.secho(f"Hello {name}!", fg="green", nl=True)
 
 
-@cli.command(help="Showing cli information")
+@cli.command()
 def info():
+    """
+    Show information for CLI and useful links.
+
+    **Example usage**:
+
+    .. code-block:: shell
+
+        $ hckr info
+        Version: devd==VERSION
+        Github: https://github.com/pateash/devd
+        PyPi: https://pypi.org/project/devd/
+
+    **Command Reference**:
+    """
     click.secho("Version: devd", fg="magenta", bold=True, nl=False)
     click.secho(f"=={__version__}  ", fg="blue", bold=False, nl=True)
     click.secho(
