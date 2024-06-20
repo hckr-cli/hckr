@@ -34,6 +34,7 @@ html_theme_options = {
     "color_mode": "light",  # light or dark
     "github_url": "https://github.com/pateash/hckr",
     "discussion_url": "https://github.com/pateash/hckr/discussions",
+    "globaltoc_expand_depth": 1,
 }
 
 html_context = {

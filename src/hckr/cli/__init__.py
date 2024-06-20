@@ -7,6 +7,7 @@ import webbrowser
 
 import click
 
+from hckr.cli.crypto.fernet import fernet
 from hckr.utils.MessageUtils import warning
 from ..__about__ import __version__
 from ..cli.cron import cron
@@ -98,6 +99,7 @@ def hello(name):
 
         $ hckr hello --name Alice
         Hello Alice!
+
     **Command Reference**:
     """
     logging.debug("Hello debug")
@@ -143,7 +145,11 @@ def docs():
 
 cli.add_command(cron)
 cli.add_command(hash)
+
+# we have to add these here otherwise it will be circular imports
+# CRYPTO
 cli.add_command(crypto)
+crypto.add_command(fernet)
 
 # implementing this so that if user just uses `devd` we show them something
 if __name__ == "__main__":

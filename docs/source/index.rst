@@ -8,13 +8,40 @@ Welcome to hckr's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: General
+   :hidden:
 
-   cron
-   hash
+   hello
    info
    docs
-   hello
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Hash
+   :hidden:
+
+   hash
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Cron
+   :hidden:
+
+   cron
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Crypto
+   :hidden:
+
+   crypto/index
+
+
+.. click:: hckr.cli:cli
+   :prog: hckr
+   :nested: short
+
+
 
 Indices and tables
 -------------------
@@ -22,7 +49,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-.. click:: hckr.cli:cli
-   :prog: hckr
-   :nested: short
