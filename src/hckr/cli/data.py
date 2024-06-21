@@ -7,11 +7,12 @@ import pandas as pd
 from cron_descriptor import get_description  # type: ignore
 from faker import Faker
 from pyarrow import parquet as pq  # type: ignore
+import pyarrow as pa  # type: ignore
 import rich
 from rich.panel import Panel
 from rich.table import Table
 
-from hckr.utils.DataUtils import safe_faker_method
+from hckr.utils.DataUtils import safe_faker_method, print_df_as_table
 from hckr.utils.FileUtils import validate_file_extension
 from hckr.utils.MessageUtils import success, colored, info
 
@@ -75,10 +76,9 @@ def faker(count, schema, output, format):
         df.to_json(output, orient="records")
     elif format == "excel":
         validate_file_extension(output, [".xlsx", ".xls"])
-        # checkFileExtension(output, "xlsx")
         df.to_excel(output, index=False, engine="openpyxl")
     elif format == "parquet":
-        table = pq.Table.from_pandas(df)
+        table = pa.Table.from_pandas(df)
         pq.write_table(table, output)
     elif format == "avro":
         records = df.to_dict(orient="records")
@@ -91,32 +91,13 @@ def faker(count, schema, output, format):
                 for key in data[0]
             ],
         }
+        parsed_schema = fastavro.parse_schema(schema)
         with open(output, "wb") as out:
-            fastavro.writer(out, schema, records)
+            fastavro.writer(out, parsed_schema, records)
 
     logging.debug(f"Data head:\n'{df.head()}'")
 
-    # Add columns to the table based on DataFrame columns
-    table = Table(
-        show_header=True,
-        title="Data Sample",
-        header_style="bold magenta",
-        expand=True,
-        show_lines=True,
-    )
-    table.border_style = "yellow"
-    for column in df.columns:
-        table.add_column(column)
-
-    # Add rows to the table
-    for index, row in df.head(3).iterrows():
-        # Convert each row to string format, necessary to handle different data types
-        table.add_row(*[str(item) for item in row.values])
-        # if index < len(df) - 1:
-        #     table.add_row(*['' for _ in row.values])  # Use '---' or any other separator
-
-    rich.print(table)
-
+    print_df_as_table(df)
     success(f"Data written to {colored(output,'magenta')} in {format} format.")
 
     rich.print(

@@ -1,10 +1,14 @@
 from pathlib import Path
 
+import fastavro
 from click.testing import CliRunner
 
 from hckr.cli.data import faker
 import pandas as pd
+from pyarrow import parquet as pq  # type: ignore
+import pyarrow as pa  # type: ignore
 
+from hckr.utils.DataUtils import print_df_as_table
 from hckr.utils.FileUtils import delete_path_if_exists
 
 parent_directory = Path(__file__).parent.parent
@@ -23,8 +27,16 @@ def readFile(_format, FILE):
         df = pd.read_json(FILE)
     elif _format == "excel":
         df = pd.read_excel(FILE, engine="openpyxl")
+    elif _format == "parquet":
+        df = pq.read_table(FILE).to_pandas()
+    elif _format == "avro":
+        with open(FILE, "rb") as f:
+            avro_reader = fastavro.reader(f)
+            records = [record for record in avro_reader]
+        df = pd.DataFrame(records)
     else:
         raise Exception("Invalid _format")
+    print_df_as_table(df, title="Test Read Sample")
     return df
 
 
@@ -105,6 +117,11 @@ def test_data_faker_excel_valid_file_extension():
 
 def test_data_faker_parquet_format():
     result = faker_test_util(_format="parquet", _count=30)
+    assert result.exit_code == 0
+
+
+def test_data_faker_avro_format():
+    result = faker_test_util(_format="avro", _count=30)
     assert result.exit_code == 0
 
 
