@@ -41,6 +41,7 @@ dependencies = [
     "Faker",
     "pandas", #To manage data and save in CSV, Excel, and Parquet formats.
     "openpyxl", # For handling Excel files with Pandas.
+    "xlrd",
     "pyarrow", # For saving data in Parquet format.
     "fastavro" # For handling Avro file format.
 ]

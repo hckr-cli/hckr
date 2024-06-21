@@ -12,6 +12,7 @@ from rich.panel import Panel
 from rich.table import Table
 
 from hckr.utils.DataUtils import safe_faker_method
+from hckr.utils.FileUtils import validate_file_extension
 from hckr.utils.MessageUtils import success, colored, info
 
 
@@ -49,6 +50,9 @@ def data():
     help="Output file format.",
 )
 def faker(count, schema, output, format):
+    info(
+        f"Generating {colored(count,'magenta')} rows in {colored(format, 'yellow')} format."
+    )
     fake = Faker()
     with open(schema, "r") as schema_file:
         schema = json.load(schema_file)
@@ -70,7 +74,9 @@ def faker(count, schema, output, format):
     elif format == "json":
         df.to_json(output, orient="records")
     elif format == "excel":
-        df.to_excel(output, index=False)
+        validate_file_extension(output, [".xlsx", ".xls"])
+        # checkFileExtension(output, "xlsx")
+        df.to_excel(output, index=False, engine="openpyxl")
     elif format == "parquet":
         table = pq.Table.from_pandas(df)
         pq.write_table(table, output)
@@ -101,10 +107,6 @@ def faker(count, schema, output, format):
     table.border_style = "yellow"
     for column in df.columns:
         table.add_column(column)
-
-    info(
-        f"Generating {colored(count,'magenta')} rows in {colored(format, 'yellow')} format."
-    )
 
     # Add rows to the table
     for index, row in df.head(3).iterrows():

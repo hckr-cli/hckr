@@ -1,4 +1,5 @@
 import logging
+import os
 from pathlib import Path
 
 from hckr.utils.MessageUtils import error
@@ -59,3 +60,15 @@ def delete_path_if_exists(path):
         print(f"Deleted: {path}")
     else:
         print(f"No such path: {path}")
+
+
+# validate if file extension is one of given
+def validate_file_extension(file_path, expected_extensions):
+    # Extract the extension from the file path
+    _, file_extension = os.path.splitext(file_path)
+    # Check if the extension is in the list of expected extensions
+    if file_extension.lower() not in expected_extensions:
+        error(
+            f"Invalid file extension: {file_extension} in file: {file_path}\n allowed: {expected_extensions}"
+        )
+        exit(1)
