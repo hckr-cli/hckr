@@ -88,4 +88,5 @@ def test_cron_run_both_schedule():
 
     result = runner.invoke(run, ["--cmd", cmd, "--expr", expr, "--seconds", "10"])
     print(result.output)
+    assert result.exit_code != 0
     assert "Please use either --seconds or --expr, can't use both" in result.output
