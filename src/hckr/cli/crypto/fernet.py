@@ -48,6 +48,26 @@ def fernet():
     required=False,
 )
 def encrypt(key, message, create_key):
+    """
+    This command encrypts a TEXT message using **Fernet** key.
+
+    **Example Usage**:
+
+    * Encrypt a message with given key file
+
+    .. code-block:: shell
+
+        $ hckr crypto fernet encrypt -m 'hello'  -k 'key.txt'
+
+    * Encrypt a message and create new key file
+
+    .. code-block:: shell
+
+        $ hckr crypto fernet encrypt -m 'hello'  -k 'key.txt' -c
+
+    **Command Reference**:
+    """
+
     checkAndCreateKey(key, message, create_key)
     new_key = load_file(key)
     encrypted_message = encrypt_message(message, new_key)
@@ -87,6 +107,25 @@ def encrypt(key, message, create_key):
     required=False,
 )
 def encrypt_file(key, file, output, create_key):
+    """
+    This command encrypts a file PATH using **Fernet** key and generates output file
+
+    **Example Usage**:
+
+    * Encrypt a file with given key file
+
+    .. code-block:: shell
+
+        $ hckr crypto fernet encrypt -f 'message.txt'  -k 'key.txt' -o 'output.txt'
+
+    * Encrypt a file and create new key file
+
+    .. code-block:: shell
+
+        $ hckr crypto fernet encrypt -f 'message.txt'  -k 'key.txt' -o 'output.txt' -c
+
+    **Command Reference**:
+    """
     checkAndCreateKey(key, file, create_key)
     new_key = load_file(key)
     encrypted_content = encrypt_file_content(file, new_key)
@@ -109,8 +148,21 @@ def encrypt_file(key, file, output, create_key):
     help="Path to the encryption key file.",
     required=True,
 )
-@click.option("-m", "--message", help="message to be decrypted", required=True)
+@click.option("-m", "--message", help="Message to be decrypted", required=True)
 def decrypt(key, message):
+    """
+    This command decrypts a TEXT message using **Fernet** key.
+
+    **Example Usage**:
+
+    * Decrypt a message with given key file
+
+    .. code-block:: shell
+
+        $ hckr crypto fernet decrypt -m 'gAAAAABmdVJkaiK1gUihh-T3Z4-_p2qoy6v3NI7uITyXcsOow==' -k 'key.txt'
+
+    **Command Reference**:
+    """
     info(
         f"Decrypting '{colored(message, 'magenta')}', Using key file: {colored(key, 'yellow')}"
     )
@@ -150,6 +202,20 @@ def decrypt(key, message):
     required=True,
 )
 def decrypt_file(key, file, output):
+    """
+    This command decrypts a file PATH using **Fernet** key and generates output file
+
+    **Example Usage**:
+
+    * Encrypt a file with given key file
+
+    .. code-block:: shell
+
+        $ hckr crypto fernet decrypt -f 'encrypted_message.txt'  -k 'key.txt' -o 'output.txt'
+
+
+    **Command Reference**:
+    """
     info(
         f"Decrypting '{colored(file, 'magenta')}', Using key file: {colored(key, 'yellow')}"
     )
