@@ -1,20 +1,13 @@
-from pathlib import Path
-
 import click
 
 from hckr.utils.CryptoUtils import (
-    generate_key,
     encrypt_message,
-    decrypt_message,
+    checkAndCreateKey,
+    encrypt_file_content,
 )
-from hckr.utils.FileUtils import save_file, load_file
+from hckr.utils.FileUtils import load_file
 from hckr.utils.MessageUtils import (
-    warning,
-    info,
-    colored,
     success,
-    error,
-    checkOnlyOnePassed,
 )
 from ..crypto import crypto
 
@@ -37,7 +30,30 @@ def fernet():
 )
 @click.option("-m", "--message", help="message to be encrypted", required=False)
 @click.option(
-    "-f", "--file", type=click.Path(), help="File to be hashed", required=False
+    "-c",
+    "--create-key",
+    help="Flat to auto create key if key path doesn't exists",
+    default=False,
+    is_flag=True,
+    required=False,
+)
+def encrypt(key, message, create_key):
+    checkAndCreateKey(key, message, create_key)
+    new_key = load_file(key)
+    encrypted_message = encrypt_message(message, new_key)
+    success(f"Encrypted message: {encrypted_message}")
+
+
+@fernet.command()
+@click.option(
+    "-k",
+    "--key",
+    type=click.Path(),
+    help="Path to the encryption key file.",
+    required=True,
+)
+@click.option(
+    "-f", "--file", type=click.Path(), help="File to be encrypted", required=False
 )
 @click.option(
     "-c",
@@ -47,27 +63,11 @@ def fernet():
     is_flag=True,
     required=False,
 )
-def encrypt(key, message, file, create_key):
-    checkOnlyOnePassed("message", message, "file", file)
-    if not Path(key).exists():
-        if create_key:
-            warning(
-                f"Key file does not exist. Generating a new one: {colored(key, 'magenta')}"
-            )
-            new_key = generate_key()
-            save_file(new_key, key)
-        else:
-            error(
-                f"Key file path :{key} doesn't exists, \nPlease provide -c / --create-key if you want to create one."
-            )
-            exit(1)
-    else:
-        info(
-            f"Encrypting '{colored(message, 'magenta')}', Using key file: {colored(key, 'yellow')}"
-        )
-        new_key = load_file(key)
-    encrypted_message = encrypt_message(message, new_key)
-    success(f"Encrypted message: {encrypted_message}")
+def encrypt_file(key, file, create_key):
+    checkAndCreateKey(key, file, create_key)
+    new_key = load_file(key)
+    encrypted_message = encrypt_file_content(file, new_key)
+    success(f"Encrypted file output: {encrypted_message}")
 
 
 # @fernet.command()
