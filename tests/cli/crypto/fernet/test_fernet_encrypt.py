@@ -1,4 +1,3 @@
-import re
 from pathlib import Path
 
 from click.testing import CliRunner
@@ -36,7 +35,7 @@ def test_fernet_encrypt_file_with_key():
     )
     print(result.output)
     # assert result.exit_code == 0 # TODO: for some reason rich.panel() returning 1 as exit_code
-    assert f"""File encrypted, output written""" in result.output
+    assert """File encrypted, output written""" in result.output
 
 
 def test_fernet_encrypt_key_path_doesnt_exist_create_key():
@@ -49,7 +48,7 @@ def test_fernet_encrypt_key_path_doesnt_exist_create_key():
         result.exit_code == 0
     )  # TODO: for some reason rich.panel() returning 1 as exit_code
     assert (
-        f"""Key file does not exist, Flag [ -c / --create-key ] passed
+        """Key file does not exist, Flag [ -c / --create-key ] passed
  Generating a new key"""
         in result.output
     )

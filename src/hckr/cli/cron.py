@@ -22,7 +22,7 @@ def cron():
 @click.option("-e", "--expr", help="Cron expression", required=True)
 @cron.command(help="describe the cron command in human readable terms")
 def desc(expr):
-    info(f"Describing cron expression: {colored(expr,'magenta')}")
+    info(f"Describing cron expression: {colored(expr, 'magenta')}")
     try:
         description = get_description(expr)
         success(description)
