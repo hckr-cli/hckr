@@ -6,19 +6,6 @@ def generate_key():
     return Fernet.generate_key()
 
 
-# Save the key to a file
-def save_file(key, file_path):
-    with open(file_path, "wb") as key_file:
-        key_file.write(key)
-
-
-# Load the key from a file
-def load_file(file_path):
-    with open(file_path, "rb") as key_file:
-        key = key_file.read()
-    return key
-
-
 # Encrypt a message
 def encrypt_message(message, key):
     f = Fernet(key)

@@ -32,7 +32,10 @@ clean :
 	rm -f coverage.xml
 
 test:
-	hatch test -- -v
+	hatch test -- -vvv
+
+test-verbose:
+	hatch test -- -vvv  --capture=no
 
 test-all:
 	hatch test -a -p -r

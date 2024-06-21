@@ -2,8 +2,6 @@
 #
 # SPDX-License-Identifier: MIT
 import logging
-import time
-import webbrowser
 
 import click
 

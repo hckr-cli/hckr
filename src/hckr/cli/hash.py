@@ -12,7 +12,9 @@ def hash():
 
 
 @click.option("-s", "--string", help="String to be hashed", required=False)
-@click.option("-f", "--file", help="File to be hashed", required=False)
+@click.option(
+    "-f", "--file", type=click.Path(), help="File to be hashed", required=False
+)
 @click.option(
     "-c",
     "--chunk-size",
@@ -26,7 +28,9 @@ def md5(string, file, chunk_size):
 
 
 @click.option("-s", "--string", help="String to be hashed", required=False)
-@click.option("-f", "--file", help="File to be hashed", required=False)
+@click.option(
+    "-f", "--file", type=click.Path(), help="File to be hashed", required=False
+)
 @click.option(
     "-c",
     "--chunk-size",
@@ -40,7 +44,9 @@ def sha1(string, file, chunk_size):
 
 
 @click.option("-s", "--string", help="String to be hashed", required=False)
-@click.option("-f", "--file", help="File to be hashed", required=False)
+@click.option(
+    "-f", "--file", type=click.Path(), help="File to be hashed", required=False
+)
 @click.option(
     "-c",
     "--chunk-size",
@@ -54,7 +60,9 @@ def sha256(string, file, chunk_size):
 
 
 @click.option("-s", "--string", help="String to be hashed", required=False)
-@click.option("-f", "--file", help="File to be hashed", required=False)
+@click.option(
+    "-f", "--file", type=click.Path(), help="File to be hashed", required=False
+)
 @click.option(
     "-c",
     "--chunk-size",
