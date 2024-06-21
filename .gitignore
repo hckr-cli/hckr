@@ -116,3 +116,4 @@ output.txt
 
 # faker outputs
 output/
+!output/.gitkeep
