@@ -110,3 +110,4 @@ ENV/
 
 # VS Code settings
 .vscode
+output.txt
