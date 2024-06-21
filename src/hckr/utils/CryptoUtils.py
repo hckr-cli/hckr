@@ -34,11 +34,19 @@ def decrypt_message(encrypted_message, key):
     return decrypted_message
 
 
+def decrypt_file_content(file_path, key):
+    f = Fernet(key)
+    with open(file_path, "rb") as file:
+        original = file.read()
+    decrypted_message = f.decrypt(original)
+    return decrypted_message
+
+
 def checkAndCreateKey(key, content, create_key):
     if not Path(key).exists():
         if create_key:
             warning(
-                f"Key file does not exist. Generating a new one: {colored(key, 'magenta')}"
+                f"Key file does not exist, Flag [ -c / --create-key ] passed\n Generating a new key: {colored(key, 'magenta')}"
             )
             new_key = generate_key()
             save_file(new_key, key)

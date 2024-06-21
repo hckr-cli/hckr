@@ -1,15 +1,25 @@
+import logging
+from pathlib import Path
+
 import click
 
 from hckr.utils.CryptoUtils import (
     encrypt_message,
     checkAndCreateKey,
     encrypt_file_content,
+    decrypt_message,
+    decrypt_file_content,
 )
-from hckr.utils.FileUtils import load_file
+from hckr.utils.FileUtils import load_file, save_file
 from hckr.utils.MessageUtils import (
     success,
+    error,
+    colored,
+    info,
 )
 from ..crypto import crypto
+import rich
+from rich.panel import Panel
 
 
 @crypto.group(
@@ -28,7 +38,7 @@ def fernet():
     help="Path to the encryption key file.",
     required=True,
 )
-@click.option("-m", "--message", help="message to be encrypted", required=False)
+@click.option("-m", "--message", help="message to be encrypted", required=True)
 @click.option(
     "-c",
     "--create-key",
@@ -41,7 +51,13 @@ def encrypt(key, message, create_key):
     checkAndCreateKey(key, message, create_key)
     new_key = load_file(key)
     encrypted_message = encrypt_message(message, new_key)
-    success(f"Encrypted message: {encrypted_message}")
+    rich.print(
+        Panel(
+            encrypted_message.decode(),
+            expand=True,
+            title=f"Encrypted message",
+        )
+    )
 
 
 @fernet.command()
@@ -53,7 +69,14 @@ def encrypt(key, message, create_key):
     required=True,
 )
 @click.option(
-    "-f", "--file", type=click.Path(), help="File to be encrypted", required=False
+    "-f", "--file", type=click.Path(), help="File to be encrypted", required=True
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output file containing encrypted file",
+    required=True,
 )
 @click.option(
     "-c",
@@ -63,27 +86,88 @@ def encrypt(key, message, create_key):
     is_flag=True,
     required=False,
 )
-def encrypt_file(key, file, create_key):
+def encrypt_file(key, file, output, create_key):
     checkAndCreateKey(key, file, create_key)
     new_key = load_file(key)
-    encrypted_message = encrypt_file_content(file, new_key)
-    success(f"Encrypted file output: {encrypted_message}")
+    encrypted_content = encrypt_file_content(file, new_key)
+    save_file(encrypted_content, output)
+    success(f"File encrypted, output written")
+    rich.print(
+        Panel(
+            output,
+            expand=True,
+            title=f"File Output",
+        )
+    )
 
 
-# @fernet.command()
-# @click.argument("encrypted_message")
-# @click.option(
-#     "--key", type=click.Path(), help="Path to the encryption key file.", required=True
-# )
-# def decrypt(encrypted_message, key):
-#     if not Path(key).exists():
-#         error(f"Key file not found: {key}, please provide a valid key path")
-#         exit(1)
-#     try:
-#         loaded_key = load_file(key)
-#         decrypted_message = decrypt_message(encrypted_message.encode(), loaded_key)
-#         success(f"Decrypted message: {colored(decrypted_message, 'magenta')}")
-#     except Exception as e:
-#         error(
-#             f"Error decrypting message with given key {key}, Please validate key \n {e}"
-#         )
+@fernet.command()
+@click.option(
+    "-k",
+    "--key",
+    type=click.Path(),
+    help="Path to the encryption key file.",
+    required=True,
+)
+@click.option("-m", "--message", help="message to be decrypted", required=True)
+def decrypt(key, message):
+    info(
+        f"Decrypting '{colored(message, 'magenta')}', Using key file: {colored(key, 'yellow')}"
+    )
+    if not Path(key).exists():
+        error(
+            f"Key file path :{key} doesn't exists, \nPlease check and provide correct encryption key path."
+        )
+        exit(1)
+
+    new_key = load_file(key)
+    decrypted_message = decrypt_message(message, new_key)
+    rich.print(
+        Panel(
+            decrypted_message,
+            expand=True,
+            title=f"Decrypted message",
+        )
+    )
+
+
+@fernet.command()
+@click.option(
+    "-k",
+    "--key",
+    type=click.Path(),
+    help="Path to the encryption key file.",
+    required=True,
+)
+@click.option(
+    "-f", "--file", type=click.Path(), help="File to be decrypted", required=True
+)
+@click.option(
+    "-o",
+    "--output",
+    type=click.Path(),
+    help="Output file containing decrypted file",
+    required=True,
+)
+def decrypt_file(key, file, output):
+    info(
+        f"Decrypting '{colored(file, 'magenta')}', Using key file: {colored(key, 'yellow')}"
+    )
+    if not Path(key).exists():
+        error(
+            f"Key file path :{key} doesn't exists, \nPlease check and provide correct encryption key path."
+        )
+        exit(1)
+
+    new_key = load_file(key)
+    decrypted_content = decrypt_file_content(file, new_key)
+    save_file(decrypted_content, output)
+    success(f"File decrypted, output written")
+    logging.debug(f"Message head:\n'{decrypted_content.decode()[:100]}'")
+    rich.print(
+        Panel(
+            output,
+            expand=True,
+            title=f"File Output",
+        )
+    )
