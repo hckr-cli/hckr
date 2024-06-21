@@ -6,7 +6,6 @@ from hckr.__about__ import __version__
 
 def test_info_hello_world():
     runner = CliRunner()
-    name = "ashish"
     result = runner.invoke(hello)
     assert result.exit_code == 0
     print(result.output)

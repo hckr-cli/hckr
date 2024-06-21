@@ -5,6 +5,7 @@ import webbrowser
 import click
 
 from ..__about__ import __version__
+from ..utils.MessageUtils import error
 
 
 @click.group(
@@ -80,4 +81,7 @@ def docs():
     click.secho(f"=={__version__}  ", fg="blue", bold=False, nl=True)
     click.secho(f"Opening Docs in browser: {url}", fg="red", bold=True, nl=True)
     time.sleep(1)
-    webbrowser.open(url)
+    try:
+        webbrowser.open(url)
+    except Exception as e:
+        error(f"Some error occured while opening docs in browser\n{e}")

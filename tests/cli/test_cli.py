@@ -10,7 +10,7 @@ def test_hckr():
     print(result.output)
     assert result.exit_code == 0
     assert f"{__version__}" in result.output
-    assert f"[OPTIONS] COMMAND [ARGS]..." in result.output
+    assert "[OPTIONS] COMMAND [ARGS]..." in result.output
     assert (
         """Options:
   -v, --verbose  Enable verbose output, use -v for INFO and -vv for DEBUG
