@@ -37,7 +37,12 @@ dependencies = [
     "sphinx-click",
     "shibuya",
     "sphinx-notfound-page",
-    "sphinx-copybutton"
+    "sphinx-copybutton",
+    "Faker",
+    "pandas", #To manage data and save in CSV, Excel, and Parquet formats.
+    "openpyxl", # For handling Excel files with Pandas.
+    "pyarrow", # For saving data in Parquet format.
+    "fastavro" # For handling Avro file format.
 ]
 
 [project.urls]

@@ -6,6 +6,7 @@ import logging
 import click
 
 from hckr.cli.crypto.fernet import fernet
+from hckr.cli.data import data
 from hckr.cli.info import info
 from hckr.utils.MessageUtils import warning
 from ..__about__ import __version__
@@ -75,6 +76,7 @@ def cli(
 cli.add_command(info)
 cli.add_command(cron)
 cli.add_command(hash)
+cli.add_command(data)
 
 # we have to add these here otherwise it will be circular imports
 # CRYPTO
