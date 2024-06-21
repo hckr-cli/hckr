@@ -9,7 +9,7 @@ def test_hckr():
     result = runner.invoke(cli)
     print(result.output)
     assert result.exit_code == 0
-    assert f"{__version__}" in result.output
+    assert __version__ in result.output
     assert "[OPTIONS] COMMAND [ARGS]..." in result.output
     assert (
         """Options:

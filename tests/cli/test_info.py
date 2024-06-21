@@ -9,7 +9,7 @@ def test_info_hello_world():
     result = runner.invoke(hello)
     assert result.exit_code == 0
     print(result.output)
-    assert f"Hello World" in result.output
+    assert "Hello World" in result.output
 
 
 def test_info_hello_name():

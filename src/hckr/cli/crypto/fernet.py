@@ -55,7 +55,7 @@ def encrypt(key, message, create_key):
         Panel(
             encrypted_message.decode(),
             expand=True,
-            title=f"Encrypted message",
+            title="Encrypted message",
         )
     )
 
@@ -96,7 +96,7 @@ def encrypt_file(key, file, output, create_key):
         Panel(
             output,
             expand=True,
-            title=f"File Output",
+            title="File Output",
         )
     )
 
@@ -126,7 +126,7 @@ def decrypt(key, message):
         Panel(
             decrypted_message,
             expand=True,
-            title=f"Decrypted message",
+            title="Decrypted message",
         )
     )
 
@@ -168,6 +168,6 @@ def decrypt_file(key, file, output):
         Panel(
             output,
             expand=True,
-            title=f"File Output",
+            title="File Output",
         )
     )
