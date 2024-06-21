@@ -27,4 +27,4 @@ def test_info_version():
     result = runner.invoke(version)
     print(result.output)
     assert result.exit_code == 0
-    assert f"Version: devd=={__version__}" in result.output
+    assert f"Version: hckr=={__version__}" in result.output

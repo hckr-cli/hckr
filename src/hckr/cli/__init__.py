@@ -81,6 +81,6 @@ cli.add_command(hash)
 cli.add_command(crypto)
 crypto.add_command(fernet)
 
-# implementing this so that if user just uses `devd` we show them something
+# implementing this so that if user just uses `hckr` we show them something
 if __name__ == "__main__":
     cli()

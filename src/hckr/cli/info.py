@@ -57,26 +57,26 @@ def version():
     .. code-block:: shell
 
         $ hckr info version
-        Version: devd==VERSION
-        Github: https://github.com/pateash/devd
-        PyPi: https://pypi.org/project/devd/
+        Version: hckr==VERSION
+        Github: https://github.com/pateash/hckr
+        PyPi: https://pypi.org/project/hckr/
 
     **Command Reference**:
     """
-    click.secho("Version: devd", fg="magenta", bold=True, nl=False)
+    click.secho("Version: hckr", fg="magenta", bold=True, nl=False)
     click.secho(f"=={__version__}  ", fg="blue", bold=False, nl=True)
     click.secho(
-        f"Github: https://github.com/pateash/devd", fg="red", bold=True, nl=True
+        f"Github: https://github.com/pateash/hckr", fg="red", bold=True, nl=True
     )
     click.secho(
-        f"PyPi: https://pypi.org/project/devd/", fg="yellow", bold=True, nl=True
+        f"PyPi: https://pypi.org/project/hckr/", fg="yellow", bold=True, nl=True
     )
 
 
 @info.command(help="Opens docs for hckr cli in browser")
 def docs():
     url = "https://hckr.readthedocs.io/"
-    click.secho("Version: devd", fg="yellow", bold=True, nl=False)
+    click.secho("Version: hckr", fg="yellow", bold=True, nl=False)
     click.secho(f"=={__version__}  ", fg="blue", bold=False, nl=True)
     click.secho(f"Opening Docs in browser: {url}", fg="red", bold=True, nl=True)
     time.sleep(1)
