@@ -110,4 +110,9 @@ ENV/
 
 # VS Code settings
 .vscode
+
+# encrypt output
 output.txt
+
+# faker outputs
+output/
