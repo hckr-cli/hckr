@@ -68,5 +68,5 @@ docs-build:
 	cd docs/ && make clean && make html && cd ..
 
 docs:
-	hatch run dev:docs
+	hatch run docs:docs
 

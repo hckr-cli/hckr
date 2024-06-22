@@ -17,7 +17,7 @@ extensions = [
     'sphinx_click',
     'notfound.extension',
     'sphinx_docsearch',
-    'sphinx_copybutton'
+    'sphinx_copybutton',
 ]
 
 docsearch_app_id = "UM5HRVXATR"
@@ -33,6 +33,8 @@ exclude_patterns = []
 # html_theme = 'alabaster'
 html_theme = 'shibuya'
 html_static_path = ['_static']
+# favicons
+html_favicon = '_static/favicon.ico'
 
 # TODO: enhance it https://shibuya.lepture.com/install/
 html_theme_options = {
