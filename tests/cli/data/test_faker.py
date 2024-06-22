@@ -1,15 +1,16 @@
 from pathlib import Path
 
-import fastavro
+import pyarrow as pa  # type: ignore
 from click.testing import CliRunner
+from pyarrow import parquet as pq  # type: ignore
 
 from hckr.cli.data import faker
-import pandas as pd
-from pyarrow import parquet as pq  # type: ignore
-import pyarrow as pa  # type: ignore
-
-from hckr.utils.DataUtils import print_df_as_table, readFile
-from hckr.utils.FileUtils import delete_path_if_exists, get_file_format_from_extension
+from hckr.utils.DataUtils import readFile
+from hckr.utils.FileUtils import (
+    delete_path_if_exists,
+    get_file_format_from_extension,
+    FileFormat,
+)
 
 parent_directory = Path(__file__).parent.parent
 
@@ -20,88 +21,66 @@ OUTPUT_DIR = parent_directory / "resources" / "data" / "faker" / "output"
 # POSITIVE
 
 
-def faker_test_util(_format=None, _count=None, _file=None):
+def faker_test_util_format_count(_format, _count=None):
     runner = CliRunner()
-    DEFAULT_FORMAT = get_file_format_from_extension(_file)
     DEFAULT_COUNT = 10
-    if _file:
-        FILE = _file
-    else:
-        FILE = OUTPUT_DIR / f"output.{_format if _format else DEFAULT_FORMAT}"
+    FILE = (
+        OUTPUT_DIR / f"output.{'xlsx' if _format == str(FileFormat.EXCEL) else _format}"
+    )
+
     delete_path_if_exists(FILE)
-    if _format and _count:
+    if _count:
         result = runner.invoke(
-            faker, ["-s", SCHEMA_FILE, "-o", FILE, "-c", _count, "-f", _format]
+            faker, ["-s", SCHEMA_FILE, "-o", FILE, "-c", _count, "-f", str(_format)]
         )
         assert f"Generating {_count} rows in {_format} format" in result.output
         # only validate count if we are checking valid case
         if result.exit_code == 0:
             df = readFile(_format, FILE)
             assert df.shape[0] == _count
-
-    elif _count:
-        result = runner.invoke(faker, ["-s", SCHEMA_FILE, "-o", FILE, "-c", _count])
-        assert f"Generating {_count} rows in {DEFAULT_FORMAT} format" in result.output
-        if result.exit_code == 0:
-            df = readFile(DEFAULT_FORMAT, FILE)
-            assert df.shape[0] == _count
-
-    elif _format:
-        result = runner.invoke(faker, ["-s", SCHEMA_FILE, "-o", FILE, "-f", _format])
-        assert f"Generating {DEFAULT_COUNT} rows in {_format} format" in result.output
-        if result.exit_code == 0:
-            df = readFile(_format, FILE)
-            assert df.shape[0] == DEFAULT_COUNT
-
-    else:
+    else:  # if count  not given use default count
         result = runner.invoke(faker, ["-s", SCHEMA_FILE, "-o", FILE])
         assert (
-            f"Generating {DEFAULT_COUNT} rows in {DEFAULT_FORMAT} format"
-            in result.output
+            f"Generating {DEFAULT_COUNT} rows in {str(_format)} format" in result.output
         )
         if result.exit_code == 0:
-            df = readFile(DEFAULT_FORMAT, FILE)
+            df = readFile(_format, FILE)
             assert df.shape[0] == DEFAULT_COUNT
 
     print(result.output)
     return result
 
 
-def test_data_faker_default_count_default_format():
-    result = faker_test_util()
-    assert result.exit_code == 0
+def test_data_faker_inferred_format():
+    formats = FileFormat.validFormats()
+    for _format in formats:
+        print(f"Running for {_format}")
+        result = faker_test_util_format_count(_format=_format)
+        assert result.exit_code == 0
 
 
 def test_data_faker_given_count():
-    result = faker_test_util(_count=20)
+    result = faker_test_util_format_count(_count=20, _format=FileFormat.CSV.value)
     assert result.exit_code == 0
 
 
 def test_data_faker_given_format():
-    result = faker_test_util(_format="csv")
+    result = faker_test_util_format_count(_format="csv")
     assert result.exit_code == 0
 
 
 def test_data_faker_given_count_given_format():
-    result = faker_test_util(_format="csv", _count=30)
+    result = faker_test_util_format_count(_format="csv", _count=30)
     assert result.exit_code == 0
 
 
-def test_data_faker_excel_valid_file_extension():
-    FORMATS = ["xls", "xlsx"]
-    for _format in FORMATS:
-        FILE = OUTPUT_DIR / f"output.{_format}"
-        result = faker_test_util(_format="excel", _file=FILE)
-        assert result.exit_code == 0
-
-
 def test_data_faker_parquet_format():
-    result = faker_test_util(_format="parquet", _count=30)
+    result = faker_test_util_format_count(_format="parquet", _count=30)
     assert result.exit_code == 0
 
 
 def test_data_faker_avro_format():
-    result = faker_test_util(_format="avro", _count=30)
+    result = faker_test_util_format_count(_format="avro", _count=30)
     assert result.exit_code == 0
 
 
@@ -127,13 +106,20 @@ def test_data_faker_invalid_output():
     )
     print(result.output)
     assert (
-        "Error: Invalid value for '-f' / '--format': 'INVALID' is not one of 'csv', 'json', 'excel', 'parquet', 'avro'."
+        """Invalid file format invalid, Available ['csv', 'avro', 'json', 'excel', 
+'parquet']"""
         in result.output
     )
 
 
 def test_data_faker_excel_invalid_file_extension():
-    result = faker_test_util(_format="excel")
-    # In util default file path is '/tests/cli/resources/data/faker/output/output.excel'
-    assert "Invalid file extension: .excel" in result.output
-    assert "allowed: ['.xlsx', '.xls']" in result.output
+    runner = CliRunner()
+    result = runner.invoke(faker, ["-s", SCHEMA_FILE, "-o", "invalid.excel"])
+
+    print(result.output)
+    assert result.exit_code == 1
+    assert (
+        """Invalid file format for extension '.excel', Available ['.avro', '.csv', 
+'.json', '.parquet', '.xls', '.xlsx']"""
+        in result.output
+    )

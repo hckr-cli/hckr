@@ -4,6 +4,8 @@ import rich
 from pyarrow import parquet as pq  # type: ignore
 from rich.table import Table
 
+from hckr.utils.FileUtils import FileFormat
+
 
 def safe_faker_method(faker_instance, method_name, *args):
     """Safely get the Faker method by name and execute it with arguments."""
@@ -34,20 +36,20 @@ def print_df_as_table(df, title="Data Sample"):
 
 
 def readFile(_format, FILE):
-    if _format == "csv":
+    if _format == FileFormat.CSV:
         df = pd.read_csv(FILE)
-    elif _format == "json":
+    elif _format == FileFormat.JSON:
         df = pd.read_json(FILE)
-    elif _format == "excel":
+    elif _format == FileFormat.EXCEL:
         df = pd.read_excel(FILE, engine="openpyxl")
-    elif _format == "parquet":
+    elif _format == FileFormat.PARQUET:
         df = pq.read_table(FILE).to_pandas()
-    elif _format == "avro":
+    elif _format == FileFormat.AVRO:
         with open(FILE, "rb") as f:
             avro_reader = fastavro.reader(f)
             records = [record for record in avro_reader]
         df = pd.DataFrame(records)
     else:
-        raise Exception("Invalid _format")
+        raise Exception(f"Invalid format: {_format}")
     print_df_as_table(df, title="Test Read Sample")
     return df

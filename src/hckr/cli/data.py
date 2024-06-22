@@ -52,73 +52,78 @@ def data():
     required=False,
 )
 def faker(count, schema, output, format):
-    if not format:
-        format = get_file_format_from_extension(output)
+    try:
+        if not format:
+            format = get_file_format_from_extension(output)
+            info(
+                f"File format is not passed, inferring from output file path {colored(output, 'yellow')}"
+            )
+        else:
+            format = format.lower()
+        fake = Faker()
+        with open(schema, "r") as schema_file:
+            schema = json.load(schema_file)
+
+        records = []
+
+        # Adjusted fake data generation
+        for _ in range(count):
+            entry = {
+                key: safe_faker_method(fake, *value.split(":"))
+                for key, value in schema.items()
+            }
+            records.append(entry)
+
+        df = pd.DataFrame(records)
+
+        if format == FileFormat.CSV:
+            df.to_csv(output, index=False, quotechar='"', escapechar="\\")
+        elif format == FileFormat.JSON:
+            df.to_json(output, orient="records")
+        elif format == FileFormat.EXCEL:
+            validate_file_extension(output, [".xlsx", ".xls"])
+            df.to_excel(output, index=False, engine="openpyxl")
+        elif format == FileFormat.PARQUET:
+            table = pa.Table.from_pandas(df)
+            pq.write_table(table, output)
+        elif format == FileFormat.AVRO:
+            records = df.to_dict(orient="records")
+            schema = {
+                "doc": "Avro schema for generated data",
+                "name": "Root",
+                "type": "record",
+                "fields": [
+                    {"name": str(key), "type": ["null", "string"], "default": None}
+                    for key in records[0]
+                ],
+            }
+            parsed_schema = fastavro.parse_schema(schema)
+            with open(output, "wb") as out:
+                fastavro.writer(out, parsed_schema, records)
+        else:
+            error(
+                f"Invalid file format {str(format)}, Available {FileFormat.validFormats()}"
+            )
+            exit(1)
         info(
-            f"File format is not passed, inferring from output file path {colored(output, 'yellow')}"
+            f"Generating {colored(count, 'magenta')} rows in {colored(format, 'yellow')} format."
         )
-    else:
-        format = format.upper()
-    fake = Faker()
-    with open(schema, "r") as schema_file:
-        schema = json.load(schema_file)
+        logging.debug(f"Data head:\n'{df.head()}'")
 
-    records = []
-
-    # Adjusted fake data generation
-    for _ in range(count):
-        entry = {
-            key: safe_faker_method(fake, *value.split(":"))
-            for key, value in schema.items()
-        }
-        records.append(entry)
-
-    df = pd.DataFrame(records)
-
-    if format == FileFormat.CSV:
-        df.to_csv(output, index=False, quotechar='"', escapechar="\\")
-    elif format == FileFormat.JSON:
-        df.to_json(output, orient="records")
-    elif format == FileFormat.EXCEL:
-        validate_file_extension(output, [".xlsx", ".xls"])
-        df.to_excel(output, index=False, engine="openpyxl")
-    elif format == FileFormat.PARQUET:
-        table = pa.Table.from_pandas(df)
-        pq.write_table(table, output)
-    elif format == FileFormat.AVRO:
-        records = df.to_dict(orient="records")
-        schema = {
-            "doc": "Avro schema for generated data",
-            "name": "Root",
-            "type": "record",
-            "fields": [
-                {"name": str(key), "type": ["null", "string"], "default": None}
-                for key in records[0]
-            ],
-        }
-        parsed_schema = fastavro.parse_schema(schema)
-        with open(output, "wb") as out:
-            fastavro.writer(out, parsed_schema, records)
-    else:
-        error(f"Invalid file format, Available {FileFormat.validFormats()}")
-        exit(1)
-    info(
-        f"Generating {colored(count, 'magenta')} rows in {colored(format, 'yellow')} format."
-    )
-    logging.debug(f"Data head:\n'{df.head()}'")
-
-    print_df_as_table(df)
-    success(
-        f"Data written to {colored(output, 'magenta')} in {colored(format, 'yellow')} format."
-    )
-
-    rich.print(
-        Panel(
-            output,
-            expand=True,
-            title="File Output",
+        print_df_as_table(df)
+        success(
+            f"Data written to {colored(output, 'magenta')} in {colored(format, 'yellow')} format."
         )
-    )
+
+        rich.print(
+            Panel(
+                output,
+                expand=True,
+                title="File Output",
+            )
+        )
+    except Exception as e:
+        error(f"Some error occurred while creating data\n{e}")
 
 
 #
