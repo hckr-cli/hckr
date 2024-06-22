@@ -12,14 +12,14 @@ from hckr.utils.FileUtils import (
 parent_directory = Path(__file__).parent.parent
 
 INPUT_DIR = parent_directory / "resources" / "data" / "peek"
-INPUT_CSV_FILE = INPUT_DIR / "output.csv"
+INPUT_CSV_FILE = INPUT_DIR / "input.csv"
 
 
 def peekUtil(_format, _count=None):
     runner = CliRunner()
     DEFAULT_COUNT = 10
     FILE = (
-        INPUT_DIR / f"output.{'xlsx' if _format == str(FileFormat.EXCEL) else _format}"
+        INPUT_DIR / f"input.{'xlsx' if _format == str(FileFormat.EXCEL) else _format}"
     )
     print(f"Reading from file :{FILE}")
     if _count:
@@ -27,24 +27,18 @@ def peekUtil(_format, _count=None):
         # print(result.output)
         # make sure format is rightly inferred
         # only validate count if we are checking valid case
-        if result.exit_code == 0:
-            assert (
-                f"File format is not passed, inferring from file path" in result.output
-            )
-            assert f"Peeking {_count} rows in file" in result.output
-            assert f"Format inferred: {_format}" in result.output
+        assert f"File format is not passed, inferring from file path" in result.output
+        assert f"Peeking {_count} rows in file" in result.output
+        assert f"Format inferred: {_format}" in result.output
     else:  # if count  not given use default count
         result = runner.invoke(peek, ["-i", FILE])
         # print(result.output)
 
-        if result.exit_code == 0:
-            assert (
-                f"File format is not passed, inferring from file path" in result.output
-            )
-            assert f"Peeking {DEFAULT_COUNT} rows in file" in result.output
-            assert f"Format inferred: {_format}" in result.output
+        assert f"File format is not passed, inferring from file path" in result.output
+        assert f"Peeking {DEFAULT_COUNT} rows in file" in result.output
+        assert f"Format inferred: {_format}" in result.output
 
-    # print(result.output)
+    print(result.output)
     return result
 
 
@@ -94,3 +88,12 @@ def test_data_peek_with_invalid_input_file_format():
 'parquet']"""
         in result.output
     )
+
+
+def test_data_peek_with_input_file_not_found():
+    runner = CliRunner()
+    # giving CSV file but Format as AVRO
+    result = runner.invoke(peek, ["-i", "invalid.csv"])
+    print(result.output)
+    assert "Some error occurred while reading data" in result.output
+    assert "[Errno 2] No such file or directory: 'invalid.csv" in result.output

@@ -37,23 +37,26 @@ def print_df_as_table(df, title="Data Sample", count=3):
 
 
 def readFile(_format, FILE):
-    if _format == FileFormat.CSV:
-        df = pd.read_csv(FILE)
-    elif _format == FileFormat.JSON:
-        df = pd.read_json(FILE)
-    elif _format == FileFormat.EXCEL:
-        df = pd.read_excel(FILE, engine="openpyxl")
-    elif _format == FileFormat.PARQUET:
-        df = pq.read_table(FILE).to_pandas()
-    elif _format == FileFormat.AVRO:
-        with open(FILE, "rb") as f:
-            avro_reader = fastavro.reader(f)
-            records = [record for record in avro_reader]
-        df = pd.DataFrame(records)
-    else:
-        error(
-            f"Invalid file format {colored(str(_format), 'bold yellow')}, Available formats: {colored(FileFormat.validFormats(), 'magenta')}"
-        )
-        exit(1)
-    # print_df_as_table(df, title="Test Read Sample")
-    return df
+    try:
+        if _format == FileFormat.CSV:
+            df = pd.read_csv(FILE)
+        elif _format == FileFormat.JSON:
+            df = pd.read_json(FILE)
+        elif _format == FileFormat.EXCEL:
+            df = pd.read_excel(FILE, engine="openpyxl")
+        elif _format == FileFormat.PARQUET:
+            df = pq.read_table(FILE).to_pandas()
+        elif _format == FileFormat.AVRO:
+            with open(FILE, "rb") as f:
+                avro_reader = fastavro.reader(f)
+                records = [record for record in avro_reader]
+            df = pd.DataFrame(records)
+        else:
+            error(
+                f"Invalid file format {colored(str(_format), 'bold yellow')}, Available formats: {colored(FileFormat.validFormats(), 'magenta')}"
+            )
+            exit(1)
+        # print_df_as_table(df, title="Test Read Sample")
+        return df
+    except Exception as e:
+        raise e
