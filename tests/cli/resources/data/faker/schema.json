@@ -1,5 +1,8 @@
 {
-    "name": "name",
-    "address": "address",
-    "email": "email"
+    "user_name": "name",
+    "user_address": "address",
+    "user_email": "email",
+    "user_credit_card": "credit_card_number",
+    "user_company": "company",
+    "user_phone_number": "phone_number"
 }

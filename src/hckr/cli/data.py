@@ -47,10 +47,49 @@ def data():
 @click.option(
     "-f",
     "--format",
-    help="Output file format, if not provided it gets inferred from file extension",
+    help=f"Output file format, Options: {FileFormat.validFormats()} [default: Inferred from file extension]",
     required=False,
 )
 def faker(count, schema, output, format):
+    """
+    This command Generate fake Data in different file formats
+
+    **Example Usage**:
+
+    * let we have the following schema in format `{"key": "faker_provider"}`
+    * Please find all faker provider  `here <https://faker.readthedocs.io/en/master/providers.html>`_
+
+    .. code-block:: json
+        :caption: schema.json
+
+        {
+            "user_name": "name",
+            "user_address": "address",
+            "user_email": "email"
+        }
+
+    * Generate **csv** data using schema
+
+    .. code-block:: shell
+
+        $ hckr data faker -s schema.json -o file.avro
+
+    * Similarly, we can generate **avro** (or any other valid format) data
+
+    .. code-block:: shell
+
+        $ hckr data faker -s schema.json -o file.csv
+
+    * We can also provide data format explicitly, if file extension is not clear
+
+    .. code-block:: shell
+
+        $ hckr data faker -s schema.json -o output -f csv
+
+
+    **Command Reference**:
+    """
+
     try:
         if not format:
             format = get_file_format_from_extension(output)
