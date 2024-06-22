@@ -2,7 +2,7 @@ import logging
 import os
 from pathlib import Path
 
-from hckr.utils.MessageUtils import error, info
+from hckr.utils.MessageUtils import error, info, colored, warning
 
 from enum import Enum
 
@@ -17,7 +17,7 @@ class FileFormat(str, Enum):
     INVALID = ("invalid",)
 
     @staticmethod
-    def fileExtToFormat(file_extension):
+    def fileExtToFormat(file_path, file_extension):
         file_type_extension_map = {
             # ".txt": FileFormat.CSV,
             # ".text": FileFormat.CSV,
@@ -33,8 +33,10 @@ class FileFormat(str, Enum):
             file_extension.lower(), FileFormat.INVALID
         )
         if _format == FileFormat.INVALID:
+            warning("Unable to infer file format from file")
             error(
-                f"Invalid file format for extension '{file_extension}', Available {sorted(file_type_extension_map.keys())}"
+                f"Invalid file extension {colored(file_extension, 'yellow')} for file {colored(file_path, 'magenta')}, "
+                f"\nAvailable extensions {sorted(file_type_extension_map.keys())}\nOr Please provide format using -f / --format option"
             )
             exit(1)
         return _format
@@ -124,4 +126,4 @@ def get_file_format_from_extension(file_path):
     # path = Path(file_path)
     _, file_extension = os.path.splitext(file_path)
     logging.info(f"file extension from file {file_path} is {file_extension}")
-    return FileFormat.fileExtToFormat(file_extension)
+    return FileFormat.fileExtToFormat(file_path, file_extension)

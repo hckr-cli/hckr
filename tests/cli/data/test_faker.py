@@ -121,7 +121,8 @@ def test_data_faker_excel_invalid_file_extension():
     print(result.output)
     assert result.exit_code == 1
     assert (
-        """Invalid file format for extension '.excel', Available ['.avro', '.csv', 
-'.json', '.parquet', '.xls', '.xlsx']"""
+        """Invalid file extension .excel for file invalid.excel, 
+Available extensions ['.avro', '.csv', '.json', '.parquet', '.xls', '.xlsx']
+Or Please provide format using -f / --format option"""
         in result.output
     )
