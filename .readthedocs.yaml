@@ -11,8 +11,11 @@ build:
   tools:
     python: "3.12"
   commands:
+# providing commands manually as we need to use hatch 'docs' env
     - pip install hatch
     - hatch shell docs
+    - cd docs
+    - make html
 
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
