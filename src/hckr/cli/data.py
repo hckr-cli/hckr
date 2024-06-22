@@ -56,7 +56,7 @@ def faker(count, schema, output, format):
 
     **Example Usage**:
 
-    * let we have the following schema in format `{"key": "faker_provider"}`
+    * let we have the following schema in format `{"column_name": "faker_provider"}`
     * Please find all faker provider  `here <https://faker.readthedocs.io/en/master/providers.html>`_
 
     .. code-block:: json
@@ -181,6 +181,33 @@ def faker(count, schema, output, format):
     required=False,
 )
 def peek(input, count, format):
+    """
+    This command allows us to peek into top COUNT rows from a file
+
+    **Example Usage**:
+
+    * We can look into an input file by providing **-i** or **-\-input** option
+    * It will show top 10 rows ( by default )
+
+    .. code-block:: shell
+
+        $ hckr data peek -i input.avro
+
+    * We can also provide number of rows we want to see using **-c** or **-\-count** option
+
+    .. code-block:: shell
+
+        $ hckr data peek -i input.avro -c 10
+
+    * We can also provide data format explicitly using **-f** or **-\-format** option, if file extension is not clear
+
+    .. code-block:: shell
+
+        $ hckr data peek -i input.data -f csv
+
+
+    **Command Reference**:
+    """
     try:
         info(
             f"Peeking {colored(count, 'magenta')} rows in file {colored(input, 'yellow')}"
