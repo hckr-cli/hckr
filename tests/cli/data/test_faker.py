@@ -30,9 +30,7 @@ def faker_test_util_format_count(_format, _count=None):
 
     delete_path_if_exists(FILE)
     if _count:
-        result = runner.invoke(
-            faker, ["-s", SCHEMA_FILE, "-o", FILE, "-c", _count, "-f", str(_format)]
-        )
+        result = runner.invoke(faker, ["-s", SCHEMA_FILE, "-o", FILE, "-c", _count])
         # make sure format is rightly inferred
         assert f"Generating {_count} rows in {_format} format" in result.output
         # only validate count if we are checking valid case
@@ -41,6 +39,11 @@ def faker_test_util_format_count(_format, _count=None):
             assert df.shape[0] == _count
     else:  # if count  not given use default count
         result = runner.invoke(faker, ["-s", SCHEMA_FILE, "-o", FILE])
+        assert (
+            "File format is not passed, inferring from output file path"
+            in result.output
+        )
+        assert f"Format inferred: {_format}" in result.output
         assert (
             f"Generating {DEFAULT_COUNT} rows in {str(_format)} format" in result.output
         )
@@ -101,7 +104,7 @@ def test_data_faker_no_output():
     assert "Error: Missing option '-o' / '--output'" in result.output
 
 
-def test_data_faker_invalid_output():
+def test_data_faker_invalid_output_format():
     runner = CliRunner()
     result = runner.invoke(
         faker, ["-s", SCHEMA_FILE, "-o", OUTPUT_DIR, "-f", "INVALID"]

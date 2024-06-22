@@ -4,15 +4,14 @@ import logging
 import click
 import fastavro
 import pandas as pd
+import pyarrow as pa  # type: ignore
+import rich
 from cron_descriptor import get_description  # type: ignore
 from faker import Faker
 from pyarrow import parquet as pq  # type: ignore
-import pyarrow as pa  # type: ignore
-import rich
 from rich.panel import Panel
-from rich.table import Table
 
-from hckr.utils.DataUtils import safe_faker_method, print_df_as_table
+from hckr.utils.DataUtils import safe_faker_method, print_df_as_table, readFile
 from hckr.utils.FileUtils import (
     validate_file_extension,
     get_file_format_from_extension,
@@ -58,6 +57,7 @@ def faker(count, schema, output, format):
             info(
                 f"File format is not passed, inferring from output file path {colored(output, 'yellow')}"
             )
+            info(f"Format inferred: {colored(format, 'magenta')}")
         else:
             format = format.lower()
         fake = Faker()
@@ -123,43 +123,43 @@ def faker(count, schema, output, format):
             )
         )
     except Exception as e:
-        error(f"Some error occurred while creating data\n{e}")
+        error(f"Some error occurred while generating data\n{e}")
 
 
-#
-# @data.command()
-# @click.option(
-#     "-f",
-#     "--file",
-#     help="File to peek into.",
-#     required=True
-# )
-# @click.option(
-#     "-c",
-#     "--count",
-#     default=10,
-#     help="Number of rows to show.",
-#     required=False,
-# )
-# def peek(file, count):
-#     info(
-#         f"Peeking {colored(count,'magenta')} rows in {colored(file, 'yellow')}"
-#     )
-#     with open(schema, "r") as schema_file:
-#         schema = json.load(schema_file)
-#
-#     data = []
-#
-#     # Adjusted fake data generation
-#     logging.debug(f"Data head:\n'{df.head()}'")
-#     df = readFile
-#     print_df_as_table(df)
-#     success(f"Data written to {colored(output,'magenta')} in {format} format.")
-#
-#     rich.print(
-#         Panel(
-#             output,
-#             expand=True,
-#             title="File Output",
-#         )
-#     )
+@data.command()
+@click.option("-i", "--input", help="Input file to peek into", required=True)
+@click.option(
+    "-c",
+    "--count",
+    default=10,
+    help="Number of rows to show, [default: 10]",
+    required=False,
+)
+@click.option(
+    "-f",
+    "--format",
+    help="Output file format, if not provided it gets inferred from file extension",
+    required=False,
+)
+def peek(input, count, format):
+    try:
+        info(
+            f"Peeking {colored(count, 'magenta')} rows in file {colored(input, 'yellow')}"
+        )
+        if not format:
+            format = get_file_format_from_extension(input)
+            info(
+                f"File format is not passed, inferring from file path {colored(input, 'yellow')}"
+            )
+            info(f"Format inferred: {colored(format, 'magenta')}")
+        else:
+            format = format.lower()
+
+        # Adjusted fake data generation
+        df = readFile(format, input)
+        logging.debug(f"Data head:\n'{df.head()}'")
+        print_df_as_table(df, count=count)
+    except Exception as e:
+        error(
+            f"Some error occurred while reading data {colored(input,'magenta')} in format {colored(format,'yellow')}\n{e}"
+        )
