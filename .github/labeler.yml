@@ -1,0 +1,24 @@
+# Add 'label1' to any changes within 'example' folder or any subfolders
+docs:
+- changed-files:
+  - any-glob-to-any-file: docs/**
+
+deps:
+- changed-files:
+  - any-glob-to-any-file: pyproject.toml
+
+tests:
+- changed-files:
+  - any-glob-to-any-file: tests/**
+
+github-actions:
+- changed-files:
+  - any-glob-to-any-file: .github/**
+
+core:
+- changed-files:
+  - any-glob-to-any-file: src/**
+
+# Add 'feature' label to any PR where the head branch name starts with `feature` or has a `feature` section in the name
+feature:
+ - head-branch: ['^feature', 'feature']

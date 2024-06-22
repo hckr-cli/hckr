@@ -15,6 +15,13 @@ Welcome to hckr's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :caption: Data
+   :hidden:
+
+   data
+
+.. toctree::
+   :maxdepth: 2
    :caption: Cron
    :hidden:
 

@@ -20,6 +20,7 @@ def test_hckr():
 Commands:
   cron    cron commands
   crypto  crypto commands
+  data    data related commands
   hash    hash commands
   info    info commands"""
         in result.output
