@@ -8,8 +8,8 @@ import pandas as pd
 from pyarrow import parquet as pq  # type: ignore
 import pyarrow as pa  # type: ignore
 
-from hckr.utils.DataUtils import print_df_as_table
-from hckr.utils.FileUtils import delete_path_if_exists
+from hckr.utils.DataUtils import print_df_as_table, readFile
+from hckr.utils.FileUtils import delete_path_if_exists, get_file_format_from_extension
 
 parent_directory = Path(__file__).parent.parent
 
@@ -20,29 +20,9 @@ OUTPUT_DIR = parent_directory / "resources" / "data" / "faker" / "output"
 # POSITIVE
 
 
-def readFile(_format, FILE):
-    if _format == "csv":
-        df = pd.read_csv(FILE)
-    elif _format == "json":
-        df = pd.read_json(FILE)
-    elif _format == "excel":
-        df = pd.read_excel(FILE, engine="openpyxl")
-    elif _format == "parquet":
-        df = pq.read_table(FILE).to_pandas()
-    elif _format == "avro":
-        with open(FILE, "rb") as f:
-            avro_reader = fastavro.reader(f)
-            records = [record for record in avro_reader]
-        df = pd.DataFrame(records)
-    else:
-        raise Exception("Invalid _format")
-    print_df_as_table(df, title="Test Read Sample")
-    return df
-
-
 def faker_test_util(_format=None, _count=None, _file=None):
     runner = CliRunner()
-    DEFAULT_FORMAT = "json"
+    DEFAULT_FORMAT = get_file_format_from_extension(_file)
     DEFAULT_COUNT = 10
     if _file:
         FILE = _file

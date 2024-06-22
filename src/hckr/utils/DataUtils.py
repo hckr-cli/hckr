@@ -1,5 +1,8 @@
-from rich.table import Table
+import fastavro
+import pandas as pd
 import rich
+from pyarrow import parquet as pq  # type: ignore
+from rich.table import Table
 
 
 def safe_faker_method(faker_instance, method_name, *args):
@@ -28,3 +31,23 @@ def print_df_as_table(df, title="Data Sample"):
         # Convert each row to string format, necessary to handle different data types
         table.add_row(*[str(item) for item in row.values])
     rich.print(table)
+
+
+def readFile(_format, FILE):
+    if _format == "csv":
+        df = pd.read_csv(FILE)
+    elif _format == "json":
+        df = pd.read_json(FILE)
+    elif _format == "excel":
+        df = pd.read_excel(FILE, engine="openpyxl")
+    elif _format == "parquet":
+        df = pq.read_table(FILE).to_pandas()
+    elif _format == "avro":
+        with open(FILE, "rb") as f:
+            avro_reader = fastavro.reader(f)
+            records = [record for record in avro_reader]
+        df = pd.DataFrame(records)
+    else:
+        raise Exception("Invalid _format")
+    print_df_as_table(df, title="Test Read Sample")
+    return df

@@ -4,6 +4,22 @@ from pathlib import Path
 
 from hckr.utils.MessageUtils import error
 
+from enum import Enum
+
+
+class FileFormat(str, Enum):
+    CSV = ("CSV",)
+    TEXT = ("TEXT",)
+    AVRO = ("AVRO",)
+    JSON = ("JSON",)
+    EXCEL = ("EXCEL",)
+    PARQUET = ("PARQUET",)
+    INVALID = ("INVALID",)
+
+    @staticmethod
+    def validFormats():
+        return [x.value for x in FileFormat if x.value != "INVALID"]
+
 
 # Save the key to a file
 def save_file(content, file_path):
@@ -72,3 +88,22 @@ def validate_file_extension(file_path, expected_extensions):
             f"Invalid file extension: {file_extension} in file: {file_path}\n allowed: {expected_extensions}"
         )
         exit(1)
+
+
+# validate if file extension is one of given
+def get_file_format_from_extension(file_path):
+    file_type_extension_map = {
+        # ".txt": FileFormat.CSV,
+        # ".text": FileFormat.CSV,
+        ".csv": FileFormat.CSV,
+        ".json": FileFormat.JSON,
+        ".xlsx": FileFormat.EXCEL,
+        ".xls": FileFormat.EXCEL,
+        ".parquet": FileFormat.PARQUET,
+        ".avro": FileFormat.AVRO,
+    }
+    # Extract the extension from the file path
+    # path = Path(file_path)
+    _, file_extension = os.path.splitext(file_path)
+    logging.info(f"file extension from file {file_path} is {file_extension}")
+    return file_type_extension_map.get(file_extension, FileFormat.INVALID).value
