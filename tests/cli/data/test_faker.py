@@ -129,3 +129,26 @@ Available extensions ['.avro', '.csv', '.json', '.parquet', '.xls', '.xlsx']
 Or Please provide format using -f / --format option"""
         in result.output
     )
+
+
+def test_data_faker_invalid_faker_provider():
+    INVALID_SCHEMA_FILE = (
+        parent_directory / "resources" / "data" / "faker" / "invalid_schema.json"
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(faker, ["-s", INVALID_SCHEMA_FILE, "-o", "output.csv"])
+
+    print(result.output)
+    assert """No such Faker method: credit_card_invalid""" in result.output
+
+
+def test_data_faker_schema_file_not_found():
+    runner = CliRunner()
+    result = runner.invoke(faker, ["-s", "not_found.json", "-o", "output.csv"])
+
+    print(result.output)
+    assert (
+        """Error: Invalid value for '-s' / '--schema': Path 'not_found.json' does not exist."""
+        in result.output
+    )
