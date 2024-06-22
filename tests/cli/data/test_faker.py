@@ -8,7 +8,6 @@ from hckr.cli.data import faker
 from hckr.utils.DataUtils import readFile
 from hckr.utils.FileUtils import (
     delete_path_if_exists,
-    get_file_format_from_extension,
     FileFormat,
 )
 
@@ -24,6 +23,7 @@ OUTPUT_DIR = parent_directory / "resources" / "data" / "faker" / "output"
 def faker_test_util_format_count(_format, _count=None):
     runner = CliRunner()
     DEFAULT_COUNT = 10
+    # create a output file according to format given
     FILE = (
         OUTPUT_DIR / f"output.{'xlsx' if _format == str(FileFormat.EXCEL) else _format}"
     )
@@ -33,6 +33,7 @@ def faker_test_util_format_count(_format, _count=None):
         result = runner.invoke(
             faker, ["-s", SCHEMA_FILE, "-o", FILE, "-c", _count, "-f", str(_format)]
         )
+        # make sure format is rightly inferred
         assert f"Generating {_count} rows in {_format} format" in result.output
         # only validate count if we are checking valid case
         if result.exit_code == 0:
@@ -57,30 +58,31 @@ def test_data_faker_inferred_format():
         print(f"Running for {_format}")
         result = faker_test_util_format_count(_format=_format)
         assert result.exit_code == 0
+        print(f"=" * 50)
 
 
 def test_data_faker_given_count():
-    result = faker_test_util_format_count(_count=20, _format=FileFormat.CSV.value)
+    result = faker_test_util_format_count(_count=20, _format=str(FileFormat.CSV))
     assert result.exit_code == 0
 
 
 def test_data_faker_given_format():
-    result = faker_test_util_format_count(_format="csv")
+    result = faker_test_util_format_count(_format=str(FileFormat.CSV))
     assert result.exit_code == 0
 
 
 def test_data_faker_given_count_given_format():
-    result = faker_test_util_format_count(_format="csv", _count=30)
+    result = faker_test_util_format_count(_format=str(FileFormat.CSV), _count=30)
     assert result.exit_code == 0
 
 
 def test_data_faker_parquet_format():
-    result = faker_test_util_format_count(_format="parquet", _count=30)
+    result = faker_test_util_format_count(_format=str(FileFormat.PARQUET), _count=30)
     assert result.exit_code == 0
 
 
 def test_data_faker_avro_format():
-    result = faker_test_util_format_count(_format="avro", _count=30)
+    result = faker_test_util_format_count(_format=str(FileFormat.AVRO), _count=30)
     assert result.exit_code == 0
 
 
