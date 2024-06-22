@@ -8,13 +8,12 @@ from enum import Enum
 
 
 class FileFormat(str, Enum):
-    CSV = ("csv",)
-    # TEXT = ("TEXT",)
-    AVRO = ("avro",)
-    JSON = ("json",)
-    EXCEL = ("excel",)
-    PARQUET = ("parquet",)
-    INVALID = ("invalid",)
+    CSV = "csv"
+    AVRO = "avro"
+    JSON = "json"
+    EXCEL = "excel"
+    PARQUET = "parquet"
+    INVALID = "invalid"
 
     @staticmethod
     def fileExtToFormat(file_path, file_extension):
