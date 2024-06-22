@@ -21,7 +21,7 @@ from hckr.utils.MessageUtils import success, colored, info, error
 
 
 @click.group(
-    help="cron commands",
+    help="data related commands",
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 def data():
