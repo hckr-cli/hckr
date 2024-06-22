@@ -197,7 +197,7 @@ def peek(input, count, format):
 
     .. code-block:: shell
 
-        $ hckr data peek -i input.avro -c 10
+        $ hckr data peek -i input.avro -c 20
 
     * We can also provide data format explicitly using **-f** or **-\-format** option, if file extension is not clear
 
