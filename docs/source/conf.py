@@ -36,11 +36,25 @@ html_static_path = ['_static']
 
 # TODO: enhance it https://shibuya.lepture.com/install/
 html_theme_options = {
-    # "announcement": "The content of the announcement",
     "color_mode": "light",  # light or dark
     "github_url": "https://github.com/pateash/hckr",
     "discussion_url": "https://github.com/pateash/hckr/discussions",
     "globaltoc_expand_depth": 1,
+    "nav_links": [
+        {
+            "title": "pypi",
+            "url": "https://pypi.org/project/hckr/",
+            "external": "true"
+        },
+    ],
+    "light_logo": "_static/hckr-logo-black.png",
+    "dark_logo": "_static/hckr-logo-white.png",
+    # "accent_color": "red",
+    "announcement":"""<div style="text-align: center;">
+        <div style="display: inline-block;">
+         Please support the project by starring it on <a href='https://github.com/pateash/hckr/' target="_blank">Github</a>
+        </div>
+    </div>""",
 }
 
 html_context = {
