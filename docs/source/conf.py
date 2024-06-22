@@ -50,7 +50,7 @@ html_theme_options = {
     "light_logo": "_static/hckr-logo-black.png",
     "dark_logo": "_static/hckr-logo-white.png",
     # "accent_color": "red",
-    "announcement":"""<div style="text-align: center;">
+    "announcement": """<div style="text-align: center;">
         <div style="display: inline-block;">
          Please support the project by starring it on <a href='https://github.com/pateash/hckr/' target="_blank">Github</a>
         </div>
