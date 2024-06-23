@@ -1,9 +1,9 @@
 # Add 'label1' to any changes within 'example' folder or any subfolders
-docs:
+documentation:
 - changed-files:
   - any-glob-to-any-file: docs/**
 
-deps:
+project-config:
 - changed-files:
   - any-glob-to-any-file: pyproject.toml
 
@@ -15,10 +15,37 @@ github-actions:
 - changed-files:
   - any-glob-to-any-file: .github/**
 
-core:
+enhancement:
 - changed-files:
   - any-glob-to-any-file: src/**
 
 # Add 'feature' label to any PR where the head branch name starts with `feature` or has a `feature` section in the name
 feature:
  - head-branch: ['^feature', 'feature']
+
+fix:
+ - head-branch: ['^fix', 'fix']
+
+release:
+- changed-files:
+  - any-glob-to-any-file: src/hckr/__about__.py
+
+crypto:
+- changed-files:
+  - any-glob-to-any-file: src/hckr/cli/crypto/**
+
+cron:
+- changed-files:
+  - any-glob-to-any-file: src/hckr/cli/cron.py
+
+data:
+- changed-files:
+  - any-glob-to-any-file: src/hckr/cli/data.py
+
+hash:
+- changed-files:
+  - any-glob-to-any-file: src/hckr/cli/hash.py
+
+utils:
+- changed-files:
+  - any-glob-to-any-file: src/hckr/cli/utils/**

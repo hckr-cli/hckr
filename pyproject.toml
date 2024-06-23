@@ -31,19 +31,12 @@ dependencies = [
     "cron-descriptor",
     "rich",
     "cryptography",
-    # docs
-    "sphinx",
-    "sphinx-docsearch",
-    "sphinx-click",
-    "shibuya",
-    "sphinx-notfound-page",
-    "sphinx-copybutton",
     "Faker",
     "pandas", #To manage data and save in CSV, Excel, and Parquet formats.
     "openpyxl", # For handling Excel files with Pandas.
     "xlrd",
     "pyarrow", # For saving data in Parquet format.
-    "fastavro" # For handling Avro file format.
+    "fastavro", # For handling Avro file format.
 ]
 
 [project.urls]
@@ -100,7 +93,6 @@ dependencies = [
     "coverage[toml]>=6.2",
     "pytest",
     "pypi-cleanup",
-    "sphinx-autobuild",
 ]
 [tool.hatch.envs.dev.scripts]
 lint = "black --check src/ tests/"
@@ -108,5 +100,19 @@ fix = "black -v src/ tests/"
 check = "mypy --install-types --non-interactive {args:src/hckr tests}"
 cov-xml = "coverage xml"
 pypi-clean = "pypi-cleanup -u pateash -p hckr --do-it"
+
+
+[tool.hatch.envs.docs]
+dependencies = [
+    "sphinx-autobuild",
+    "sphinx",
+    "sphinx-docsearch",
+    "sphinx-click",
+    "shibuya",
+    "sphinx-notfound-page",
+    "sphinx-copybutton",
+    "tomli"
+]
+[tool.hatch.envs.docs.scripts]
 # --pre-build makes sure we get latest changes even if we modify something in
 docs = "sphinx-autobuild -a --port=0 --open-browser docs/source docs/build --watch src/hckr --pre-build 'rm -rf docs/build'"

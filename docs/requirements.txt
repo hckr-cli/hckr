@@ -1,0 +1,8 @@
+sphinx-autobuild
+sphinx
+sphinx-docsearch
+sphinx-click
+shibuya
+sphinx-notfound-page
+sphinx-copybutton
+tomli

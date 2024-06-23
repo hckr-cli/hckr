@@ -10,8 +10,10 @@ env-clean :
 env-show :
 	hatch env show
 
+hatch-docs-deps-sync:
+	python docs/hatch-env-docs-requirements-sync.py
 # this will sync the dependencies automatically
-sync :
+sync : hatch-docs-deps-sync
 	hatch run cowsay -t "Syncing Dependencies" && echo "Synced.\n============="
 
 # install cli in local for testing, change code an it will be automatically reflected in UI
@@ -68,5 +70,5 @@ docs-build:
 	cd docs/ && make clean && make html && cd ..
 
 docs:
-	hatch run dev:docs
+	hatch run docs:docs
 
