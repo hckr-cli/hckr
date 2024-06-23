@@ -104,7 +104,6 @@ pypi-clean = "pypi-cleanup -u pateash -p hckr --do-it"
 
 [tool.hatch.envs.docs]
 dependencies = [
-    # docs
     "sphinx-autobuild",
     "sphinx",
     "sphinx-docsearch",
@@ -112,6 +111,7 @@ dependencies = [
     "shibuya",
     "sphinx-notfound-page",
     "sphinx-copybutton",
+    "tomli"
 ]
 [tool.hatch.envs.docs.scripts]
 # --pre-build makes sure we get latest changes even if we modify something in
