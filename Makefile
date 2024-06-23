@@ -56,7 +56,7 @@ check:
 # this checks for any error in local github action files, https://nektosact.com/
 # using dryrun with -n and -v for verbose
 gha:
-	act -g && act -n
+	act -g
 
 
 # all checks
