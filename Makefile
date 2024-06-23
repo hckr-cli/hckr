@@ -11,7 +11,7 @@ env-show :
 	hatch env show
 
 hatch-docs-deps-sync:
-	python hatch-env-docs-requirements-sync.py
+	python docs/hatch-env-docs-requirements-sync.py
 # this will sync the dependencies automatically
 sync : hatch-docs-deps-sync
 	hatch run cowsay -t "Syncing Dependencies" && echo "Synced.\n============="
