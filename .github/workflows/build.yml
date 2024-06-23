@@ -27,48 +27,24 @@ jobs:
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
-        run: pip install hatch
+    - name: Install dependencies
+      run: pip install hatch
 
-      - name: Run Checks
-        run: make checks
+    - name: Run Checks
+      run: make checks
 
-      - name: Run Coverage
-        run: make coverage
+    - name: Run Coverage
+      run: make coverage
 
-      - name: Save coverage report
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-${{ matrix.os }}-${{ matrix.python-version }}
-          path: coverage.xml
-
-  coverage-merge:
-    runs-on: ubuntu-latest
-    needs: build-and-test
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Download coverage reports
-        uses: actions/download-artifact@v3
-        with:
-          name: 'coverage-*'
-          path: coverage_reports
-
-      - name: Merge coverage reports
-        run: |
-          pip install coverage
-          coverage combine coverage_reports/**/*.xml
-          coverage xml
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage.xml
-          fail_ci_if_error: true
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: coverage.xml
+        fail_ci_if_error: true
