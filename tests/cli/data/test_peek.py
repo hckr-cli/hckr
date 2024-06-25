@@ -57,7 +57,7 @@ def test_data_peek_inferred_format_given_count():
     for _format in formats:
         print(f"Running for {_format}")
         result = peekUtil(_format=_format, _count=8)
-        print(result.output)
+        # print(result.output)
         assert result.exit_code == 0
         assert "showing first 8 rows" in result.output
         print(f"=" * 50)

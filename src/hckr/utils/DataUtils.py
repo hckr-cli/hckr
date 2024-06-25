@@ -34,9 +34,9 @@ def print_df_as_table(df, title="Data Sample", count=3):
     table.border_style = "yellow"
     for column in df.columns[:COLS_TO_SHOW]:
         table.add_column(column, no_wrap=False, overflow="fold")
-    msg = f"Data has total {colored(df.shape[0],'yellow')} rows and {colored(df.shape[1],'yellow')} columns, showing first {colored(ROWS_TO_SHOW,'yellow')} rows"
+    msg = f"Data has total {colored(df.shape[0], 'yellow')} rows and {colored(df.shape[1], 'yellow')} columns, showing first {colored(ROWS_TO_SHOW, 'yellow')} rows"
     if len(df.columns) > MAX_COLS_TO_SHOW:
-        warning(f"{msg} and {colored(COLS_TO_SHOW,'yellow')} columns")
+        warning(f"{msg} and {colored(COLS_TO_SHOW, 'yellow')} columns")
     else:
         info(msg)
     # Add rows to the table
@@ -46,26 +46,17 @@ def print_df_as_table(df, title="Data Sample", count=3):
     rich.print(table)
 
 
-# tries to figure out if a Json file is JSON line format or not.
-def checkJsonLine(file_path):
-    logging.debug("Checking whether JSON is in line format")
-    with open(file_path, "r") as file:
-        first_line = file.readline().strip()
-        try:
-            # Try to parse the first line as JSON
-            json.loads(first_line)
-            info(f"Data is in {colored('JSON Lines', 'yellow')} format")
-            return True
-        except json.JSONDecodeError:
-            # If it fails, it might be a JSON Object
-            try:
-                # Go back to start of file and try to read it as a complete JSON object
-                file.seek(0)
-                json.load(file)
-                logging.debug("JSON is in object format")
-                return False
-            except json.JSONDecodeError as e:
-                raise e
+# Try to read as simple JSON if there is an Error then tries as json lines
+def readJSON(_file):
+    try:
+        return pd.read_json(_file)
+    except Exception as e:
+        logging.debug(
+            f"Error occurred while reading as JSON Object\n{e}\nTrying as JSON Lines"
+        )
+        df = pd.read_json(_file, lines=True)
+        info(f"Data is in {colored('JSON Lines', 'yellow')} format")
+        return df
 
 
 def readFile(_format, FILE):
@@ -73,11 +64,7 @@ def readFile(_format, FILE):
         if _format == FileFormat.CSV:
             df = pd.read_csv(FILE)
         elif _format == FileFormat.JSON:
-            df = (
-                pd.read_json(FILE)
-                if not checkJsonLine(FILE)
-                else pd.read_json(FILE, lines=True)
-            )
+            df = readJSON(FILE)
         elif _format == FileFormat.EXCEL:
             df = pd.read_excel(FILE, engine="openpyxl")
         elif _format == FileFormat.PARQUET:
