@@ -63,7 +63,7 @@ def test_data_peek_inferred_format_given_count():
         print(f"=" * 50)
 
 
-def test_data_peek_with_big_file():
+def test_data_peek_with_large_cols():
     runner = CliRunner()
     result = runner.invoke(peek, ["-i", INPUT_DIR / "Account.csv"])
     print(result.output)
@@ -71,6 +71,15 @@ def test_data_peek_with_big_file():
         "Data has total 13 rows and 61 columns, showing first 10 rows and 10 columns"
         in result.output
     )
+
+
+def test_data_peek_with_json_lines():
+    runner = CliRunner()
+
+    result = runner.invoke(peek, ["-i", INPUT_DIR / "json-lines.json"])
+    print(result.output)
+    assert "Data is in JSON Lines format" in result.output
+    assert "Data has total 3 rows and 4 columns, showing first 3 rows" in result.output
 
 
 # NEGATIVE
