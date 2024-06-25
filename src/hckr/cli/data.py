@@ -147,7 +147,7 @@ def faker(count, schema, output, format):
         info(
             f"Generating {colored(count, 'magenta')} rows in {colored(format, 'yellow')} format."
         )
-        logging.debug(f"Data head:\n'{df.head()}'")
+        # logging.debug(f"Data head:\n'{df.head()}'")
 
         print_df_as_table(df)
         success(
@@ -223,7 +223,7 @@ def peek(input, count, format):
 
         # Adjusted fake data generation
         df = readFile(format, input)
-        logging.debug(f"Data head:\n'{df.head()}'")
+        # logging.debug(f"Data head:\n'{df.head()}'")
         print_df_as_table(df, count=count)
     except Exception as e:
         error(
