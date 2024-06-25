@@ -57,8 +57,20 @@ def test_data_peek_inferred_format_given_count():
     for _format in formats:
         print(f"Running for {_format}")
         result = peekUtil(_format=_format, _count=8)
+        print(result.output)
         assert result.exit_code == 0
+        assert "showing first 8 rows" in result.output
         print(f"=" * 50)
+
+
+def test_data_peek_with_big_file():
+    runner = CliRunner()
+    result = runner.invoke(peek, ["-i", INPUT_DIR / "Account.csv"])
+    print(result.output)
+    assert (
+        "Data has total 13 rows and 61 columns, showing first 10 rows and 10 columns"
+        in result.output
+    )
 
 
 # NEGATIVE
