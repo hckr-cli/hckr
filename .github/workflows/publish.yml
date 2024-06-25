@@ -59,7 +59,7 @@ jobs:
           NEW_VERSION=`hatch version`
           git add src/hckr/__about__.py
           echo "========================================"
-          git commit -m "Tag $VERSION created, Bumping module version: $VERSION → $NEW_VERSION"
+          git commit -m "TAG[$VERSION] created, Bumping version: [$VERSION → $NEW_VERSION]"
           echo "========================================"
           git tag $VERSION
           echo "Pushing changes"

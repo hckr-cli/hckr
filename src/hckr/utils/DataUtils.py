@@ -5,7 +5,7 @@ from pyarrow import parquet as pq  # type: ignore
 from rich.table import Table
 
 from hckr.utils.FileUtils import FileFormat
-from hckr.utils.MessageUtils import error, colored
+from hckr.utils.MessageUtils import error, colored, warning, info
 
 
 def safe_faker_method(faker_instance, method_name, *args):
@@ -18,21 +18,27 @@ def safe_faker_method(faker_instance, method_name, *args):
 
 
 def print_df_as_table(df, title="Data Sample", count=3):
+    MAX_COLS_TO_SHOW = 10
+    COLS_TO_SHOW = min(MAX_COLS_TO_SHOW, len(df.columns))
     table = Table(
         show_header=True,
         title=title,
         header_style="bold magenta",
         expand=True,
-        show_lines=True,
+        show_lines=True,  # show line after every row
     )
     table.border_style = "yellow"
-    for column in df.columns:
-        table.add_column(column)
-
+    for column in df.columns[:COLS_TO_SHOW]:
+        table.add_column(column, no_wrap=False, overflow="fold")
+    msg = f"Data has total {df.shape[0]} rows and {df.shape[1]} columns, showing first {count} rows"
+    if len(df.columns) > MAX_COLS_TO_SHOW:
+        warning(f"{msg} and {COLS_TO_SHOW} columns")
+    else:
+        info(msg)
     # Add rows to the table
     for index, row in df.head(count).iterrows():
         # Convert each row to string format, necessary to handle different data types
-        table.add_row(*[str(item) for item in row.values])
+        table.add_row(*[str(item) for item in row.values[:MAX_COLS_TO_SHOW]])
     rich.print(table)
 
 
