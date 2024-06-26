@@ -27,6 +27,7 @@ classifiers = [
 
 dependencies = [
     "click",
+    "click-repl",
     "croniter",
     "cron-descriptor",
     "rich",
