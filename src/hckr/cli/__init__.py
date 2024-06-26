@@ -4,10 +4,12 @@
 import logging
 
 import click
+from click_repl import register_repl  # type: ignore
 
 from hckr.cli.crypto.fernet import fernet
 from hckr.cli.data import data
 from hckr.cli.info import info
+from hckr.utils.CliUtils import check_update
 from hckr.utils.MessageUtils import warning
 from ..__about__ import __version__
 from ..cli.cron import cron
@@ -68,11 +70,15 @@ def cli(
         click.secho("hckr ", fg="magenta", bold=True, nl=False)
         click.secho(f"v{__version__}  ", fg="blue", bold=True, nl=False)
         click.secho(
-            f"https://github.com/pateash/hckr\n", fg="green", bold=True, nl=True
+            f"https://github.com/pateash/hckr\n", fg="green", bold=True, nl=False
         )
+        check_update()
         cli(["-h"])
+    else:
+        check_update()
 
 
+register_repl(cli)
 cli.add_command(info)
 cli.add_command(cron)
 cli.add_command(hash)
