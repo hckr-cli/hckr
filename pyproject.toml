@@ -46,10 +46,19 @@ Documentation = "https://hckr.readthedocs.io"
 Issues = "https://github.com/pateash/hckr/issues"
 Source = "https://github.com/pateash/hckr"
 
+[tool.hatch.env]
+requires = [
+    "hatch-pip-compile"
+]
 # to make sure the default env is in same repo ( for Intellij to refer )
 [tool.hatch.envs.default]
-type = "virtual"
-path = ".venv"
+type = "pip-compile"
+path = "venv"
+# using hatch-pip-compile to generate requirements hashes for depandabot
+pip-compile-hashes = true
+
+[tool.hatch.envs.default.scripts]
+deps = "echo 'Syncing Default Dependencies\n=========================='"
 
 [project.scripts]
 hckr = "hckr.cli:cli"
@@ -89,7 +98,6 @@ build-dir = "docs/build"
 [tool.hatch.envs.dev]
 dependencies = [
     "black",
-    "cowsay",
     "pre-commit",
     "mypy>=1.0.0",
     "coverage[toml]>=6.2",
@@ -102,6 +110,7 @@ fix = "black -v src/ tests/"
 check = "mypy --install-types --non-interactive {args:src/hckr tests}"
 cov-xml = "coverage xml"
 pypi-clean = "pypi-cleanup -u pateash -p hckr --do-it"
+deps = "echo 'Syncing Dev Dependencies\n============='"
 
 
 [tool.hatch.envs.docs]
@@ -118,3 +127,4 @@ dependencies = [
 [tool.hatch.envs.docs.scripts]
 # --pre-build makes sure we get latest changes even if we modify something in
 docs = "sphinx-autobuild -a --port=0 --open-browser docs/source docs/build --watch src/hckr --pre-build 'rm -rf docs/build'"
+deps = "echo 'Syncing Docs Dependencies\n============='"
