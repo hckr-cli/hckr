@@ -13,9 +13,6 @@ env-show :
 hatch-docs-deps-sync:
 	hatch run docs:docs-deps
 
-# this will sync the dependencies automatically
-clean-requirements:
-	rm requirements.txt && rm requirements/requirements-dev.txt && rm requirements/requirements-docs.txt
 sync-default:
 	hatch run default:deps
 sync-dev:
