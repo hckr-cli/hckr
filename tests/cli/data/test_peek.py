@@ -44,7 +44,7 @@ def peekUtil(_format, _count=None):
 
 # POSITIVE
 def test_data_peek_inferred_format_default_count():
-    formats = FileFormat.validFormats()
+    formats = FileFormat.validPeekFormats()
     for _format in formats:
         print(f"Running for {_format}")
         result = peekUtil(_format=_format)
@@ -53,7 +53,7 @@ def test_data_peek_inferred_format_default_count():
 
 
 def test_data_peek_inferred_format_given_count():
-    formats = FileFormat.validFormats()
+    formats = FileFormat.validPeekFormats()
     for _format in formats:
         print(f"Running for {_format}")
         result = peekUtil(_format=_format, _count=8)
@@ -114,3 +114,19 @@ def test_data_peek_with_input_file_not_found():
     print(result.output)
     assert "Some error occurred while reading data" in result.output
     assert "[Errno 2] No such file or directory: 'invalid.csv" in result.output
+
+
+# TRYING OUT SNIFFER
+def test_test():
+    import csv
+    import pandas as pd
+
+    path = INPUT_DIR / "input.tsv"
+    with open(path) as csvfile:
+        dialect = csv.Sniffer().sniff(csvfile.read(1024))
+        has_header = csv.Sniffer().has_header(csvfile.read(1024))
+        print(dialect)
+        print(f"del=> [{dialect.delimiter}]")
+        print(has_header)
+        # df = pd.read_csv(path, sep=dialect.delimiter).head()
+        # print(df)

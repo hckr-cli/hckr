@@ -43,7 +43,15 @@ class FileFormat(str, Enum):
         return _format
 
     @staticmethod
-    def validFormats():
+    def validFakerFormats():
+        return [
+            str(x)
+            for x in FileFormat
+            if str(x) != str(FileFormat.INVALID) and str(x) != str(FileFormat.TSV)
+        ]
+
+    @staticmethod
+    def validPeekFormats():
         return [str(x) for x in FileFormat if str(x) != str(FileFormat.INVALID)]
 
     def __str__(self):

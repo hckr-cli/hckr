@@ -47,7 +47,7 @@ def data():
 @click.option(
     "-f",
     "--format",
-    help=f"Output file format, Options: {FileFormat.validFormats()} [default: Inferred from file extension]",
+    help=f"Output file format, Options: {FileFormat.validFakerFormats()} [default: Inferred from file extension]",
     required=False,
 )
 def faker(count, schema, output, format):
@@ -141,7 +141,7 @@ def faker(count, schema, output, format):
                 fastavro.writer(out, parsed_schema, records)
         else:
             error(
-                f"Invalid file format {str(format)}, Available {FileFormat.validFormats()}"
+                f"Invalid file format {str(format)}, Available {FileFormat.validFakerFormats()}"
             )
             exit(1)
         info(

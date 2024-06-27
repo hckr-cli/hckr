@@ -118,3 +118,4 @@ output.txt
 output/
 !output/.gitkeep
 _build/
+out/

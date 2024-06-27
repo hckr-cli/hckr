@@ -77,9 +77,7 @@ def readFile(_format, FILE):
                 records = [record for record in avro_reader]
             df = pd.DataFrame(records)
         else:
-            error(
-                f"Invalid file format {colored(str(_format), 'bold yellow')}, Available formats: {colored(FileFormat.validFormats(), 'magenta')}"
-            )
+            error(f"Invalid file format {colored(str(_format), 'bold yellow')}")
             exit(1)
         # print_df_as_table(df, title="Test Read Sample")
         return df
