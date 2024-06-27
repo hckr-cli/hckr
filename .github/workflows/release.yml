@@ -26,7 +26,7 @@ jobs:
 
       - name: Debug Ref
         run: |
-        echo "GitHub ref: ${GITHUB_REF}"
+          echo "GitHub ref: ${GITHUB_REF}"
 
       - name: Set Prerelease Variable
         id: set-prerelease
