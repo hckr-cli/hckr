@@ -63,7 +63,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
-          automatic_release_tag: "Pre-release"
+          automatic_release_tag: "${{ GITHUB_REF }}"
           files: |
             LICENSE.txt
             dist/**
