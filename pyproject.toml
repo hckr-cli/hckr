@@ -39,6 +39,7 @@ dependencies = [
     "pyarrow", # For saving data in Parquet format.
     "fastavro", # For handling Avro file format.
     "requests",
+    "tomli"
 ]
 
 [project.urls]
@@ -54,8 +55,9 @@ requires = [
 [tool.hatch.envs.default]
 type = "pip-compile"
 path = "venv"
+python = "python3.8"
 # using hatch-pip-compile to generate requirements hashes for depandabot
-pip-compile-hashes = true
+#pip-compile-hashes = true
 
 [tool.hatch.envs.default.scripts]
 deps = "echo 'Syncing Default Dependencies\n=========================='"
@@ -122,9 +124,9 @@ dependencies = [
     "shibuya",
     "sphinx-notfound-page",
     "sphinx-copybutton",
-    "tomli"
 ]
 [tool.hatch.envs.docs.scripts]
 # --pre-build makes sure we get latest changes even if we modify something in
 docs = "sphinx-autobuild -a --port=0 --open-browser docs/source docs/build --watch src/hckr --pre-build 'rm -rf docs/build'"
 deps = "echo 'Syncing Docs Dependencies\n============='"
+docs-deps = "python docs/hatch-env-docs-requirements-sync.py"

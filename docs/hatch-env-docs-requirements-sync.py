@@ -1,5 +1,6 @@
 import tomli
 
+
 # this is needed as we want to use hatch.docs env for all doc dependencies
 # but readthedocs can't use hatch env and we have to either provide setup.py or requirement.txt
 # using this script we are syncing requirements.txt from docs dependencies automatically
@@ -16,7 +17,7 @@ def generate_requirements(hatch_env='docs'):
 
         # Extract dependencies for the specific Hatch environment
         dependencies = toml_data.get('tool', {}).get('hatch', {}).get('envs', {}).get(hatch_env, {}).get('dependencies',
-                                                                                                       [])
+                                                                                                         [])
 
         # Write dependencies to requirements.txt
         if dependencies:
