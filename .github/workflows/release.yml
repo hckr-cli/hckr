@@ -9,6 +9,7 @@ jobs:
   release:
     name: "Creating  Release"
     runs-on: ubuntu-latest
+    if: "!contains(github.ref, 'dev')"  # Exclude tags containing "dev"
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python
@@ -28,19 +29,10 @@ jobs:
         run: |
           echo "GitHub ref: ${GITHUB_REF}"
 
-      - name: Set Prerelease Variable
-        id: set-prerelease
-        run: |
-          if [[ "${GITHUB_REF}" == *"dev"* ]]; then
-            echo "::set-output name=prerelease::true"
-          else
-            echo "::set-output name=prerelease::false"
-          fi
-
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: ${{ steps.set-prerelease.outputs.prerelease }}
+          prerelease: false
           files: |
             LICENSE.txt
             dist/**
