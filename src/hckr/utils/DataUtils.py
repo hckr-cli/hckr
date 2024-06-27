@@ -63,6 +63,8 @@ def readFile(_format, FILE):
     try:
         if _format == FileFormat.CSV:
             df = pd.read_csv(FILE)
+        elif _format == FileFormat.TSV:
+            df = pd.read_csv(FILE, sep="\t")
         elif _format == FileFormat.JSON:
             df = readJSON(FILE)
         elif _format == FileFormat.EXCEL:

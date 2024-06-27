@@ -9,6 +9,7 @@ from enum import Enum
 
 class FileFormat(str, Enum):
     CSV = "csv"
+    TSV = "tsv"
     AVRO = "avro"
     JSON = "json"
     EXCEL = "excel"
@@ -21,6 +22,7 @@ class FileFormat(str, Enum):
             # ".txt": FileFormat.CSV,
             # ".text": FileFormat.CSV,
             ".csv": FileFormat.CSV,
+            ".tsv": FileFormat.TSV,
             ".json": FileFormat.JSON,
             ".xlsx": FileFormat.EXCEL,
             ".xls": FileFormat.EXCEL,

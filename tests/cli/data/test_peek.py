@@ -104,11 +104,7 @@ def test_data_peek_with_invalid_input_file_format():
     # giving CSV file but Format as AVRO
     result = runner.invoke(peek, ["-i", INPUT_CSV_FILE, "-f", INVALID_FORMAT])
     print(result.output)
-    assert (
-        f"""Invalid file format {INVALID_FORMAT}, Available formats: ['csv', 'avro', 'json', 'excel', 
-'parquet']"""
-        in result.output
-    )
+    assert f"""Invalid file format {INVALID_FORMAT}""" in result.output
 
 
 def test_data_peek_with_input_file_not_found():
