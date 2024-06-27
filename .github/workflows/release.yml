@@ -2,12 +2,10 @@ name: "release"
 
 on:
   push:
-    branches:
-      - automatic-releases
-#    tags:
-#      - "*"
-#    tags-ignore:
-#      - "*dev*"
+    tags:
+      - "*"
+    tags-ignore:
+      - "*dev*"
 
 jobs:
   tagged-release:
