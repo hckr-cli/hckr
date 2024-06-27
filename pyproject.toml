@@ -51,7 +51,6 @@ Source = "https://github.com/pateash/hckr"
 [tool.hatch.envs.default]
 type = "virtual"
 path = "venv"
-python = "python3.8"
 
 [tool.hatch.envs.default.scripts]
 deps = "echo 'Syncing Default Dependencies\n=========================='"
