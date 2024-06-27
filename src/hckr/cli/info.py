@@ -5,6 +5,7 @@ import webbrowser
 import click
 
 from ..__about__ import __version__
+from ..utils.CliUtils import check_update
 from ..utils.MessageUtils import error
 
 
@@ -66,6 +67,7 @@ def version():
     """
     click.secho("Version: hckr", fg="magenta", bold=True, nl=False)
     click.secho(f"=={__version__}  ", fg="blue", bold=False, nl=True)
+    check_update(show_no_update=True)
     click.secho(
         f"Github: https://github.com/pateash/hckr", fg="red", bold=True, nl=True
     )
