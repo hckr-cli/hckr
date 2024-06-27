@@ -47,17 +47,11 @@ Documentation = "https://hckr.readthedocs.io"
 Issues = "https://github.com/pateash/hckr/issues"
 Source = "https://github.com/pateash/hckr"
 
-[tool.hatch.env]
-requires = [
-    "hatch-pip-compile"
-]
 # to make sure the default env is in same repo ( for Intellij to refer )
 [tool.hatch.envs.default]
 type = "virtual"
 path = "venv"
 python = "python3.8"
-# using hatch-pip-compile to generate requirements hashes for depandabot
-#pip-compile-hashes = true
 
 [tool.hatch.envs.default.scripts]
 deps = "echo 'Syncing Default Dependencies\n=========================='"
