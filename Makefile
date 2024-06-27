@@ -11,9 +11,8 @@ env-show :
 	hatch env show
 
 hatch-docs-deps-sync:
-	python docs/hatch-env-docs-requirements-sync.py
+	hatch run docs:docs-deps
 
-# this will sync the dependencies automatically
 sync-default:
 	hatch run default:deps
 sync-dev:
@@ -21,7 +20,7 @@ sync-dev:
 sync-docs:
 	hatch run docs:deps
 
-sync : hatch-docs-deps-sync sync-default sync-dev sync-docs
+sync : sync-default sync-dev sync-docs hatch-docs-deps-sync
 	echo "DONE.\n=========================="
 
 # install cli in local for testing, change code an it will be automatically reflected in UI

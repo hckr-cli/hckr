@@ -39,6 +39,7 @@ dependencies = [
     "pyarrow", # For saving data in Parquet format.
     "fastavro", # For handling Avro file format.
     "requests",
+    "tomli"
 ]
 
 [project.urls]
@@ -46,16 +47,10 @@ Documentation = "https://hckr.readthedocs.io"
 Issues = "https://github.com/pateash/hckr/issues"
 Source = "https://github.com/pateash/hckr"
 
-[tool.hatch.env]
-requires = [
-    "hatch-pip-compile"
-]
 # to make sure the default env is in same repo ( for Intellij to refer )
 [tool.hatch.envs.default]
-type = "pip-compile"
+type = "virtual"
 path = "venv"
-# using hatch-pip-compile to generate requirements hashes for depandabot
-pip-compile-hashes = true
 
 [tool.hatch.envs.default.scripts]
 deps = "echo 'Syncing Default Dependencies\n=========================='"
@@ -122,9 +117,9 @@ dependencies = [
     "shibuya",
     "sphinx-notfound-page",
     "sphinx-copybutton",
-    "tomli"
 ]
 [tool.hatch.envs.docs.scripts]
 # --pre-build makes sure we get latest changes even if we modify something in
 docs = "sphinx-autobuild -a --port=0 --open-browser docs/source docs/build --watch src/hckr --pre-build 'rm -rf docs/build'"
 deps = "echo 'Syncing Docs Dependencies\n============='"
+docs-deps = "python docs/hatch-env-docs-requirements-sync.py"
