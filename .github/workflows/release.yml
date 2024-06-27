@@ -36,34 +36,3 @@ jobs:
           files: |
             LICENSE.txt
             dist/**
-  prerelease:
-    name: "Creating  Pre-release"
-    runs-on: ubuntu-latest
-    if: "contains(github.ref, 'dev')"  # for 'dev' tags
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.8'
-          cache: 'pip'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip 
-          pip install hatch
-
-      - name: Build package
-        run: make package
-
-      - name: Debug Ref
-        run: |
-          echo "GitHub ref: ${GITHUB_REF}"
-
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: true
-          automatic_release_tag: "latest"
-          files: |
-            LICENSE.txt
-            dist/**
