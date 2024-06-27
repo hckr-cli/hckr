@@ -4,8 +4,8 @@ on:
   push:
     tags:
       - "*"
-    tags-ignore:
-      - "*dev*"
+#    tags-ignore:
+#      - "*dev*"
 
 jobs:
   tagged-release:
