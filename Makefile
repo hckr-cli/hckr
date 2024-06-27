@@ -12,9 +12,17 @@ env-show :
 
 hatch-docs-deps-sync:
 	python docs/hatch-env-docs-requirements-sync.py
+
 # this will sync the dependencies automatically
-sync : hatch-docs-deps-sync
-	hatch run cowsay -t "Syncing Dependencies" && echo "Synced.\n============="
+sync-default:
+	hatch run default:deps
+sync-dev:
+	hatch run dev:deps
+sync-docs:
+	hatch run docs:deps
+
+sync : hatch-docs-deps-sync sync-default sync-dev sync-docs
+	echo "DONE.\n=========================="
 
 # install cli in local for testing, change code an it will be automatically reflected in UI
 install:
