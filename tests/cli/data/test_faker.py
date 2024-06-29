@@ -56,7 +56,7 @@ def faker_test_util_format_count(_format, _count=None):
 
 
 def test_data_faker_inferred_format():
-    formats = FileFormat.validFakerFormats()
+    formats = FileFormat.validFormats()
     for _format in formats:
         print(f"Running for {_format}")
         result = faker_test_util_format_count(_format=_format)

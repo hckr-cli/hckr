@@ -44,7 +44,7 @@ def peekUtil(_format, _count=None):
 
 # POSITIVE
 def test_data_peek_inferred_format_default_count():
-    formats = FileFormat.validPeekFormats()
+    formats = FileFormat.validFormats()
     for _format in formats:
         print(f"Running for {_format}")
         result = peekUtil(_format=_format)
@@ -53,7 +53,7 @@ def test_data_peek_inferred_format_default_count():
 
 
 def test_data_peek_inferred_format_given_count():
-    formats = FileFormat.validPeekFormats()
+    formats = FileFormat.validFormats()
     for _format in formats:
         print(f"Running for {_format}")
         result = peekUtil(_format=_format, _count=8)
@@ -70,6 +70,15 @@ def test_data_peek_with_large_cols():
     assert (
         "Data has total 13 rows and 61 columns, showing first 10 rows and 10 columns"
         in result.output
+    )
+
+
+def test_data_peek_with_tsv_format():
+    runner = CliRunner()
+    result = runner.invoke(peek, ["-i", INPUT_DIR / "TabSep.tsv"])
+    print(result.output)
+    assert (
+        "Data has total 2902 rows and 6 columns, showing first 10 rows" in result.output
     )
 
 
@@ -122,11 +131,29 @@ def test_test():
     import pandas as pd
 
     path = INPUT_DIR / "input.tsv"
-    with open(path) as csvfile:
-        dialect = csv.Sniffer().sniff(csvfile.read(1024))
-        has_header = csv.Sniffer().has_header(csvfile.read(1024))
+    with open(path, mode="r", newline="") as csvfile:
+        # Sniff the first 1024 bytes to find the dialect
+        sample = csvfile.read(1024)
+        dialect = csv.Sniffer().sniff(sample)
+
+        # Reset the file pointer to the start of the file before checking the header
+        # csvfile.seek(0)
+        # has_header = csv.Sniffer().has_header(csvfile.read(1024))
+
         print(dialect)
-        print(f"del=> [{dialect.delimiter}]")
-        print(has_header)
-        # df = pd.read_csv(path, sep=dialect.delimiter).head()
-        # print(df)
+        print(f"Delimiter => [{dialect.delimiter}]")
+        # print(f"Has header: {has_header}")
+
+        # Reset again to read the full file with pandas
+        # csvfile.seek(0)
+        df = pd.read_csv(csvfile, sep=dialect.delimiter)
+        print(df.head())
+    # with open(path) as csvfile:
+    #     content=csvfile.read(1024)
+    #     has_header = csv.Sniffer().has_header(content)
+    #     dialect = csv.Sniffer().sniff(content)
+    #     print(dialect)
+    #     print(f"del=> [{dialect.delimiter}]")
+    #     print(has_header)
+    #     df = pd.read_csv(path, sep=dialect.delimiter).head()
+    #     print(df)

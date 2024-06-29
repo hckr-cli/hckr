@@ -9,7 +9,6 @@ from enum import Enum
 
 class FileFormat(str, Enum):
     CSV = "csv"
-    TSV = "tsv"
     AVRO = "avro"
     JSON = "json"
     EXCEL = "excel"
@@ -22,7 +21,7 @@ class FileFormat(str, Enum):
             # ".txt": FileFormat.CSV,
             # ".text": FileFormat.CSV,
             ".csv": FileFormat.CSV,
-            ".tsv": FileFormat.TSV,
+            ".tsv": FileFormat.CSV,
             ".json": FileFormat.JSON,
             ".xlsx": FileFormat.EXCEL,
             ".xls": FileFormat.EXCEL,
@@ -43,15 +42,7 @@ class FileFormat(str, Enum):
         return _format
 
     @staticmethod
-    def validFakerFormats():
-        return [
-            str(x)
-            for x in FileFormat
-            if str(x) != str(FileFormat.INVALID) and str(x) != str(FileFormat.TSV)
-        ]
-
-    @staticmethod
-    def validPeekFormats():
+    def validFormats():
         return [str(x) for x in FileFormat if str(x) != str(FileFormat.INVALID)]
 
     def __str__(self):
