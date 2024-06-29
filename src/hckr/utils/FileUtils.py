@@ -104,7 +104,7 @@ def delete_path_if_exists(path):
             path.rmdir()  # Remove the directory, note this directory must be empty
         print(f"Deleted: {path}")
     else:
-        print(f"No such path: {path}")
+        logging.info(f"No such path: {path}")
 
 
 # validate if file extension is one of given
