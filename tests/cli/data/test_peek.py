@@ -123,37 +123,3 @@ def test_data_peek_with_input_file_not_found():
     print(result.output)
     assert "Some error occurred while reading data" in result.output
     assert "[Errno 2] No such file or directory: 'invalid.csv" in result.output
-
-
-# TRYING OUT SNIFFER
-def test_test():
-    import csv
-    import pandas as pd
-
-    path = INPUT_DIR / "input.tsv"
-    with open(path, mode="r", newline="") as csvfile:
-        # Sniff the first 1024 bytes to find the dialect
-        sample = csvfile.read(1024)
-        dialect = csv.Sniffer().sniff(sample)
-
-        # Reset the file pointer to the start of the file before checking the header
-        # csvfile.seek(0)
-        # has_header = csv.Sniffer().has_header(csvfile.read(1024))
-
-        print(dialect)
-        print(f"Delimiter => [{dialect.delimiter}]")
-        # print(f"Has header: {has_header}")
-
-        # Reset again to read the full file with pandas
-        # csvfile.seek(0)
-        df = pd.read_csv(csvfile, sep=dialect.delimiter)
-        print(df.head())
-    # with open(path) as csvfile:
-    #     content=csvfile.read(1024)
-    #     has_header = csv.Sniffer().has_header(content)
-    #     dialect = csv.Sniffer().sniff(content)
-    #     print(dialect)
-    #     print(f"del=> [{dialect.delimiter}]")
-    #     print(has_header)
-    #     df = pd.read_csv(path, sep=dialect.delimiter).head()
-    #     print(df)
