@@ -16,8 +16,10 @@ jobs:
       # otherwise, read permission is required at least
       pull-requests: write
     runs-on: ubuntu-latest
+    if: "!contains(github.ref, 'dev')"  # Exclude tags containing "dev"
     steps:
       - uses: release-drafter/release-drafter@v6
         with:
          config-name: release-drafter-template.yml
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
