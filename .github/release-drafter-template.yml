@@ -1,5 +1,5 @@
-name-template: 'v$RESOLVED_VERSION 🌈'
-tag-template: 'v$RESOLVED_VERSION'
+name-template: '$RESOLVED_VERSION 🌈'
+tag-template: '$RESOLVED_VERSION'
 categories:
   - title: '🚀 Features'
     labels:
@@ -14,18 +14,22 @@ categories:
     label: 'chore'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
-version-resolver:
-  major:
-    labels:
-      - 'major'
-  minor:
-    labels:
-      - 'minor'
-  patch:
-    labels:
-      - 'patch'
-  default: patch
+# automatically creates a proposes creation of a version, based on tag
+#version-resolver:
+#  major:
+#    labels:
+#      - 'major'
+#  minor:
+#    labels:
+#      - 'minor'
+#  patch:
+#    labels:
+#      - 'patch'
+#  default: patch
 template: |
   ## What's Changes
 
   $CHANGES
+
+  ### Resources
+  https://pypi.org/project/hckr/$RESOLVED_VERSION/

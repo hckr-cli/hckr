@@ -7,7 +7,7 @@ on:
       - 'src/**'
       - 'tests/**'
       - 'pyproject.toml'
-      - '.github/workflows/**'
+      - '.github/workflows/publish.yml'
 permissions:
   contents: write
 
