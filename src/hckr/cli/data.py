@@ -115,7 +115,8 @@ def faker(count, schema, output, format):
 
         df = pd.DataFrame(records)
 
-        if format == FileFormat.CSV:
+        # this is same as CSV in case of faker as columns are determined by schema
+        if format == FileFormat.TXT or format == FileFormat.CSV:
             df.to_csv(output, index=False, quotechar='"', escapechar="\\")
         elif format == FileFormat.JSON:
             df.to_json(output, orient="records")

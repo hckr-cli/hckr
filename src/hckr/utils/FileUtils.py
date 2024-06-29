@@ -8,6 +8,7 @@ from enum import Enum
 
 
 class FileFormat(str, Enum):
+    TXT = "txt"
     CSV = "csv"
     AVRO = "avro"
     JSON = "json"
@@ -18,9 +19,10 @@ class FileFormat(str, Enum):
     @staticmethod
     def fileExtToFormat(file_path, file_extension):
         file_type_extension_map = {
-            # ".txt": FileFormat.CSV,
-            # ".text": FileFormat.CSV,
+            ".txt": FileFormat.TXT,
+            ".text": FileFormat.TXT,
             ".csv": FileFormat.CSV,
+            ".tsv": FileFormat.CSV,
             ".json": FileFormat.JSON,
             ".xlsx": FileFormat.EXCEL,
             ".xls": FileFormat.EXCEL,
@@ -102,7 +104,7 @@ def delete_path_if_exists(path):
             path.rmdir()  # Remove the directory, note this directory must be empty
         print(f"Deleted: {path}")
     else:
-        print(f"No such path: {path}")
+        logging.info(f"No such path: {path}")
 
 
 # validate if file extension is one of given

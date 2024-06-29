@@ -5,10 +5,11 @@ import pandas as pd
 import rich
 from pyarrow import parquet as pq  # type: ignore
 from rich.table import Table
-import json
-
+import csv
 from hckr.utils.FileUtils import FileFormat
 from hckr.utils.MessageUtils import error, colored, warning, info
+
+COMMA = ","
 
 
 def safe_faker_method(faker_instance, method_name, *args):
@@ -59,10 +60,26 @@ def readJSON(_file):
         return df
 
 
+def sniffCsvDelimiter(path):
+    try:
+        with open(path, mode="r") as csvfile:
+            # Sniff the first 1024 bytes to find the dialect
+            sample = csvfile.read(2048)
+            dialect = csv.Sniffer().sniff(sample)
+            logging.debug(f"Delimiter => [{dialect.delimiter}]")
+            return dialect.delimiter
+    except Exception as e:
+        logging.debug(f"Error occured while sniffing delimiter\n{e}")
+        return COMMA
+
+
 def readFile(_format, FILE):
     try:
-        if _format == FileFormat.CSV:
+        if _format == FileFormat.TXT:
             df = pd.read_csv(FILE)
+        elif _format == FileFormat.CSV:
+            delimiter = sniffCsvDelimiter(FILE)
+            df = pd.read_csv(FILE, sep=delimiter)
         elif _format == FileFormat.JSON:
             df = readJSON(FILE)
         elif _format == FileFormat.EXCEL:

@@ -33,7 +33,6 @@ def peekUtil(_format, _count=None):
     else:  # if count  not given use default count
         result = runner.invoke(peek, ["-i", FILE])
         # print(result.output)
-
         assert f"File format is not passed, inferring from file path" in result.output
         assert f"Peeking {DEFAULT_COUNT} rows in file" in result.output
         assert f"Format inferred: {_format}" in result.output
@@ -73,6 +72,24 @@ def test_data_peek_with_large_cols():
     )
 
 
+def test_data_peek_with_tsv_format():
+    runner = CliRunner()
+    result = runner.invoke(peek, ["-i", INPUT_DIR / "TabSep.tsv"])
+    print(result.output)
+    assert (
+        "Data has total 2902 rows and 6 columns, showing first 10 rows" in result.output
+    )
+
+
+def test_data_peek_with_text_format():
+    runner = CliRunner()
+    result = runner.invoke(peek, ["-i", INPUT_DIR / "simple.text"])
+    print(result.output)
+    assert (
+        "Data has total 29 rows and 1 columns, showing first 10 rows" in result.output
+    )
+
+
 def test_data_peek_with_json_lines():
     runner = CliRunner()
 
@@ -104,11 +121,7 @@ def test_data_peek_with_invalid_input_file_format():
     # giving CSV file but Format as AVRO
     result = runner.invoke(peek, ["-i", INPUT_CSV_FILE, "-f", INVALID_FORMAT])
     print(result.output)
-    assert (
-        f"""Invalid file format {INVALID_FORMAT}, Available formats: ['csv', 'avro', 'json', 'excel', 
-'parquet']"""
-        in result.output
-    )
+    assert f"""Invalid file format {INVALID_FORMAT}""" in result.output
 
 
 def test_data_peek_with_input_file_not_found():

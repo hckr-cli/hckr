@@ -110,11 +110,7 @@ def test_data_faker_invalid_output_format():
         faker, ["-s", SCHEMA_FILE, "-o", OUTPUT_DIR, "-f", "INVALID"]
     )
     print(result.output)
-    assert (
-        """Invalid file format invalid, Available ['csv', 'avro', 'json', 'excel', 
-'parquet']"""
-        in result.output
-    )
+    assert """Invalid file format invalid""" in result.output
 
 
 def test_data_faker_excel_invalid_file_extension():
@@ -125,10 +121,10 @@ def test_data_faker_excel_invalid_file_extension():
     assert result.exit_code == 1
     assert (
         """Invalid file extension .excel for file invalid.excel, 
-Available extensions ['.avro', '.csv', '.json', '.parquet', '.xls', '.xlsx']
-Or Please provide format using -f / --format option"""
+Available extensions"""
         in result.output
     )
+    assert """Or Please provide format using -f / --format option""" in result.output
 
 
 def test_data_faker_invalid_faker_provider():
