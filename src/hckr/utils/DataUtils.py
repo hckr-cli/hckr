@@ -75,7 +75,9 @@ def sniffCsvDelimiter(path):
 
 def readFile(_format, FILE):
     try:
-        if _format == FileFormat.CSV:
+        if _format == FileFormat.TXT:
+            df = pd.read_csv(FILE)
+        elif _format == FileFormat.CSV:
             delimiter = sniffCsvDelimiter(FILE)
             df = pd.read_csv(FILE, sep=delimiter)
         elif _format == FileFormat.JSON:

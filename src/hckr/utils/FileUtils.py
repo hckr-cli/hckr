@@ -8,6 +8,7 @@ from enum import Enum
 
 
 class FileFormat(str, Enum):
+    TXT = "txt"
     CSV = "csv"
     AVRO = "avro"
     JSON = "json"
@@ -18,8 +19,8 @@ class FileFormat(str, Enum):
     @staticmethod
     def fileExtToFormat(file_path, file_extension):
         file_type_extension_map = {
-            # ".txt": FileFormat.CSV,
-            # ".text": FileFormat.CSV,
+            ".txt": FileFormat.TXT,
+            ".text": FileFormat.TXT,
             ".csv": FileFormat.CSV,
             ".tsv": FileFormat.CSV,
             ".json": FileFormat.JSON,
