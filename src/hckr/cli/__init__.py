@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 import logging
-
+import art  # type: ignore
 import click
 from click_repl import register_repl  # type: ignore
 
@@ -67,6 +67,7 @@ def cli(
         )
     _info.verbose = verbose
     if ctx.invoked_subcommand is None:
+        art.tprint("hckr")
         click.secho("hckr ", fg="magenta", bold=True, nl=False)
         click.secho(f"v{__version__}  ", fg="blue", bold=True, nl=False)
         click.secho(
