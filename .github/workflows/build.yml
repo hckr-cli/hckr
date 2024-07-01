@@ -39,7 +39,7 @@ jobs:
       - name: Run Checks
         run: make checks
 
-  codecov:
+  coverage:
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
