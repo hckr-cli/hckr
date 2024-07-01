@@ -97,7 +97,7 @@ dependencies = [
     "black",
     "pre-commit",
     "mypy>=1.0.0",
-    "coverage[toml]>=6.2",
+    "coverage",
     "pytest",
     "pypi-cleanup",
 ]
