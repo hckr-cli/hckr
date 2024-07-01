@@ -60,10 +60,6 @@ jobs:
       - name: Run Coverage
         run: |
           make coverage
-          pwd
-          tree -L 2
-          cd ..
-          tree -L 2
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v2.3.0
