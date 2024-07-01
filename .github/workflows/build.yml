@@ -57,14 +57,10 @@ jobs:
           sudo apt-get install tree
           python -m pip install --upgrade pip 
           pip install hatch pytest coverage
-
+          tree -L 2
       - name: Run Coverage
         run: |
           make coverage
-          cd ..
-          tree
-          cd ..
-          tree
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v2.3.0
