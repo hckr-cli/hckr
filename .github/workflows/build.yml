@@ -17,29 +17,29 @@ on:
       - '.github/workflows/build.yml'
 
 jobs:
-#  build-and-test:
-#    runs-on: ${{ matrix.os }}
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#         os: [ubuntu-latest, windows-latest, macos-latest] # TODO: Fix windows
-#         python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Set up Python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v3
-#        with:
-#          python-version: ${{ matrix.python-version }}
-#
-#      - name: Install dependencies
-#        run: pip install hatch
-#
-#      - name: Run Checks
-#        run: make checks
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+         os: [ubuntu-latest, windows-latest, macos-latest] # TODO: Fix windows
+         python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install hatch
+
+      - name: Run Checks
+        run: make checks
 
   coverage:
-#    needs: build-and-test
+    needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
