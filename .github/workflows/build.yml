@@ -55,17 +55,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip 
-          pip install hatch
+          pip install hatch pytest coverage
 
       - name: Run Coverage
-        run: make coverage
-
-#      - name: Upload coverage reports to Codecov
-#        uses: codecov/codecov-action@v4.0.1
-#        with:
-#          token: ${{ secrets.CODECOV_TOKEN }}
-#          files: coverage.xml
-#          fail_ci_if_error: true
+        run: |
+          make coverage        
+          # Adjust paths in coverage.xml if necessary
+          sed -i 's|<source>.*</source>|<source>./src</source>|g' coverage.xml
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v2.3.0
