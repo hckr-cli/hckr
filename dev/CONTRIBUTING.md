@@ -33,12 +33,5 @@ pre-commit install
  make pypi-clean
 ```
 
-## Creating brew formulae
-* Local testing
-```shell
-brew cleanup && brew uninstall hckr && brew install --verbose --build-from-source ./hckr.rb && hckr -h
-```
-* Bumping version [more](https://github.com/Homebrew/homebrew-core/blob/master/CONTRIBUTING.md)
-```shell
-brew bump-formula-pr h/hckr.rb
-```
+## Homebrew formulae
+Please find contributing guide for `Homebrew formulae` here [HOMEBREW.md](HOMEBREW.md)
