@@ -38,7 +38,7 @@ pip install hckr
 `hckr` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
 
 ## Contributing
-Please find contributing guide here [CONTRIBUTING.md](CONTRIBUTING.md)
+Please find contributing guide here [CONTRIBUTING.md](dev/CONTRIBUTING.md)
 
 ## Sponsors
 > Built using Jetbrains Products
