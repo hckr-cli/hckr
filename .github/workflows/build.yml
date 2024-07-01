@@ -60,8 +60,6 @@ jobs:
       - name: Run Coverage
         run: |
           make coverage        
-          # Adjust paths in coverage.xml if necessary
-          sed -i 's|<source>.*</source>|<source>./src</source>|g' coverage.xml
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v2.3.0
