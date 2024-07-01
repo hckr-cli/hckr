@@ -22,9 +22,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-#         os: [ubuntu-latest, windows-latest, macos-latest] # TODO: Fix windows
-         os: [ ubuntu-latest, macos-latest ]
-         python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
+        #         os: [ubuntu-latest, windows-latest, macos-latest] # TODO: Fix windows
+        os: [ ubuntu-latest, macos-latest ]
+        python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
 
     steps:
       - uses: actions/checkout@v3
@@ -60,10 +60,8 @@ jobs:
       - name: Run Coverage
         run: |
           make coverage
-          head -n 7 coverage.xml
           # Adjust paths in coverage.xml to be relative
           sed -i "s|<source>/home/runner/work/hckr/hckr|<source>/github/workspace|g" coverage.xml
-          head -n 7 coverage.xml
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v2.3.0
         env:
