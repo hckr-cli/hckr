@@ -2,53 +2,54 @@
 
 SOURCE="/Users/ashishpatel/pateash/homebrew-core/Formula/h/hckr.rb"
 
-
+#FLAGS="--debug --verbose"
+FLAGS="--verbose"
 function clean(){
   echo "Cleaning all caches"
-  brew cleanup
+  brew cleanup $FLAGS
   echo "====================================="
 }
 
 function uninstall(){
   echo "Uninstalling if exists"
-  brew uninstall hckr
+  brew uninstall $FLAGS hckr
   echo "====================================="
 }
 
 function install(){
   echo "Installing from sources"
-  brew install --verbose --build-from-source $SOURCE
+  brew install $FLAGS --build-from-source $SOURCE
   echo "====================================="
 }
 
 function test(){
   echo "Testing hckr"
-  brew test hckr
+  brew test $FLAGS hckr
   echo "====================================="
 }
 
 function audit(){
   echo "Audit hckr"
-  brew audit hckr
+  brew audit --strict $FLAGS hckr
   echo "====================================="
 
 }
 
 function style(){
   echo "Style hckr"
-  brew style $SOURCE
+  brew style $FLAGS $SOURCE
   echo "====================================="
 }
 
 function tap(){
-  echo "Creating a new tap with latest formulae 'hckr.rb'"
+  echo -e "Creating a new tap with latest formulae 'hckr.rb'\nAs the files are soft linked, we do not need run this again."
   TAP_NAME="pateash/local"
   TAP_DIR="/opt/homebrew/Library/Taps/pateash/homebrew-local/Formula/"
   # removing tap if exists
-  brew untap $TAP_NAME
+  brew untap $FLAGS $TAP_NAME
   echo -e "Creating tap $TAP_NAME"
-  brew tap-new $TAP_NAME --no-git
-  brew tap-info $TAP_NAME
+  brew tap-new  $FLAGS $TAP_NAME --no-git
+  brew tap-info $FLAGS $TAP_NAME
   ln -s $SOURCE $TAP_DIR # copying tap
   ls -la $TAP_DIR
   brew tap-info $TAP_NAME # checking taps after moving formulae
@@ -85,6 +86,11 @@ tap)
   tap
   ;;
 style)
+  style
+  ;;
+checks) # run all checks
+  test
+  audit
   style
   ;;
 *)
