@@ -54,12 +54,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install tree
           python -m pip install --upgrade pip 
           pip install hatch pytest coverage
       - name: Run Coverage
         run: |
           make coverage
+          cat coverage.xml
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v2.3.0
