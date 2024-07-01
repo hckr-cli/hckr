@@ -61,8 +61,8 @@ jobs:
           make coverage
           head -n 7 coverage.xml
           # Adjust paths in coverage.xml to be relative
-          sed -i 's|<source>/home/runner/work/hckr/hckr|<source>./hckr|g' coverage.xml
-          cat coverage.xml
+          sed -i "s|<source>/home/runner/work/hckr/hckr|<source>/github/workspace|g" coverage.xml
+          head -n 7 coverage.xml
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@v2.3.0
         env:
