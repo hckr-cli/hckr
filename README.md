@@ -5,8 +5,9 @@
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=hckr-cli_hckr)](https://sonarcloud.io/summary/new_code?id=hckr-cli_hckr)
 [![Dependabot](https://github.com/hckr-cli/hckr/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/hckr-cli/hckr/actions/workflows/dependabot/dependabot-updates)
 [![Build](https://github.com/hckr-cli/hckr/actions/workflows/build.yml/badge.svg)](https://github.com/hckr-cli/hckr/actions/workflows/build.yml)
-
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=hckr-cli_hckr)
+[![Documentation Status](https://readthedocs.org/projects/hckr/badge/?version=latest)](https://hckr.readthedocs.io/en/latest/?badge=latest)
+ 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg)](https://sonarcloud.io/summary/new_code?id=hckr-cli_hckr)
 
 [//]: # ([![GitHub commit activity]&#40;https://img.shields.io/github/commit-activity/m/hckr-cli/hckr&#41;]&#40;https://github.com/hckr-cli/hckr/graphs/commit-activity&#41;)
 
