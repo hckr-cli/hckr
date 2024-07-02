@@ -48,6 +48,11 @@ html_theme_options = {
             "url": "https://pypi.org/project/hckr/",
             "external": "true"
         },
+        {
+            "title": "Join our Slack",
+            "url": "https://join.slack.com/t/hckr-cli/shared_invite/zt-2kpwz39dw-CIVDcv1nGhEnQNLumJxJDQ",
+            "external": "true"
+        },
     ],
     "light_logo": "_static/hckr-logo-black.png",
     "dark_logo": "_static/hckr-logo-white.png",

@@ -1,10 +1,7 @@
 .DEFAULT_GOAL := install # default command to run with just `make`
 .PHONY: build publish package coverage test lint docs
 
-env-default :
-	hatch shell default
-
-env-clean :
+env-prune :
 	hatch env prune
 
 env-show :
@@ -15,13 +12,16 @@ hatch-docs-deps-sync:
 
 sync-default:
 	hatch run default:deps
+
 sync-dev:
 	hatch run dev:deps
+
 sync-docs:
 	hatch run docs:deps
 
-sync : sync-default sync-dev sync-docs hatch-docs-deps-sync
-	echo "DONE.\n=========================="
+# Sync only happens when we change something in deps array
+# to simulate we can add a dependency 'cowsay' to a env and sync
+sync : sync-default sync-dev sync-docs hatch-docs-deps-sync lint
 
 # install cli in local for testing, change code an it will be automatically reflected in UI
 install:
