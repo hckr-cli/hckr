@@ -60,7 +60,7 @@ def version():
 
         $ hckr info version
         Version: hckr==VERSION
-        Github: https://github.com/pateash/hckr
+        Github: https://github.com/hckr-cli/hckr
         PyPi: https://pypi.org/project/hckr/
 
     **Command Reference**:
@@ -69,7 +69,7 @@ def version():
     click.secho(f"=={__version__}  ", fg="blue", bold=False, nl=True)
     check_update(show_no_update=True)
     click.secho(
-        f"Github: https://github.com/pateash/hckr", fg="red", bold=True, nl=True
+        f"Github: https://github.com/hckr-cli/hckr", fg="red", bold=True, nl=True
     )
     click.secho(
         f"PyPi: https://pypi.org/project/hckr/", fg="yellow", bold=True, nl=True

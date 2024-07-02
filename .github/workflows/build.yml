@@ -39,7 +39,7 @@ jobs:
       - name: Run Checks
         run: make checks
 
-  coverage:
+  sonarcloud:
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
@@ -57,7 +57,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip 
           pip install hatch
-      - name: Run Coverage
+      - name: Run SonarCloud Scan and Coverage
         run: |
           make coverage
           # Adjust paths in coverage.xml to be relative
