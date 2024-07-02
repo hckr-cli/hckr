@@ -103,6 +103,7 @@ pypi-clean = "pypi-cleanup -u pateash -p hckr --do-it" # deletes dev version fro
 deps = "echo 'Syncing Dev Dependencies\n============='"
 
 [tool.hatch.envs.docs]
+dev-mode = true
 dependencies = [
     "sphinx-autobuild",
     "sphinx",
