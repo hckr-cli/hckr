@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "hckr"
 dynamic = ["version"]
-description = ''
+description = ""
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
@@ -33,7 +33,7 @@ dependencies = [
     "rich",
     "cryptography",
     "Faker",
-    "pandas", #To manage data and save in CSV, Excel, and Parquet formats.
+    "pandas", # To manage data and save in CSV, Excel, and Parquet formats.
     "openpyxl", # For handling Excel files with Pandas.
     "xlrd",
     "pyarrow", # For saving data in Parquet format.
@@ -49,7 +49,7 @@ Documentation = "https://hckr.readthedocs.io"
 Issues = "https://github.com/hckr-cli/hckr/issues"
 Source = "https://github.com/hckr-cli/hckr"
 
-# to make sure the default env is in same repo ( for Intellij to refer )
+# Ensure the default environment is in the same repo (for IntelliJ to reference)
 [tool.hatch.envs.default]
 type = "virtual"
 path = "venv"
@@ -84,14 +84,7 @@ exclude_lines = [
     "if TYPE_CHECKING:",
 ]
 
-## STYLING ( commenting in favour of `hatch fmt`
-# creating an env for styling and use it to fix
-
-[tool.sphinx]
-builders = ["html"]
-source-dir = "docs/source"
-build-dir = "docs/build"
-
+# Styling and formatting
 [tool.hatch.envs.dev]
 dependencies = [
     "black",
@@ -125,3 +118,10 @@ dependencies = [
 docs = "sphinx-autobuild -a --port=0 --open-browser docs/source docs/build --watch src/hckr --pre-build 'rm -rf docs/build'"
 deps = "echo 'Syncing Docs Dependencies\n============='"
 docs-deps = "python docs/hatch-env-docs-requirements-sync.py"
+
+
+# sphinx deps
+[tool.sphinx]
+builders = ["html"]
+source-dir = "docs/source"
+build-dir = "docs/build"
