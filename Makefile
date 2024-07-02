@@ -19,7 +19,8 @@ sync-dev:
 sync-docs:
 	hatch run docs:deps
 
-sync : clean env-prune sync-default sync-dev sync-docs hatch-docs-deps-sync lint
+sync : sync-default sync-dev sync-docs hatch-docs-deps-sync lint
+
 
 
 # install cli in local for testing, change code an it will be automatically reflected in UI
