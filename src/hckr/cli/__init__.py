@@ -71,7 +71,7 @@ def cli(
         click.secho("hckr ", fg="magenta", bold=True, nl=False)
         click.secho(f"v{__version__}  ", fg="blue", bold=True, nl=False)
         click.secho(
-            f"https://github.com/pateash/hckr\n", fg="green", bold=True, nl=False
+            f"https://github.com/hckr-cli/hckr\n", fg="green", bold=True, nl=False
         )
         check_update()
         cli(["-h"])

@@ -39,8 +39,8 @@ html_favicon = '_static/favicon.ico'
 # TODO: enhance it https://shibuya.lepture.com/install/
 html_theme_options = {
     "color_mode": "light",  # light or dark
-    "github_url": "https://github.com/pateash/hckr",
-    "discussion_url": "https://github.com/pateash/hckr/discussions",
+    "github_url": "https://github.com/hckr-cli/hckr",
+    "discussion_url": "https://github.com/hckr-cli/hckr/discussions",
     "globaltoc_expand_depth": 1,
     "nav_links": [
         {
@@ -54,7 +54,7 @@ html_theme_options = {
     # "accent_color": "red",
     "announcement": """<div style="text-align: center;">
         <div style="display: inline-block;">
-         Please support the project by starring it on <a href='https://github.com/pateash/hckr/' target="_blank">Github</a>
+         Please support the project by starring it on <a href='https://github.com/hckr-cli/hckr/' target="_blank">Github</a>
         </div>
     </div>""",
 }

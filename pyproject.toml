@@ -46,8 +46,8 @@ dependencies = [
 
 [project.urls]
 Documentation = "https://hckr.readthedocs.io"
-Issues = "https://github.com/pateash/hckr/issues"
-Source = "https://github.com/pateash/hckr"
+Issues = "https://github.com/hckr-cli/hckr/issues"
+Source = "https://github.com/hckr-cli/hckr"
 
 # to make sure the default env is in same repo ( for Intellij to refer )
 [tool.hatch.envs.default]

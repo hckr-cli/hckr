@@ -1,12 +1,12 @@
 # hckr -  cli hack for developers
 [![PyPI - Version](https://img.shields.io/pypi/v/hckr.svg)](https://pypi.org/project/hckr)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/hckr.svg)](https://pypi.org/project/hckr)
-[![Build](https://github.com/pateash/hckr/actions/workflows/build.yml/badge.svg)](https://github.com/pateash/hckr/actions/workflows/build.yml)
-[![Dependabot](https://github.com/pateash/hckr/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/pateash/hckr/actions/workflows/dependabot/dependabot-updates)
-[![CodeQL](https://github.com/pateash/hckr/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/pateash/hckr/actions/workflows/github-code-scanning/codeql)
-[![codecov](https://codecov.io/gh/pateash/hckr/branch/main/graph/badge.svg)](https://codecov.io/gh/pateash/hckr)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/pateash/hckr)](https://github.com/pateash/hckr/graphs/commit-activity)
-[![GitHub contributors](https://img.shields.io/github/contributors/pateash/hckr)](https://github.com/pateash/hckr/graphs/contributors)
+[![Build](https://github.com/hckr-cli/hckr/actions/workflows/build.yml/badge.svg)](https://github.com/hckr-cli/hckr/actions/workflows/build.yml)
+[![Dependabot](https://github.com/hckr-cli/hckr/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/hckr-cli/hckr/actions/workflows/dependabot/dependabot-updates)
+[![CodeQL](https://github.com/hckr-cli/hckr/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/hckr-cli/hckr/actions/workflows/github-code-scanning/codeql)
+[![codecov](https://codecov.io/gh/hckr-cli/hckr/branch/main/graph/badge.svg)](https://codecov.io/gh/hckr-cli/hckr)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/hckr-cli/hckr)](https://github.com/hckr-cli/hckr/graphs/commit-activity)
+[![GitHub contributors](https://img.shields.io/github/contributors/hckr-cli/hckr)](https://github.com/hckr-cli/hckr/graphs/contributors)
 
 ## Introduction
 

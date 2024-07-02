@@ -8,9 +8,9 @@ This Project is created and managed by [Ashish Patel](http://pateash.in/)
 - [Publishing to PyPi](#publishing-to-pypi)
 - [Pre-commit Checks](#pre-commits)
 
-Please Contribute to this project by forking [hckr](https://github.com/pateash/hckr/)
+Please Contribute to this project by forking [hckr](https://github.com/hckr-cli/hckr/)
 
-Please feel free to provide any suggestion for new utility in [Issues](https://github.com/pateash/hckr/issues)
+Please feel free to provide any suggestion for new utility in [Issues](https://github.com/hckr-cli/hckr/issues)
 
 ## Python 
 * Use python3.8 in development
