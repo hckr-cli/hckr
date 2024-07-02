@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "hckr"
 dynamic = ["version"]
-description = ""
+description = ''
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
@@ -27,14 +27,13 @@ classifiers = [
 
 dependencies = [
     "click",
-    "cowsay",
     "click-repl",
     "croniter",
     "cron-descriptor",
     "rich",
     "cryptography",
     "Faker",
-    "pandas", # To manage data and save in CSV, Excel, and Parquet formats.
+    "pandas", #To manage data and save in CSV, Excel, and Parquet formats.
     "openpyxl", # For handling Excel files with Pandas.
     "xlrd",
     "pyarrow", # For saving data in Parquet format.
@@ -50,7 +49,7 @@ Documentation = "https://hckr.readthedocs.io"
 Issues = "https://github.com/hckr-cli/hckr/issues"
 Source = "https://github.com/hckr-cli/hckr"
 
-# Ensure the default environment is in the same repo (for IntelliJ to reference)
+# to make sure the default env is in same repo ( for Intellij to refer )
 [tool.hatch.envs.default]
 type = "virtual"
 path = "venv"
@@ -63,6 +62,7 @@ hckr = "hckr.cli:cli"
 
 [tool.hatch.version]
 path = "src/hckr/__about__.py"
+
 
 [tool.coverage.run]
 source_pkgs = ["hckr", "tests"]
@@ -84,7 +84,14 @@ exclude_lines = [
     "if TYPE_CHECKING:",
 ]
 
-# Styling and formatting
+## STYLING ( commenting in favour of `hatch fmt`
+# creating an env for styling and use it to fix
+
+[tool.sphinx]
+builders = ["html"]
+source-dir = "docs/source"
+build-dir = "docs/build"
+
 [tool.hatch.envs.dev]
 dependencies = [
     "black",
@@ -102,8 +109,8 @@ cov-xml = "coverage xml"
 pypi-clean = "pypi-cleanup -u pateash -p hckr --do-it" # deletes dev version from hckr
 deps = "echo 'Syncing Dev Dependencies\n============='"
 
+
 [tool.hatch.envs.docs]
-dev-mode = true
 dependencies = [
     "sphinx-autobuild",
     "sphinx",
@@ -113,15 +120,8 @@ dependencies = [
     "sphinx-notfound-page",
     "sphinx-copybutton",
 ]
-
 [tool.hatch.envs.docs.scripts]
-run = "python -m sphinx-autobuild -a --port=0 --open-browser docs/source docs/build --watch src/hckr --pre-build 'rm -rf docs/build'"
+# --pre-build makes sure we get latest changes even if we modify something in
+docs = "sphinx-autobuild -a --port=0 --open-browser docs/source docs/build --watch src/hckr --pre-build 'rm -rf docs/build'"
 deps = "echo 'Syncing Docs Dependencies\n============='"
 docs-deps = "python docs/hatch-env-docs-requirements-sync.py"
-
-
-# sphinx deps
-[tool.sphinx]
-builders = ["html"]
-source-dir = "docs/source"
-build-dir = "docs/build"
