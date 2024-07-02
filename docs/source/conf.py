@@ -61,7 +61,7 @@ html_theme_options = {
 
 html_context = {
     "source_type": "github",
-    "source_user": "pateash",
+    "source_user": "hckr-cli",
     "source_repo": "hckr",
     "source_version": "main",  # Optional
     "source_docs_path": "/docs/source/",  # Optional
