@@ -27,6 +27,7 @@ classifiers = [
 
 dependencies = [
     "click",
+    "cowsay",
     "click-repl",
     "croniter",
     "cron-descriptor",
@@ -62,7 +63,6 @@ hckr = "hckr.cli:cli"
 
 [tool.hatch.version]
 path = "src/hckr/__about__.py"
-
 
 [tool.coverage.run]
 source_pkgs = ["hckr", "tests"]
@@ -102,7 +102,6 @@ cov-xml = "coverage xml"
 pypi-clean = "pypi-cleanup -u pateash -p hckr --do-it" # deletes dev version from hckr
 deps = "echo 'Syncing Dev Dependencies\n============='"
 
-
 [tool.hatch.envs.docs]
 dependencies = [
     "sphinx-autobuild",
@@ -113,9 +112,9 @@ dependencies = [
     "sphinx-notfound-page",
     "sphinx-copybutton",
 ]
+
 [tool.hatch.envs.docs.scripts]
-# --pre-build makes sure we get latest changes even if we modify something in
-docs = "sphinx-autobuild -a --port=0 --open-browser docs/source docs/build --watch src/hckr --pre-build 'rm -rf docs/build'"
+run = "python -m sphinx-autobuild -a --port=0 --open-browser docs/source docs/build --watch src/hckr --pre-build 'rm -rf docs/build'"
 deps = "echo 'Syncing Docs Dependencies\n============='"
 docs-deps = "python docs/hatch-env-docs-requirements-sync.py"
 
