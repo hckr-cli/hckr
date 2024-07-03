@@ -39,9 +39,9 @@ dependencies = [
     "pyarrow", # For saving data in Parquet format.
     "fastavro", # For handling Avro file format.
     "requests",
-    "tomli",
-    "art",
-    "packaging"
+#    "tomli",
+    "packaging",
+    "kubernetes"
 ]
 
 [project.urls]
