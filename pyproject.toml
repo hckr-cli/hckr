@@ -41,7 +41,8 @@ dependencies = [
     "requests",
 #    "tomli",
     "packaging",
-    "kubernetes"
+    "kubernetes",
+    "yaspin"
 ]
 
 [project.urls]

@@ -23,7 +23,7 @@ def run_progress_bar(duration):
     Run a progress bar for the specified duration in seconds.
     """
     step = _get_step(duration)
-    with click.progressbar(length=duration, label="Next job will run in") as bar:
+    with click.progressbar(length=duration, label=f"Next job will run in {duration} seconds") as bar:
         for i in range(0, duration, step):
             time.sleep(step)  # Sleep for a second
             bar.update(step)  # Update the progress bar by one step
@@ -35,7 +35,7 @@ def run_progress_barV2(duration):
     Run a progress bar for the specified duration in seconds.
     """
     step = _get_step(duration)
-    for _ in track(range(0, duration, step), description="[blue]Next job will run in"):
+    for _ in track(range(0, duration, step), description=f"[blue]Next job will run in {duration} seconds"):
         time.sleep(step)  # Sleep for a second
 
 

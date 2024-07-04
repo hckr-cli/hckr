@@ -91,7 +91,7 @@ cli.add_command(data)
 cli.add_command(crypto)
 crypto.add_command(fernet)
 
-#k8s
+# k8s
 cli.add_command(k8s)
 cli.add_command(show)
 
