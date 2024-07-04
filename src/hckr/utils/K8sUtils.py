@@ -14,9 +14,11 @@ def _getApi(context):
     try:
         if context:
             config.load_kube_config(context=context)
+            return client.CoreV1Api(), context
         else:
             config.load_kube_config()
-        return client.CoreV1Api()
+            _, currentContext = config.list_kube_config_contexts()
+            return client.CoreV1Api(), currentContext['name']
     except config.ConfigException as e:
         error(f"Error loading kube-config: \n{e}")
         exit(1)
@@ -42,7 +44,7 @@ def _human_readable_age(start_time):
 
 def list_pods(context, namespace, count):
     with yaspin(text=f"Fetching pods for namespace {namespace}...", color="green") as spinner:
-        coreApi = _getApi(context)
+        coreApi, currentContext = _getApi(context)
         ret = coreApi.list_namespaced_pod(namespace)
         sorted_pods = sorted(ret.items, key=lambda pod: pod.metadata.creation_timestamp)
         pods_info = []
@@ -63,7 +65,7 @@ def list_pods(context, namespace, count):
         df = pd.DataFrame(pods_info)
         spinner.ok("✔")
 
-    print_df_as_table(df, title=f"Pods in namespace: {namespace}", count=100)
+    print_df_as_table(df, title=f"Pods in context: {currentContext}, namespace: {namespace}", count=100)
 
 
 def list_namespaces(context):
@@ -97,11 +99,11 @@ def list_namespaces(context):
 #             info(resp.read_stderr())
 
 
-# def delete_pod(namespace, pod_name):
-#     coreApi = _getApi()
-#     info(f"Deleting pod {pod_name} in namespace {namespace}")
-#     coreApi.delete_namespaced_pod(name=pod_name, namespace=namespace)
-#     info(f"Pod {pod_name} deleted")
+def delete_pod(namespace, pod_name):
+    coreApi = _getApi()
+    info(f"Deleting pod {pod_name} in namespace {namespace}")
+    coreApi.delete_namespaced_pod(name=pod_name, namespace=namespace)
+    info(f"Pod {pod_name} deleted")
 
 def list_contexts():
     contexts, active_context = config.list_kube_config_contexts()

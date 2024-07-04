@@ -2,21 +2,24 @@
 #
 # SPDX-License-Identifier: MIT
 import logging
+
 import click
 from click_repl import register_repl  # type: ignore
 
+from hckr.cli.k8s.context import context
+from hckr.cli.k8s.namespace import namespace
+from hckr.cli.k8s.pod import pod
 from .crypto.fernet import fernet
 from .data import data
 from .info import info
-from ..utils.CliUtils import check_update
-from ..utils.MessageUtils import warning
-
 from .k8s import k8s
 from .k8s.show import show
 from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.crypto import crypto
 from ..cli.hash import hash
+from ..utils.CliUtils import check_update
+from ..utils.MessageUtils import warning
 
 LOGGING_LEVELS = {
     0: logging.NOTSET,
@@ -93,7 +96,9 @@ crypto.add_command(fernet)
 
 # k8s
 cli.add_command(k8s)
-cli.add_command(show)
+cli.add_command(pod)
+cli.add_command(namespace)
+cli.add_command(context)
 
 # implementing this so that if user just uses `hckr` we show them something
 if __name__ == "__main__":
