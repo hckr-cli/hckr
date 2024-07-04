@@ -85,3 +85,7 @@ docs-build:
 docs:
 	hatch run docs:docs
 
+# this if for local testing only
+run:
+	which hckr
+	hckr

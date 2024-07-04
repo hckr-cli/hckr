@@ -5,11 +5,14 @@ import logging
 import click
 from click_repl import register_repl  # type: ignore
 
-from hckr.cli.crypto.fernet import fernet
-from hckr.cli.data import data
-from hckr.cli.info import info
-from hckr.utils.CliUtils import check_update
-from hckr.utils.MessageUtils import warning
+from .crypto.fernet import fernet
+from .data import data
+from .info import info
+from ..utils.CliUtils import check_update
+from ..utils.MessageUtils import warning
+
+from .k8s import k8s
+from .k8s.show import show
 from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.crypto import crypto
@@ -87,6 +90,10 @@ cli.add_command(data)
 # CRYPTO
 cli.add_command(crypto)
 crypto.add_command(fernet)
+
+#k8s
+cli.add_command(k8s)
+cli.add_command(show)
 
 # implementing this so that if user just uses `hckr` we show them something
 if __name__ == "__main__":
