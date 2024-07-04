@@ -4,16 +4,22 @@ import pandas as pd
 import rich
 from kubernetes import client, config
 from rich.panel import Panel
-
-from .DataUtils import print_df_as_table
-
-config.load_kube_config()
 from yaspin import yaspin
 
+from .DataUtils import print_df_as_table
+from .MessageUtils import info, error
 
-def _getApi():
-    coreApi = client.CoreV1Api()
-    return coreApi
+
+def _getApi(context):
+    try:
+        if context:
+            config.load_kube_config(context=context)
+        else:
+            config.load_kube_config()
+        return client.CoreV1Api()
+    except config.ConfigException as e:
+        error(f"Error loading kube-config: \n{e}")
+        exit(1)
 
 
 def _human_readable_age(start_time):
@@ -34,9 +40,9 @@ def _human_readable_age(start_time):
         return f"{seconds}s"
 
 
-def list_pods(namespace, count):
+def list_pods(context, namespace, count):
     with yaspin(text=f"Fetching pods for namespace {namespace}...", color="green") as spinner:
-        coreApi = _getApi()
+        coreApi = _getApi(context)
         ret = coreApi.list_namespaced_pod(namespace)
         sorted_pods = sorted(ret.items, key=lambda pod: pod.metadata.creation_timestamp)
         pods_info = []
@@ -52,7 +58,6 @@ def list_pods(namespace, count):
                     # TODO: for some issue .metadata.creationTimestamp is different in kubectl and here
                     # "Containers": ", ".join([container.name for container in containers]),
                     "Images": ", ".join(container_images),
-                    # "Restart Count": sum([container_state.restart_count for container_state in pod.status.container_statuses])
                 }
             )
         df = pd.DataFrame(pods_info)
@@ -61,8 +66,8 @@ def list_pods(namespace, count):
     print_df_as_table(df, title=f"Pods in namespace: {namespace}", count=100)
 
 
-def list_namespaces():
-    coreApi = _getApi()
+def list_namespaces(context):
+    coreApi = _getApi(context)
     ret = coreApi.list_namespace()
     rich.print(
         Panel(
@@ -72,9 +77,10 @@ def list_namespaces():
                 else "NOTHING FOUND"
             ),
             expand=True,
-            title="Namespaces",
+            title=f"Namespaces in context: {context}",
         )
     )
+
 
 # def shell_into_pod(namespace, pod_name):
 #     coreApi = _getApi()
@@ -98,14 +104,21 @@ def list_namespaces():
 #     info(f"Pod {pod_name} deleted")
 
 def list_contexts():
-    contexts, _ = config.list_kube_config_contexts()
-    context_names = [context['name'] for context in contexts]
-    for context in context_names:
-        click.echo(context)
-    return context_names
+    contexts, active_context = config.list_kube_config_contexts()
+    if not contexts:
+        rich.print("[red]Warning: No contexts found in kube-config file.[/red]")
+        return
 
-def switch_context(context_name):
-    config.load_kube_config(context=context_name)
-    global v1
-    v1 = client.CoreV1Api()
-    click.echo(f"Switched to context: {context_name}")
+    context_names = [
+        f"[green]{context['name']}[/green] <- [magenta]active[/magenta]" if context['name'] == active_context[
+            'name'] else context['name']
+        for context in contexts
+    ]
+
+    rich.print(
+        Panel(
+            "\n".join(context_names) if context_names else "NOTHING FOUND",
+            expand=True,
+            title="Contexts",
+        )
+    )
