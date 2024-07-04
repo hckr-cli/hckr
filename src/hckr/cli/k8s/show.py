@@ -31,8 +31,8 @@ def namespaces():
 
 
 @show.command()
-@click.option("-n", "--namespaces", default="default", help="Kubernetes namespace")
-def pods(namespaces):
+@click.option("-n", "--namespace", default="default", help="Kubernetes namespace")
+def pods(namespace):
     """
     This Lists all Pods in a given namespace
 
@@ -45,5 +45,5 @@ def pods(namespaces):
     **Command Reference**:
     """
 
-    info(f"Listing all Pods in namespace :{namespaces}")
-    list_pods(namespaces)
+    info(f"Listing all Pods in namespace :{namespace}")
+    list_pods(namespace)
