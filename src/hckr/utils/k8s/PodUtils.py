@@ -4,7 +4,7 @@ import threading
 
 import pandas as pd
 import rich
-from kubernetes import stream
+from kubernetes import stream, watch
 from kubernetes.client.exceptions import ApiException
 from yaspin import yaspin
 
@@ -124,3 +124,31 @@ def shell_into_pod(context, namespace, pod_name, container):
         error(f"Error connection to pod: {colored(pod_name, 'yellow')}\n {e.reason}")
     except Exception as e:
         error(f"Unexpected error occurred: {e}")
+
+
+def get_pod_logs(context, namespace, pod_name, container):
+    follow = False
+    tail_lines = None
+    coreApi, currentContext = _getApi(context)
+    if not container:
+        logging.info("container is not defined, trying to get container name from pod")
+        container = _getContainerName(coreApi, namespace, pod_name)
+
+    try:
+        # Set up streaming of logs if follow is True
+        if follow:
+            w = watch.Watch()
+            for log_entry in w.stream(coreApi.read_namespaced_pod_log, name=pod_name, namespace=namespace,
+                                      container=container, tail_lines=tail_lines):
+                print(log_entry)
+        else:
+            # Retrieve logs without following (static)
+            logs = coreApi.read_namespaced_pod_log(name=pod_name,
+                                              namespace=namespace,
+                                              container=container,
+                                              follow=follow,
+                                              tail_lines=tail_lines)
+            print(logs)
+    except ApiException as e:
+        error(f"An exception occurred while reading log: {e}")
+        return None
