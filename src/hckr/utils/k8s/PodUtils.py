@@ -9,7 +9,7 @@ from kubernetes.client.exceptions import ApiException
 from yaspin import yaspin
 
 from hckr.utils.DataUtils import print_df_as_table
-from hckr.utils.MessageUtils import error, info, colored, warning
+from hckr.utils.MessageUtils import error, info, colored, warning, success
 from hckr.utils.k8s.K8sUtils import _getApi, _human_readable_age
 
 
@@ -73,10 +73,12 @@ def shell_into_pod(context, namespace, pod_name, container):
                     if data:
                         if resp.is_open():
                             resp.write_stdin(data)
-        except KeyboardInterrupt:
-            print("\nSession closed by user.")
-        except EOFError:
-            print("read EOF  called")
+        except KeyboardInterrupt as e:
+            logging.info(f"Closing web socket: {e}")
+            success("Session closed by user.")
+        except EOFError as e:
+            logging.info(f"End of file occurred: {e}")
+            error(f"End of file occurred\n{e}")
     info(
         f"Starting shell into pod {colored(pod_name, 'magenta')} in context: {colored(currentContext, 'yellow')}, namespace: {colored(namespace, 'yellow')}")
     try:
