@@ -76,6 +76,7 @@ def shell_into_pod(context, namespace, pod_name, container):
             except KeyboardInterrupt:
                 resp.close()
                 print("\nSession closed by user.")
+                exit(1)
             except EOFError:
                 break
             # finally:
@@ -121,6 +122,7 @@ def shell_into_pod(context, namespace, pod_name, container):
         except KeyboardInterrupt:
             resp.close()
             print("\nSession closed by user.")
+            exit(1)
         finally:
             with write_lock:
                 if resp.is_open():
