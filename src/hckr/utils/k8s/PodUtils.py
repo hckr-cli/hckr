@@ -78,10 +78,10 @@ def shell_into_pod(context, namespace, pod_name, container):
                 print("\nSession closed by user.")
             except EOFError:
                 break
-            finally:
-                with write_lock:  # Ensure to lock before closing
-                    if resp.is_open():
-                        resp.close()
+            # finally:
+            #     with write_lock:  # Ensure to lock before closing
+            #         if resp.is_open():
+            #             resp.close()
 
     info(
         f"Starting shell into pod {colored(pod_name, 'magenta')} in context: {colored(currentContext, 'yellow')}, namespace: {colored(namespace, 'yellow')}")
