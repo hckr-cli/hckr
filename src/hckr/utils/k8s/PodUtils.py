@@ -1,4 +1,5 @@
 import logging
+import re
 import sys
 import threading
 
@@ -11,7 +12,7 @@ from yaspin import yaspin
 from hckr.utils.DataUtils import print_df_as_table
 from hckr.utils.MessageUtils import error, info, colored, warning, success
 from hckr.utils.k8s.K8sUtils import _getApi, _human_readable_age
-
+import logging
 
 def _getContainerName(coreApi, namespace, pod_name):
     pod = coreApi.read_namespaced_pod(name=pod_name, namespace=namespace)
@@ -126,9 +127,8 @@ def shell_into_pod(context, namespace, pod_name, container):
         error(f"Unexpected error occurred: {e}")
 
 
-def get_pod_logs(context, namespace, pod_name, container):
-    follow = False
-    tail_lines = None
+def get_pod_logs(context, namespace, pod_name, container, follow):
+    tail_lines = 10
     coreApi, currentContext = _getApi(context)
     if not container:
         logging.info("container is not defined, trying to get container name from pod")
@@ -138,9 +138,12 @@ def get_pod_logs(context, namespace, pod_name, container):
         # Set up streaming of logs if follow is True
         if follow:
             w = watch.Watch()
-            for log_entry in w.stream(coreApi.read_namespaced_pod_log, name=pod_name, namespace=namespace,
-                                      container=container, tail_lines=tail_lines):
-                print(log_entry)
+            try:
+                for log_entry in w.stream(coreApi.read_namespaced_pod_log, name=pod_name, namespace=namespace,
+                                          container=container, tail_lines=tail_lines):
+                        print(log_entry)
+            finally:
+                w.stop()
         else:
             # Retrieve logs without following (static)
             logs = coreApi.read_namespaced_pod_log(name=pod_name,
