@@ -43,12 +43,12 @@ def _human_readable_age(start_time):
 
 
 def list_pods(context, namespace, count):
-    with yaspin(text=f"Fetching pods for namespace {namespace}...", color="green") as spinner:
+    with yaspin(text=f"Fetching pods for namespace {namespace}...", color="green", timer=True) as spinner:
         coreApi, currentContext = _getApi(context)
         ret = coreApi.list_namespaced_pod(namespace)
-        sorted_pods = sorted(ret.items, key=lambda pod: pod.metadata.creation_timestamp)
+        sorted_pods = sorted(ret.items, key=lambda pod: pod.metadata.creation_timestamp, reverse=True)
         pods_info = []
-        for pod in sorted_pods[-count:]:  # get last count values
+        for pod in sorted_pods:  # get last count values
             containers = pod.spec.containers
             container_images = [container.image for container in containers]
             pods_info.append(
@@ -65,7 +65,7 @@ def list_pods(context, namespace, count):
         df = pd.DataFrame(pods_info)
         spinner.ok("✔")
 
-    print_df_as_table(df, title=f"Pods in context: {currentContext}, namespace: {namespace}", count=100)
+    print_df_as_table(df, title=f"Pods in context: {currentContext}, namespace: {namespace}", count=count)
 
 
 def list_namespaces(context):

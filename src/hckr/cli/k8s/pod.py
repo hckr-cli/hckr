@@ -20,9 +20,10 @@ def pod():
 @common_k8s_options
 @click.option("-n", "--namespace", default="default", help="Kubernetes namespace")
 @click.option(
-    "--count",
+    "-r",
+    "--records",
     default=10,
-    help="Number of Pods to show",
+    help="Number of records to show",
     required=False,
 )
 @click.option(
@@ -30,7 +31,7 @@ def pod():
     "--watch",
     help="This will enable continuous running of this command, every given of seconds",
 )
-def show(context, namespace, count, watch):
+def show(context, namespace, records, watch):
     """
     This Lists all Pods in a given namespace, If not passed 'default' namespace will be used
 
@@ -48,8 +49,8 @@ def show(context, namespace, count, watch):
     if watch:
         info(f"Watch {colored('enabled', 'yellow')}, running this command every {watch} seconds")
         while True:
-            list_pods(context, namespace, count)
+            list_pods(context, namespace, records)
             run_progress_barV2(int(watch))
 
     else:
-        list_pods(context, namespace, count)
+        list_pods(context, namespace, records)

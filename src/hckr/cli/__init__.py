@@ -100,6 +100,6 @@ cli.add_command(pod)
 cli.add_command(namespace)
 cli.add_command(context)
 
-# implementing this so that if user just uses `hckr` we show them something
+# implementing this so that if the user just uses `hckr` we show them something
 if __name__ == "__main__":
     cli()
