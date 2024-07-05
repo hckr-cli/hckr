@@ -13,7 +13,6 @@ from .crypto.fernet import fernet
 from .data import data
 from .info import info
 from .k8s import k8s
-from .k8s.show import show
 from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.crypto import crypto

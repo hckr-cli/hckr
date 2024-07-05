@@ -1,11 +1,6 @@
-from time import sleep
-
-from ..k8s import k8s, common_k8s_options
-from ...utils.CronUtils import run_progress_barV2, run_progress_bar
-
-from ...utils.K8sUtils import list_namespaces, list_pods, list_contexts
-from ...utils.MessageUtils import info, colored
-import click
+from ..k8s import k8s
+from ...utils.MessageUtils import info
+from ...utils.k8s.K8sUtils import list_contexts
 
 
 @k8s.group(
