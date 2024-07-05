@@ -3,22 +3,23 @@ import sys
 import threading
 
 import pandas as pd
+import rich
 from kubernetes import stream
 from kubernetes.client.exceptions import ApiException
 from yaspin import yaspin
 
 from hckr.utils.DataUtils import print_df_as_table
-from hckr.utils.MessageUtils import error, info, colored
+from hckr.utils.MessageUtils import error, info, colored, warning
 from hckr.utils.k8s.K8sUtils import _getApi, _human_readable_age
 
-write_lock = threading.Lock()
 
 def _getContainerName(coreApi, namespace, pod_name):
     pod = coreApi.read_namespaced_pod(name=pod_name, namespace=namespace)
     container_names = [container.name for container in pod.spec.containers]
     if container_names:
         if len(container_names) > 1:
-            error(f"Multiple containers found. Please specify one using --container from the following containers: [yellow]{container_names}[/yellow]")
+            error(f"Error: Multiple containers found for pod {pod_name}")
+            warning(f"Please specify one using --container from the following containers: [magenta]{container_names}")
             exit(0)
         else:
             return container_names[0]
@@ -66,24 +67,16 @@ def delete_pod(context, namespace, pod_name):
 def shell_into_pod(context, namespace, pod_name, container):
     coreApi, currentContext = _getApi(context)
     def read_stdin():
-        while resp.is_open():
-            try:
-                data = sys.stdin.read(1)
-                if data:
-                    if data.strip() == 'exit':  # exit
-                        break
-                    resp.write_stdin(data)
-            except KeyboardInterrupt:
-                resp.close()
-                print("\nSession closed by user.")
-                exit(1)
-            except EOFError:
-                break
-            # finally:
-            #     with write_lock:  # Ensure to lock before closing
-            #         if resp.is_open():
-            #             resp.close()
-
+        try:
+            while resp.is_open():
+                    data = sys.stdin.read(1)
+                    if data:
+                        if resp.is_open():
+                            resp.write_stdin(data)
+        except KeyboardInterrupt:
+            print("\nSession closed by user.")
+        except EOFError:
+            print("read EOF  called")
     info(
         f"Starting shell into pod {colored(pod_name, 'magenta')} in context: {colored(currentContext, 'yellow')}, namespace: {colored(namespace, 'yellow')}")
     try:
@@ -106,7 +99,7 @@ def shell_into_pod(context, namespace, pod_name, container):
                                  _request_timeout=10 # time out for connection to container
                                  )
             spinner.ok("✔")
-        info("You are now in the pod's shell. Type 'exit' or press 'CTRL-C' to end the session.")
+        info(f"You are now in the {colored(container, 'magenta')} shell. Type 'exit' or press 'CTRL-C' to end the session.\n\n")
         threading.Thread(target=read_stdin).start() # to start input thread
         try:
             while resp.is_open():
@@ -120,14 +113,12 @@ def shell_into_pod(context, namespace, pod_name, container):
                     sys.stderr.write(error_output)
                     sys.stderr.flush()
         except KeyboardInterrupt:
-            resp.close()
-            print("\nSession closed by user.")
-            exit(1)
+            rich.print("\n[green]Session closed by user.")
         finally:
-            with write_lock:
-                if resp.is_open():
-                    resp.close()
+            if resp.is_open():
+                logging.info("Closing web socket")
+                resp.close()
     except ApiException as e:
         error(f"Error connection to pod: {colored(pod_name, 'yellow')}\n {e.reason}")
     except Exception as e:
-        error(f"Error occurred\n {type(e)}")
+        error(f"Unexpected error occurred: {e}")
