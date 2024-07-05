@@ -5,9 +5,9 @@ import rich
 from kubernetes import client, config
 from rich.panel import Panel
 from yaspin import yaspin
-
+from kubernetes.client.exceptions import ApiException
 from .DataUtils import print_df_as_table
-from .MessageUtils import info, error
+from .MessageUtils import info, error, colored
 
 
 def _getApi(context):
@@ -56,7 +56,7 @@ def list_pods(context, namespace, count):
                     "Name": pod.metadata.name,
                     "Status": pod.status.phase,
                     # "Start Time": pod.status.start_time,
-                    "Age": _human_readable_age(pod.metadata.creation_timestamp),
+                    "Age (↑)": _human_readable_age(pod.metadata.creation_timestamp),
                     # TODO: for some issue .metadata.creationTimestamp is different in kubectl and here
                     # "Containers": ", ".join([container.name for container in containers]),
                     "Images": ", ".join(container_images),
@@ -69,7 +69,7 @@ def list_pods(context, namespace, count):
 
 
 def list_namespaces(context):
-    coreApi = _getApi(context)
+    coreApi, currentContext = _getApi(context)
     ret = coreApi.list_namespace()
     rich.print(
         Panel(
@@ -82,28 +82,6 @@ def list_namespaces(context):
             title=f"Namespaces in context: {context}",
         )
     )
-
-
-# def shell_into_pod(namespace, pod_name):
-#     coreApi = _getApi()
-#     info(f"Starting shell into pod {pod_name} in namespace {namespace}")
-#     exec_command = ['/bin/sh']
-#     resp = stream.stream(coreApi.connect_get_namespaced_pod_exec, pod_name, namespace,
-#                          command=exec_command, stderr=True, stdin=True,
-#                          stdout=True, tty=True)
-#     while resp.is_open():
-#         resp.update(timeout=1)
-#         if resp.peek_stdout():
-#             info(resp.read_stdout())
-#         if resp.peek_stderr():
-#             info(resp.read_stderr())
-
-
-def delete_pod(namespace, pod_name):
-    coreApi = _getApi()
-    info(f"Deleting pod {pod_name} in namespace {namespace}")
-    coreApi.delete_namespaced_pod(name=pod_name, namespace=namespace)
-    info(f"Pod {pod_name} deleted")
 
 def list_contexts():
     contexts, active_context = config.list_kube_config_contexts()
@@ -124,3 +102,30 @@ def list_contexts():
             title="Contexts",
         )
     )
+
+
+def delete_pod(context, namespace, pod_name):
+    coreApi, currentContext = _getApi(context)
+    try:
+        info(f"Deleting pod {colored(pod_name,'magenta')} in context: {colored(currentContext,'yellow')}, namespace: {colored(namespace,'yellow')}")
+        coreApi.delete_namespaced_pod(name=pod_name, namespace=namespace)
+        info(f"Pod {colored(pod_name,'green')} deleted")
+    except ApiException as e:
+        error(f"Error while delete pod: {colored(pod_name,'yellow')}: {e.reason}")
+    except Exception as e:
+        error(f"Error occurred\n {type(e)}")
+
+# def shell_into_pod(namespace, pod_name):
+#     coreApi = _getApi()
+#     info(f"Starting shell into pod {pod_name} in namespace {namespace}")
+#     exec_command = ['/bin/sh']
+#     resp = stream.stream(coreApi.connect_get_namespaced_pod_exec, pod_name, namespace,
+#                          command=exec_command, stderr=True, stdin=True,
+#                          stdout=True, tty=True)
+#     while resp.is_open():
+#         resp.update(timeout=1)
+#         if resp.peek_stdout():
+#             info(resp.read_stdout())
+#         if resp.peek_stderr():
+#             info(resp.read_stderr())
+

@@ -3,7 +3,7 @@ from time import sleep
 from ..k8s import k8s, common_k8s_options
 from ...utils.CronUtils import run_progress_barV2, run_progress_bar
 
-from ...utils.K8sUtils import list_namespaces, list_pods, list_contexts
+from ...utils.K8sUtils import list_namespaces, list_pods, list_contexts, delete_pod
 from ...utils.MessageUtils import info, colored
 import click
 
@@ -39,7 +39,7 @@ def show(context, namespace, records, watch):
 
     .. code-block:: shell
 
-        $ hckr k8s show pods --namespace default
+        $ hckr k8s pod show --namespace default
 
     **Command Reference**:
     """
@@ -54,3 +54,24 @@ def show(context, namespace, records, watch):
 
     else:
         list_pods(context, namespace, records)
+
+
+@pod.command()
+@click.argument('pod_name')
+@common_k8s_options
+@click.option("-n", "--namespace", default="default", help="Kubernetes namespace")
+def delete(context, namespace, pod_name):
+    """
+    Delete a pod in given namespace and context (default: current context)
+
+    **Example Usage**:
+
+    .. code-block:: shell
+
+        $ hckr k8s pod delete <POD_NAME> --namespace default
+
+    **Command Reference**:
+    """
+    if context:
+        info(f"Using context: {context}")
+    delete_pod(context, namespace, pod_name)
