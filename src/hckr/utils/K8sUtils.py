@@ -1,13 +1,14 @@
+import logging
 from datetime import datetime, timezone
 
 import pandas as pd
 import rich
-from kubernetes import client, config
+from kubernetes import client, config, stream
 from rich.panel import Panel
 from yaspin import yaspin
 from kubernetes.client.exceptions import ApiException
 from .DataUtils import print_df_as_table
-from .MessageUtils import info, error, colored
+from .MessageUtils import info, error, colored, warning
 
 
 def _getApi(context):
@@ -58,8 +59,8 @@ def list_pods(context, namespace, count):
                     # "Start Time": pod.status.start_time,
                     "Age (↑)": _human_readable_age(pod.metadata.creation_timestamp),
                     # TODO: for some issue .metadata.creationTimestamp is different in kubectl and here
-                    # "Containers": ", ".join([container.name for container in containers]),
                     "Images": ", ".join(container_images),
+                    "Containers": ", ".join([container.name for container in containers]),
                 }
             )
         df = pd.DataFrame(pods_info)
@@ -82,6 +83,7 @@ def list_namespaces(context):
             title=f"Namespaces in context: {context}",
         )
     )
+
 
 def list_contexts():
     contexts, active_context = config.list_kube_config_contexts()
@@ -107,25 +109,60 @@ def list_contexts():
 def delete_pod(context, namespace, pod_name):
     coreApi, currentContext = _getApi(context)
     try:
-        info(f"Deleting pod {colored(pod_name,'magenta')} in context: {colored(currentContext,'yellow')}, namespace: {colored(namespace,'yellow')}")
+        info(
+            f"Deleting pod {colored(pod_name, 'magenta')} in context: {colored(currentContext, 'yellow')}, namespace: {colored(namespace, 'yellow')}")
         coreApi.delete_namespaced_pod(name=pod_name, namespace=namespace)
-        info(f"Pod {colored(pod_name,'green')} deleted")
+        info(f"Pod {colored(pod_name, 'green')} deleted")
     except ApiException as e:
-        error(f"Error while delete pod: {colored(pod_name,'yellow')}: {e.reason}")
+        error(f"Error while delete pod: {colored(pod_name, 'yellow')}: {e.reason}")
     except Exception as e:
         error(f"Error occurred\n {type(e)}")
 
-# def shell_into_pod(namespace, pod_name):
-#     coreApi = _getApi()
-#     info(f"Starting shell into pod {pod_name} in namespace {namespace}")
-#     exec_command = ['/bin/sh']
-#     resp = stream.stream(coreApi.connect_get_namespaced_pod_exec, pod_name, namespace,
-#                          command=exec_command, stderr=True, stdin=True,
-#                          stdout=True, tty=True)
-#     while resp.is_open():
-#         resp.update(timeout=1)
-#         if resp.peek_stdout():
-#             info(resp.read_stdout())
-#         if resp.peek_stderr():
-#             info(resp.read_stderr())
 
+def _getContainerName(pod):
+    container_names = [container.name for container in pod.spec.containers]
+    if container_names:
+        if len(container_names) > 1:
+            error(f"Multiple containers found. Please specify one using --container from the following containers: [yellow]{container_names}[/yellow]")
+            exit(0)
+        else:
+            return container_names[0]
+    else:
+        error(f"No containers found in pod [yellow]{pod}[/yellow]")
+
+
+def shell_into_pod(context, namespace, pod_name, container):
+    coreApi, currentContext = _getApi(context)
+
+    info(
+        f"Starting shell into pod {colored(pod_name, 'magenta')} in context: {colored(currentContext, 'yellow')}, namespace: {colored(namespace, 'yellow')}")
+    pod = coreApi.read_namespaced_pod(name=pod_name, namespace=namespace)
+
+    if not container:
+        logging.info("container is not defined, trying to get container name from pod")
+        container = _getContainerName(pod)
+    try:
+        exec_command = ['/bin/sh']
+        resp = stream.stream(
+            coreApi.connect_get_namespaced_pod_exec,
+            pod_name,
+            namespace,
+            command=exec_command,
+            stderr=True,
+            stdin=True,
+            stdout=True,
+            tty=True,
+            container=container
+        )
+        logging.info(f"k8s stream created, {stream}")
+
+        while resp.is_open():
+            resp.update(timeout=1)
+            if resp.peek_stdout():
+                info(resp.read_stdout())
+            if resp.peek_stderr():
+                info(resp.read_stderr())
+    except ApiException as e:
+        error(f"Error connection to pod: {colored(pod_name, 'yellow')}\n {e.reason}")
+    except Exception as e:
+        error(f"Error occurred\n {type(e)}")

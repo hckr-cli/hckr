@@ -3,7 +3,7 @@ from time import sleep
 from ..k8s import k8s, common_k8s_options
 from ...utils.CronUtils import run_progress_barV2, run_progress_bar
 
-from ...utils.K8sUtils import list_namespaces, list_pods, list_contexts, delete_pod
+from ...utils.K8sUtils import list_namespaces, list_pods, list_contexts, delete_pod, shell_into_pod
 from ...utils.MessageUtils import info, colored
 import click
 
@@ -75,3 +75,25 @@ def delete(context, namespace, pod_name):
     if context:
         info(f"Using context: {context}")
     delete_pod(context, namespace, pod_name)
+
+
+@pod.command()
+@click.argument('pod_name')
+@common_k8s_options
+@click.option("-n", "--namespace", default="default", help="Kubernetes namespace")
+@click.option("--container", help="Kubernetes container to shell, If not provided hckr try to infer from pod")
+def shell(context, namespace, pod_name, container):
+    """
+    Shell into a pod in the given namespace and context (default: current context)
+
+    **Example Usage**:
+
+    .. code-block:: shell
+
+        $ hckr k8s pod shell <POD_NAME> --namespace default
+
+    **Command Reference**:
+    """
+    if context:
+        info(f"Using context: {context}")
+    shell_into_pod(context, namespace, pod_name, container)
