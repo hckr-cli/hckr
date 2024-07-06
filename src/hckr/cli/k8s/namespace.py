@@ -10,6 +10,7 @@ from ...utils.MessageUtils import info
 def namespace():
     pass
 
+
 @common_k8s_options
 @namespace.command()
 def show(context):
@@ -28,4 +29,3 @@ def show(context):
         info(f"Using context: {context}")
     # info("Listing all namespaces")
     list_namespaces(context)
-

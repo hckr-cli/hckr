@@ -27,4 +27,3 @@ def show():
 
     info("Listing all contexts")
     list_contexts()
-

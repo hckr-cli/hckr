@@ -15,7 +15,7 @@ def _getApi(context):
         else:
             config.load_kube_config()
             _, currentContext = config.list_kube_config_contexts()
-            return client.CoreV1Api(), currentContext['name']
+            return client.CoreV1Api(), currentContext["name"]
     except config.ConfigException as e:
         error(f"Error loading kube-config: \n{e}")
         exit(1)
@@ -37,8 +37,6 @@ def _human_readable_age(start_time):
         return f"{minutes}m{seconds}s"
     else:
         return f"{seconds}s"
-
-
 
 
 def list_namespaces(context):
@@ -64,8 +62,11 @@ def list_contexts():
         return
 
     context_names = [
-        f"[green]{context['name']}[/green] <- [magenta]active[/magenta]" if context['name'] == active_context[
-            'name'] else context['name']
+        (
+            f"[green]{context['name']}[/green] <- [magenta]active[/magenta]"
+            if context["name"] == active_context["name"]
+            else context["name"]
+        )
         for context in contexts
     ]
 
@@ -76,9 +77,3 @@ def list_contexts():
             title="Contexts",
         )
     )
-
-
-
-
-
-

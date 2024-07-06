@@ -45,7 +45,9 @@ def show(context, namespace, records, watch):
         info(f"Using context: {context}")
     info(f"Listing all Pods in namespace: {namespace}")
     if watch:
-        info(f"Watch {colored('enabled', 'yellow')}, running this command every {watch} seconds")
+        info(
+            f"Watch {colored('enabled', 'yellow')}, running this command every {watch} seconds"
+        )
         while True:
             list_pods(context, namespace, records)
             run_progress_barV2(int(watch))
@@ -55,7 +57,7 @@ def show(context, namespace, records, watch):
 
 
 @pod.command()
-@click.argument('pod_name')
+@click.argument("pod_name")
 @common_k8s_options
 @click.option("-n", "--namespace", default="default", help="Kubernetes namespace")
 def delete(context, namespace, pod_name):
@@ -76,10 +78,13 @@ def delete(context, namespace, pod_name):
 
 
 @pod.command()
-@click.argument('pod_name')
+@click.argument("pod_name")
 @common_k8s_options
 @click.option("-n", "--namespace", default="default", help="Kubernetes namespace")
-@click.option("--container", help="Kubernetes container to shell, If not provided hckr try to infer from pod")
+@click.option(
+    "--container",
+    help="Kubernetes container to shell, If not provided hckr try to infer from pod",
+)
 def shell(context, namespace, pod_name, container):
     """
     Shell into a pod in the given namespace and context (default: current context)
@@ -98,11 +103,16 @@ def shell(context, namespace, pod_name, container):
 
 
 @pod.command()
-@click.argument('pod_name')
+@click.argument("pod_name")
 @common_k8s_options
 @click.option("-n", "--namespace", default="default", help="Kubernetes namespace")
-@click.option("--container", help="Kubernetes container to check logs, If not provided hckr try to infer from pod")
-@click.option("-w","--watch", default=False, is_flag=True, help="Whether to watch/follow logs")
+@click.option(
+    "--container",
+    help="Kubernetes container to check logs, If not provided hckr try to infer from pod",
+)
+@click.option(
+    "-w", "--watch", default=False, is_flag=True, help="Whether to watch/follow logs"
+)
 def logs(context, namespace, pod_name, container, watch):
     """
     Get logs from a pod in the given namespace and context (default: current context)
