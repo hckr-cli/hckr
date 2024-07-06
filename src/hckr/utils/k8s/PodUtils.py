@@ -128,11 +128,18 @@ def shell_into_pod(context, namespace, pod_name, container):
 
 
 def get_pod_logs(context, namespace, pod_name, container, follow):
-    tail_lines = 10
     coreApi, currentContext = _getApi(context)
+    tail_lines = 10
+
+    info(f"Getting logs from pod {colored(pod_name, 'magenta')}, container: {container} in context: {colored(currentContext, 'yellow')}, namespace: {colored(namespace, 'yellow')}")
+    if follow:
+        info("watch is enabled")
+    else:
+        info("watch is disabled")
     if not container:
         logging.info("container is not defined, trying to get container name from pod")
         container = _getContainerName(coreApi, namespace, pod_name)
+        logging.info(f"container is {container}")
 
     try:
         # Set up streaming of logs if follow is True

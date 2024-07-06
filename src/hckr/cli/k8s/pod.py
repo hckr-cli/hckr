@@ -102,7 +102,7 @@ def shell(context, namespace, pod_name, container):
 @common_k8s_options
 @click.option("-n", "--namespace", default="default", help="Kubernetes namespace")
 @click.option("--container", help="Kubernetes container to check logs, If not provided hckr try to infer from pod")
-@click.option("-w","--watch", default=True, is_flag=True, help="Whether to watch/follow logs")
+@click.option("-w","--watch", default=False, is_flag=True, help="Whether to watch/follow logs")
 def logs(context, namespace, pod_name, container, watch):
     """
     Get logs from a pod in the given namespace and context (default: current context)
