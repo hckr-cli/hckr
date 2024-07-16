@@ -41,6 +41,13 @@ Welcome to hckr's documentation!
 
    info
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Kubernetes
+   :hidden:
+
+   k8s/index
+
 
 .. click:: hckr.cli:cli
    :prog: hckr
