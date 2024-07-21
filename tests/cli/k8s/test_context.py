@@ -27,6 +27,6 @@ class TestK8sContextCLI(unittest.TestCase):
         result = runner.invoke(show)
         print(result.output)
         # self.assertEqual(result.exit_code, 0)
-        assert"Listing all contexts" in result.output
-        assert"dev <- active" in  result.output
-        assert"prod" in result.output
+        assert "Listing all contexts" in result.output
+        assert "dev <- active" in result.output
+        assert "prod" in result.output

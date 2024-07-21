@@ -30,6 +30,6 @@ class TestK8sNamespaceCLI(unittest.TestCase):
         mock_api.list_namespace.return_value = []
         mock_core_v1_api.return_value = (mock_api, "default")
 
-        result = runner.invoke(show, ['--context', 'mycontext'])
+        result = runner.invoke(show, ["--context", "mycontext"])
         print(result.output)
         assert "Using given context: mycontext" in result.output
