@@ -23,3 +23,6 @@ class TestK8sPodCLI(unittest.TestCase):
         result = runner.invoke(show)
         print(result.output)
         assert "Listing all Pods in namespace: default" in result.output
+
+
+# TODO: add tests for delete, logs etc.
