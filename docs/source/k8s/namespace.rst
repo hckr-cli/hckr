@@ -5,5 +5,5 @@
 
 
 .. click:: hckr.cli.k8s.namespace:namespace
-   :prog: hckr crypto namespace
+   :prog: hckr k8s namespace
    :nested: full

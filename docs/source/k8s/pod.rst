@@ -5,5 +5,5 @@
 
 
 .. click:: hckr.cli.k8s.pod:pod
-   :prog: hckr crypto pod
+   :prog: hckr k8s pod
    :nested: full
