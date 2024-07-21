@@ -21,7 +21,7 @@ sync-docs:
 
 # Sync only happens when we change something in deps array
 # to simulate we can add a dependency 'cowsay' to a env and sync
-sync : sync-default sync-dev sync-docs hatch-docs-deps-sync lint
+sync : sync-default sync-dev sync-docs hatch-docs-deps-sync fix
 
 # install cli in local for testing, change code an it will be automatically reflected in UI
 install:
@@ -85,3 +85,7 @@ docs-build:
 docs:
 	hatch run docs:docs
 
+# this if for local testing only
+run:
+	which hckr
+	hckr
