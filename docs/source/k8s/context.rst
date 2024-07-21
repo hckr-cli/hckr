@@ -5,5 +5,5 @@
 
 
 .. click:: hckr.cli.k8s.context:context
-   :prog: hckr crypto context
+   :prog: hckr k8s context
    :nested: full

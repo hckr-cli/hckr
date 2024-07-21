@@ -7,6 +7,7 @@ from rich.panel import Panel
 
 from .MessageUtils import colored, success, warning
 from ..__about__ import __version__
+import platform
 
 
 def check_latest_version():
@@ -40,9 +41,18 @@ def check_update(show_no_update=False):
             Panel(
                 "pip install --upgrade hckr",
                 expand=False,
-                title="Run to upgrade",
+                title="Run to upgrade using Pip",
             )
         )
+        # only show this on MacOs
+        if platform.system() == 'Darwin':
+            rich.print(
+                Panel(
+                    "brew update && brew upgrade hckr",
+                    expand=False,
+                    title="Run to upgrade using Homebrew",
+                )
+            )
     elif show_no_update:
         success(
             f"Success: You are using latest version {colored(__version__, 'magenta')}"
