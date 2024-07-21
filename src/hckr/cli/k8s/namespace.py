@@ -3,7 +3,7 @@ from ...utils.k8s.K8sUtils import list_namespaces
 
 
 @k8s.group(
-    help="List Kubernetes resources",
+    help="Kubernetes namespace related commands ",
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 def namespace():

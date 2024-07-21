@@ -95,9 +95,9 @@ crypto.add_command(fernet)
 
 # k8s
 cli.add_command(k8s)
-cli.add_command(pod)
-cli.add_command(namespace)
-cli.add_command(context)
+k8s.add_command(pod)
+k8s.add_command(namespace)
+k8s.add_command(context)
 
 # implementing this so that if the user just uses `hckr` we show them something
 if __name__ == "__main__":

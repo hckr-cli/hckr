@@ -4,7 +4,7 @@ from ...utils.k8s.K8sUtils import list_contexts
 
 
 @k8s.group(
-    help="Kubernetes pod related commands ",
+    help="Kubernetes context related commands ",
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 def context():
