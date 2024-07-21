@@ -45,7 +45,7 @@ def check_update(show_no_update=False):
             )
         )
         # only show this on MacOs
-        if platform.system() == 'Darwin':
+        if platform.system() == "Darwin":
             rich.print(
                 Panel(
                     "brew update && brew upgrade hckr",
