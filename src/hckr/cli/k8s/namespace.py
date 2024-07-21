@@ -25,7 +25,5 @@ def show(context):
 
     **Command Reference**:
     """
-    if context:
-        info(f"Using context: {context}")
     # info("Listing all namespaces")
     list_namespaces(context)

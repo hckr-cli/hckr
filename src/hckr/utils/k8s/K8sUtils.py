@@ -4,7 +4,7 @@ import rich
 from kubernetes import client, config
 from rich.panel import Panel
 
-from ..MessageUtils import error
+from ..MessageUtils import error, info
 
 
 def _getApi(context):
@@ -41,6 +41,11 @@ def _human_readable_age(start_time):
 
 def list_namespaces(context):
     coreApi, currentContext = _getApi(context)
+    if context:
+        info(f"Using given context: {context}")
+    else:
+        info(f"Using default context: {currentContext}")
+
     ret = coreApi.list_namespace()
     rich.print(
         Panel(
@@ -50,7 +55,7 @@ def list_namespaces(context):
                 else "NOTHING FOUND"
             ),
             expand=True,
-            title=f"Namespaces in context: {context}",
+            title=f"Namespaces in context: {currentContext}",
         )
     )
 
