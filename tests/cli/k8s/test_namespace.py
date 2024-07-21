@@ -2,9 +2,7 @@ import unittest
 from pathlib import Path  # type: ignore
 from unittest.mock import patch, MagicMock  # type: ignore
 
-import pyarrow as pa  # type: ignore
 from click.testing import CliRunner
-from pyarrow import parquet as pq  # type: ignore
 
 from hckr.cli.k8s.namespace import show
 

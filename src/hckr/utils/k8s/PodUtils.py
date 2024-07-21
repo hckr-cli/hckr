@@ -5,9 +5,9 @@ import threading
 
 import pandas as pd
 import rich
-from kubernetes import stream, watch
-from kubernetes.client.exceptions import ApiException
-from yaspin import yaspin
+from kubernetes import stream, watch  # type: ignore
+from kubernetes.client.exceptions import ApiException  # type: ignore
+from yaspin import yaspin  # type: ignore
 
 from hckr.utils.DataUtils import print_df_as_table
 from hckr.utils.MessageUtils import error, info, colored, warning, success

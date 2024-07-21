@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 
 import rich
-from kubernetes import client, config
+from kubernetes import client, config  # type: ignore
 from rich.panel import Panel
 
 from ..MessageUtils import error, info

@@ -1,6 +1,5 @@
 from ..k8s import k8s, common_k8s_options
 from ...utils.k8s.K8sUtils import list_namespaces
-from ...utils.MessageUtils import info
 
 
 @k8s.group(
