@@ -1,11 +1,9 @@
 import unittest
-from datetime import datetime, timezone
 from pathlib import Path  # type: ignore
 from unittest.mock import patch, MagicMock  # type: ignore
 
 import pyarrow as pa  # type: ignore
 from click.testing import CliRunner
-from kubernetes.client.models import V1Container
 from pyarrow import parquet as pq  # type: ignore
 
 from hckr.cli.k8s.context import show
@@ -29,6 +27,6 @@ class TestK8sContextCLI(unittest.TestCase):
         result = runner.invoke(show)
         print(result.output)
         # self.assertEqual(result.exit_code, 0)
-        self.assertIn("Listing all contexts", result.output)
-        self.assertIn("dev <- active", result.output)
-        self.assertIn("prod", result.output)
+        assert"Listing all contexts" in result.output
+        assert"dev <- active" in  result.output
+        assert"prod" in result.output

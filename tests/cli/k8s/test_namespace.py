@@ -1,11 +1,9 @@
 import unittest
-from datetime import datetime, timezone
 from pathlib import Path  # type: ignore
 from unittest.mock import patch, MagicMock  # type: ignore
 
 import pyarrow as pa  # type: ignore
 from click.testing import CliRunner
-from kubernetes.client.models import V1Container
 from pyarrow import parquet as pq  # type: ignore
 
 from hckr.cli.k8s.namespace import show
