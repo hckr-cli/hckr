@@ -7,7 +7,7 @@
 :description: Shibuya is a modern, responsive, customizable theme for Sphinx.
 
 👋 Hi, welcome to hckr
-=====================
+======================
 
 .. rst-class:: lead
 
@@ -22,54 +22,15 @@
 
 .. toctree::
    :maxdepth: 2
+   :caption: Getting started
    :hidden:
 
    setup/index
 
 .. toctree::
    :maxdepth: 2
+   :caption: Commands
    :hidden:
 
    commands/index
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Hash
-   :hidden:
-
-   hash
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Data
-   :hidden:
-
-   data
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Cron
-   :hidden:
-
-   cron
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Crypto
-   :hidden:
-
-   crypto/index
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Info
-   :hidden:
-
-   info
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Kubernetes
-   :hidden:
-
-   k8s/index
