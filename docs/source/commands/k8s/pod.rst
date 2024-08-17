@@ -4,7 +4,6 @@
    contain the root `toctree` directive.
 
 
-.. toctree::
-    :hidden:
-
-    fernet
+.. click:: hckr.cli.k8s.pod:pod
+   :prog: hckr k8s pod
+   :nested: full

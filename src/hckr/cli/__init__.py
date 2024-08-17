@@ -2,19 +2,23 @@
 #
 # SPDX-License-Identifier: MIT
 import logging
-import art  # type: ignore
+
 import click
 from click_repl import register_repl  # type: ignore
 
-from hckr.cli.crypto.fernet import fernet
-from hckr.cli.data import data
-from hckr.cli.info import info
-from hckr.utils.CliUtils import check_update
-from hckr.utils.MessageUtils import warning
+from hckr.cli.k8s.context import context
+from hckr.cli.k8s.namespace import namespace
+from hckr.cli.k8s.pod import pod
+from .crypto.fernet import fernet
+from .data import data
+from .info import info
+from .k8s import k8s
 from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.crypto import crypto
 from ..cli.hash import hash
+from ..utils.CliUtils import check_update
+from ..utils.MessageUtils import warning
 
 LOGGING_LEVELS = {
     0: logging.NOTSET,
@@ -67,7 +71,6 @@ def cli(
         )
     _info.verbose = verbose
     if ctx.invoked_subcommand is None:
-        art.tprint("hckr")
         click.secho("hckr ", fg="magenta", bold=True, nl=False)
         click.secho(f"v{__version__}  ", fg="blue", bold=True, nl=False)
         click.secho(
@@ -90,6 +93,12 @@ cli.add_command(data)
 cli.add_command(crypto)
 crypto.add_command(fernet)
 
-# implementing this so that if user just uses `hckr` we show them something
+# k8s
+cli.add_command(k8s)
+k8s.add_command(pod)
+k8s.add_command(namespace)
+k8s.add_command(context)
+
+# implementing this so that if the user just uses `hckr` we show them something
 if __name__ == "__main__":
     cli()

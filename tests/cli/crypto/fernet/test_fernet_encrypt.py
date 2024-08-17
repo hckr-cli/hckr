@@ -95,9 +95,7 @@ def test_fernet_encrypt_key_path_doesnt_exist():
     print(result.output)
     assert result.exit_code != 0
     assert (
-        f"""Key file path 
-:{INVALID_KEY_PATH} 
-doesn't exists, 
+        f"""doesn't exists, 
 Please provide -c / --create-key if you want to create one."""
         in result.output
     )

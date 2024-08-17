@@ -22,6 +22,8 @@ Commands:
   crypto  crypto commands
   data    data related commands
   hash    hash commands
-  info    info commands"""
+  info    info commands
+  k8s     Kubernetes commands
+  repl    Start an interactive shell"""
         in result.output
     )
