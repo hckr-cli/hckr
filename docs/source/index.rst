@@ -15,7 +15,7 @@
 
 .. container:: buttons
 
-    `Docs </setup/>`_
+    :ref:`Docs <installation>`
     `GitHub <https://github.com/hckr-cli/hckr>`_
     `Pypi <https://pypi.org/project/hckr/>`_
     `Join our Slack <https://join.slack.com/t/hckr-cli/shared_invite/zt-2kpwz39dw-CIVDcv1nGhEnQNLumJxJDQ>`_
