@@ -19,5 +19,5 @@ def get_ip_addresses(all):
             if all or "127." not in sockaddr[0]:  # Skip loopback addresses for IPv4
                 ip_addresses["IPv4"].append(sockaddr[0])
         elif family == socket.AF_INET6 and (all or not sockaddr[0].startswith("::1")):
-                ip_addresses["IPv6"].append(sockaddr[0])
+            ip_addresses["IPv6"].append(sockaddr[0])
     return set(ip_addresses["IPv4"]), set(ip_addresses["IPv6"])
