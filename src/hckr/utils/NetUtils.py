@@ -12,15 +12,12 @@ def list_servers(st):
 
 def get_ip_addresses(all):
     ip_addresses = {"IPv4": [], "IPv6": []}
-    for family, type, proto, canonname, sockaddr in socket.getaddrinfo(
+    for family, _type, _proto, _canonname, sockaddr in socket.getaddrinfo(
         socket.gethostname(), None
     ):
         if family == socket.AF_INET:  # IPv4
             if all or "127." not in sockaddr[0]:  # Skip loopback addresses for IPv4
                 ip_addresses["IPv4"].append(sockaddr[0])
-        elif family == socket.AF_INET6:  # IPv6
-            if all or not sockaddr[0].startswith(
-                "::1"
-            ):  # Skip loopback addresses for IPv6
+        elif family == socket.AF_INET6 and (all or not sockaddr[0].startswith("::1")):
                 ip_addresses["IPv6"].append(sockaddr[0])
     return set(ip_addresses["IPv4"]), set(ip_addresses["IPv6"])
