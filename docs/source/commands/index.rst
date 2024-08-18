@@ -10,14 +10,14 @@ hckr
    :caption: Cron
    :hidden:
 
-   cron
+   cron/index
 
 .. toctree::
    :maxdepth: 2
    :caption: Crypto
    :hidden:
 
-   crypto/fernet
+   crypto/index
 
 
 .. toctree::
@@ -25,20 +25,14 @@ hckr
    :caption: Data
    :hidden:
 
-   data
+   data/index
+
 .. toctree::
    :maxdepth: 2
    :caption: Hash
    :hidden:
 
-   hash
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Info
-   :hidden:
-
-   info
+   hash/index
 
 
 .. toctree::
@@ -46,7 +40,11 @@ hckr
    :caption: Kubernetes
    :hidden:
 
-   k8s/context
-   k8s/namespace
-   k8s/pod
+   k8s/index
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Info
+   :hidden:
+
+   others/index
