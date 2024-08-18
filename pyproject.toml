@@ -42,7 +42,8 @@ dependencies = [
 #    "tomli",
     "packaging",
     "kubernetes",
-    "yaspin"
+    "yaspin",
+    "speedtest-cli"
 ]
 
 [project.urls]

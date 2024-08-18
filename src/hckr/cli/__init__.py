@@ -9,6 +9,7 @@ from click_repl import register_repl  # type: ignore
 from hckr.cli.k8s.context import context
 from hckr.cli.k8s.namespace import namespace
 from hckr.cli.k8s.pod import pod
+from .net import net
 from .crypto.fernet import fernet
 from .data import data
 from .info import info
@@ -98,6 +99,9 @@ cli.add_command(k8s)
 k8s.add_command(pod)
 k8s.add_command(namespace)
 k8s.add_command(context)
+
+# NETWORK command
+cli.add_command(net)
 
 # implementing this so that if the user just uses `hckr` we show them something
 if __name__ == "__main__":
