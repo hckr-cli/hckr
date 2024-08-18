@@ -38,9 +38,9 @@ def speed():
         servers, current_server = NetUtils.list_servers(st)
         servers_details = [
             (
-                f"🔗[green]{server['id']} - {server['sponsor']}, {server['name']}[/green] <- [magenta]currently using[/magenta]"
+                f"🌐 [green]{server['id']} - {server['sponsor']}, {server['name']}[/green] <- [magenta]currently using[/magenta]"
                 if server["id"] == current_server["id"]
-                else f"🗄{server['id']} - {server['sponsor']}, {server['name']}"
+                else f"🌐 {server['id']} - {server['sponsor']}, {server['name']}"
             )
             for server in servers
         ]
@@ -48,7 +48,7 @@ def speed():
             Panel(
                 "\n".join(servers_details) if servers_details else "NOTHING FOUND",
                 expand=False,
-                title="Servers",
+                title="Speedtest.net Servers",
             )
         )
         ping = st.results.ping
@@ -65,9 +65,9 @@ def speed():
             rich.print(
                 Panel(
                     # [magenta]currently using[/magenta]
-                    f"[blue]🛜 Ping:[/blue] [green]{ping:.2f} ms[/green]"
-                    f"\n[yellow]⬇️ Download Speed:[/yellow] [green]{download_speed:.2f} Mbps[/green]"
-                    f"\n[magenta]⬆️ Upload Speed:[/magenta] [green]{upload_speed:.2f} Mbps[/green]",
+                    f"[blue]⏱ Ping:[/blue] [green]{ping:.2f} ms[/green]"
+                    f"\n[yellow]⬇ Download Speed:[/yellow] [green]{download_speed:.2f} Mbps[/green]"
+                    f"\n[magenta]⬆ Upload Speed:[/magenta] [green]{upload_speed:.2f} Mbps[/green]",
                     expand=False,
                     title="Speed test results",
                 )
