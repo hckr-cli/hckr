@@ -24,6 +24,7 @@ Commands:
   hash    hash commands
   info    info commands
   k8s     Kubernetes commands
+  net     network commands
   repl    Start an interactive shell"""
         in result.output
     )
