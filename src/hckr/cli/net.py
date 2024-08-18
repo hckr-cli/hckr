@@ -4,7 +4,8 @@ import speedtest
 from rich.panel import Panel
 from yaspin import yaspin
 
-from hckr.utils import NetUtils
+from hckr.utils import NetUtils, MessageUtils
+from hckr.utils.NetUtils import get_ip_addresses
 
 
 @click.group(
@@ -13,15 +14,6 @@ from hckr.utils import NetUtils
 )
 def net():
     pass
-
-
-def list_servers():
-    st = speedtest.Speedtest()
-    st.get_servers()  # Fetch the server list
-    servers = st.servers
-    for _, server_list in servers.items():
-        for server in server_list:
-            print(f"Server ID: {server['id']} - {server['sponsor']} in {server['name']}, {server['country']}")
 
 
 # NOTE - keep command() empty to provide docstr
@@ -61,10 +53,14 @@ def speed():
         )
         ping = st.results.ping
         with yaspin(
-                text="Checking internet connection speeds...", color="green", timer=True
+            text="Checking internet connection speeds...", color="green", timer=True
         ) as spinner:
-            download_speed = st.download(threads=None) / 1_000_000  # Convert from bits/s to Mbps
-            upload_speed = st.upload(threads=None) / 1_000_000  # Convert from bits/s to Mbps
+            download_speed = (
+                st.download(threads=None) / 1_000_000
+            )  # Convert from bits/s to Mbps
+            upload_speed = (
+                st.upload(threads=None) / 1_000_000
+            )  # Convert from bits/s to Mbps
             click.echo("\n")
             rich.print(
                 Panel(
@@ -78,8 +74,58 @@ def speed():
             )
             spinner.ok("✔")
     except speedtest.ConfigRetrievalError as e:
-        click.echo(click.style(f"Failed to retrieve speedtest configuration. {e}", fg="red"))
+        click.echo(
+            click.style(f"Failed to retrieve speedtest configuration. {e}", fg="red")
+        )
     except speedtest.SpeedtestBestServerFailure as e:
-        click.echo(click.style(f"Failed to find best server for speedtest. {e}", fg="red"))
+        click.echo(
+            click.style(f"Failed to find best server for speedtest. {e}", fg="red")
+        )
     except speedtest.SpeedtestException as e:
         click.echo(click.style(f"A speedtest error occurred. {e}", fg="red"))
+
+
+@net.command()
+@click.option(
+    "-a",
+    "--all",
+    default=False,
+    is_flag=True,
+    help="Whether to show loopback addresses (default: False)",
+)
+def ips(all):
+    """
+    find your internet ip addresses.
+
+
+    **Example Usage**:
+
+    .. code-block:: shell
+
+        $ hckr net ips
+
+    **Command Reference**:
+    """
+    try:
+        MessageUtils.success("Fetching IP addresses...")
+        if all:
+            MessageUtils.info(
+                "-a/--all is passed listing down all IP addresses including loopback addresses"
+            )
+        ipV4s, ipV6s = get_ip_addresses(all)
+        rich.print(
+            Panel(
+                "\n".join(ipV4s) if ipV4s else "No IpV4 Address FOUND",
+                expand=True,
+                title="IpV4 Addresses",
+            )
+        )
+        rich.print(
+            Panel(
+                "\n".join(ipV6s) if ipV4s else "No IpV6 Address FOUND",
+                expand=True,
+                title="IpV6 Addresses",
+            )
+        )
+    except Exception as e:
+        MessageUtils.error(f"Some error occured while fetching IP addresses: {e}")

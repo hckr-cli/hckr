@@ -44,6 +44,13 @@ hckr
 
 .. toctree::
    :maxdepth: 2
+   :caption: Network
+   :hidden:
+
+   net/index
+
+.. toctree::
+   :maxdepth: 2
    :caption: Info
    :hidden:
 
