@@ -1,8 +1,8 @@
 import click
 import rich
-import speedtest
+import speedtest  # type: ignore
 from rich.panel import Panel
-from yaspin import yaspin
+from yaspin import yaspin  # type: ignore
 
 from hckr.utils import NetUtils, MessageUtils
 from hckr.utils.NetUtils import get_ip_addresses
