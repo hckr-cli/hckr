@@ -6,7 +6,7 @@ from hckr.cli.net import speed, ips
 def test_net_speed():
     runner = CliRunner()
     result = runner.invoke(speed)
-    print(result.output)
+    # print(result.output)
     assert "Servers" in result.output and "currently using" in result.output
     assert (
         "Speed test results" in result.output
