@@ -2,18 +2,22 @@
 #
 # SPDX-License-Identifier: MIT
 import logging
+import os
+from pathlib import Path
 
 import click
+import click_config_file
+import yaml
 from click_repl import register_repl  # type: ignore
 
 from hckr.cli.k8s.context import context
 from hckr.cli.k8s.namespace import namespace
 from hckr.cli.k8s.pod import pod
-from .net import net
 from .crypto.fernet import fernet
 from .data import data
 from .info import info
 from .k8s import k8s
+from .net import net
 from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.crypto import crypto
@@ -42,11 +46,44 @@ class Info:
 # pass_info is a decorator for functions that pass 'Info' objects.
 pass_info = click.make_pass_decorator(Info, ensure=True)
 
+# Define the default configuration file path
+config_path = Path.home() / ".hckrcfg"
+
+
+# Ensure the configuration file exists
+def ensure_config_file(config_path: Path):
+    """Ensure the configuration file and its directory exist."""
+    if not config_path.exists():
+        config_path.parent.mkdir(parents=True, exist_ok=True)  # Create the directory if it doesn't exist
+        config_path.touch(exist_ok=True)  # Create the file if it doesn't exist
+        # Optionally, write some default configuration
+        default_config = {
+            'hckr': {
+                'version': f'hckr {__version__}'
+            },
+            'verbose': 3
+        }
+        with config_path.open('w') as config_file:
+            yaml.dump(default_config, config_file)
+
+
+ensure_config_file(config_path)
+
+
+def yaml_loader(config_file, command):
+    """Load YAML configuration file."""
+    print(config_file, command)
+    with open(config_file, 'r') as yaml_file:
+        return yaml.safe_load(yaml_file)[command]
+
 
 @click.group(
     context_settings={"help_option_names": ["-h", "--help"]},
     invoke_without_command=True,
 )
+@click_config_file.configuration_option(provider=yaml_loader, implicit=True,
+                                        # cmd_name=str(config_path),
+                                        config_file_name=str(config_path), default=config_path)
 @click.option(
     "--verbose",
     "-v",
@@ -57,9 +94,9 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
 @click.pass_context
 @pass_info
 def cli(
-    _info: Info,
-    ctx: click.Context,
-    verbose: int,
+        _info: Info,
+        ctx: click.Context,
+        verbose: int,
 ):
     if verbose > 0:
         logging.basicConfig(

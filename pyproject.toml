@@ -39,11 +39,13 @@ dependencies = [
     "pyarrow", # For saving data in Parquet format.
     "fastavro", # For handling Avro file format.
     "requests",
-#    "tomli",
     "packaging",
-    "kubernetes",
+    "kubernetes", # for k8s commands
     "yaspin",
-    "speedtest-cli"
+    "speedtest-cli", # for net speed command
+    # YAML config support
+    "click-config-file",
+    "pyyaml",
 ]
 
 [project.urls]
