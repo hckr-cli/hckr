@@ -2,14 +2,11 @@
 #
 # SPDX-License-Identifier: MIT
 import logging
-import os
-from pathlib import Path
 
 import click
-import click_config_file
-import yaml
 from click_repl import register_repl  # type: ignore
 
+from hckr.cli.configure import configure
 from hckr.cli.k8s.context import context
 from hckr.cli.k8s.namespace import namespace
 from hckr.cli.k8s.pod import pod
@@ -46,44 +43,11 @@ class Info:
 # pass_info is a decorator for functions that pass 'Info' objects.
 pass_info = click.make_pass_decorator(Info, ensure=True)
 
-# Define the default configuration file path
-config_path = Path.home() / ".hckrcfg"
-
-
-# Ensure the configuration file exists
-def ensure_config_file(config_path: Path):
-    """Ensure the configuration file and its directory exist."""
-    if not config_path.exists():
-        config_path.parent.mkdir(parents=True, exist_ok=True)  # Create the directory if it doesn't exist
-        config_path.touch(exist_ok=True)  # Create the file if it doesn't exist
-        # Optionally, write some default configuration
-        default_config = {
-            'hckr': {
-                'version': f'hckr {__version__}'
-            },
-            'verbose': 3
-        }
-        with config_path.open('w') as config_file:
-            yaml.dump(default_config, config_file)
-
-
-ensure_config_file(config_path)
-
-
-def yaml_loader(config_file, command):
-    """Load YAML configuration file."""
-    print(config_file, command)
-    with open(config_file, 'r') as yaml_file:
-        return yaml.safe_load(yaml_file)[command]
-
 
 @click.group(
     context_settings={"help_option_names": ["-h", "--help"]},
     invoke_without_command=True,
 )
-@click_config_file.configuration_option(provider=yaml_loader, implicit=True,
-                                        # cmd_name=str(config_path),
-                                        config_file_name=str(config_path), default=config_path)
 @click.option(
     "--verbose",
     "-v",
@@ -139,6 +103,9 @@ k8s.add_command(context)
 
 # NETWORK command
 cli.add_command(net)
+
+# config
+cli.add_command(configure)
 
 # implementing this so that if the user just uses `hckr` we show them something
 if __name__ == "__main__":

@@ -6,8 +6,8 @@ import rich
 from cron_descriptor import get_description  # type: ignore
 from rich.panel import Panel
 
-from ..utils import ConfigUtils, MessageUtils
-from ..utils.ConfigUtils import load_config, config_path, ensure_config_file, DEFAULT_CONFIG, configMessage
+from ..utils.ConfigUtils import load_config, config_path, ensure_config_file, DEFAULT_CONFIG, configMessage, \
+    list_config, set_config_value, get_config_value
 
 
 @click.group(
@@ -44,7 +44,7 @@ def set(config, key, value):
         $ cli_tool configure set database_host 127.0.0.1
     """
     configMessage(config)
-    ConfigUtils.set_config_value(config, key, value)
+    set_config_value(config, key, value)
     rich.print(
         Panel(
             f"[{config}] {key} <- {value}",
@@ -53,6 +53,7 @@ def set(config, key, value):
         )
     )
 
+
 @configure.command()
 @common_config_options
 @click.argument('key')
@@ -60,7 +61,7 @@ def get(config, key):
     """Get a configuration value."""
     configMessage(config)
     try:
-        value = ConfigUtils.get_config_value(config, key)
+        value = get_config_value(config, key)
         rich.print(
             Panel(
                 f"[{config}] {key} = {value}",
@@ -80,7 +81,30 @@ def get(config, key):
 
 @configure.command()
 @common_config_options
-def show(config):
+@click.option(
+    "-a",
+    "--all",
+    default=False,
+    is_flag=True,
+    help="Whether to show all configs (default: False)"
+)
+def show(config, all):
     """List configuration values."""
-    configMessage(config)
-    ConfigUtils.list_config(config)
+    list_config(config, all)
+
+
+@configure.command('db')
+@click.option('--host', prompt=True, help='Database host')
+@click.option('--port', prompt=True, help='Database port')
+@click.option('--user', prompt=True, help='Database user')
+@click.option('--password', prompt=True, hide_input=True, confirmation_prompt=True, help='Database password')
+@click.option('--dbname', prompt=True, help='Database name')
+@click.pass_context
+def configure_db(ctx, host, port, user, password, dbname):
+    """Configure database credentials."""
+    set_config_value('database', 'host', host)
+    set_config_value('database', 'port', port)
+    set_config_value('database', 'user', user)
+    set_config_value('database', 'password', password)
+    set_config_value('database', 'dbname', dbname)
+    click.echo("Database configuration saved successfully.")

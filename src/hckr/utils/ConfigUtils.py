@@ -1,6 +1,7 @@
 import configparser
 import logging
 from pathlib import Path
+from readline import set_completer
 
 import click
 import rich
@@ -11,7 +12,7 @@ from ..__about__ import __version__
 
 # Define the default configuration file path, this can't be changed, although user can have multile instances using --config
 config_path = Path.home() / ".hckrcfg"
-DEFAULT_CONFIG = "HCKR"
+DEFAULT_CONFIG = "DEFAULT"
 
 
 def load_config():
@@ -95,7 +96,35 @@ def get_config_value(section, key) -> str:
     return config.get(section, key)
 
 
-def list_config(section):
+def show_config(config, section):
+    if section == DEFAULT_CONFIG:
+        rich.print(
+            Panel(
+                "\n".join([f"{key} = {value}" for key, value in config.items('DEFAULT')]) if config.items(
+                    'DEFAULT') else "NOTHING FOUND",
+                expand=True,
+                title=f"\[DEFAULT]",
+            )
+        )
+    elif config.has_section(section):
+        rich.print(
+            Panel(
+                "\n".join([f"{key} = {value}" for key, value in config.items(section)]) if config.items(
+                    section) else "NOTHING FOUND",
+                expand=True,
+                title=f"\[{section}]",
+            )
+        )
+    else:
+        rich.print(
+            Panel(
+                f"config {section} not found",
+                expand=True,
+                title="Error",
+            )
+        )
+
+def list_config(section, all=False):
     """
     List Config
 
@@ -105,17 +134,14 @@ def list_config(section):
     :return: None
     """
     config = load_config()
-    if config.has_section(section):
-        rich.print(
-            Panel(
-                "\n".join([f"{key} = {value}" for key, value in config.items(section)]) if config.items(
-                    section) else "NOTHING FOUND",
-                expand=True,
-                title="HCKR",
-            )
-        )
+    if all:
+        MessageUtils.info("Listing all config")
+        show_config(config, DEFAULT_CONFIG)
+        for section in config.sections():
+            show_config(config, section)
     else:
-        MessageUtils.warning(f"Config '{section}' not found.")
+        configMessage(section)
+        show_config(config, section)
 
 
 def configMessage(config):
@@ -123,3 +149,24 @@ def configMessage(config):
         MessageUtils.info(f"Using default config: [magenta]{DEFAULT_CONFIG}")
     else:
         MessageUtils.info(f"Using config: [magenta]{config}")
+
+
+# Function to retrieve database credentials
+def get_db_creds(section):
+    config = load_config()
+    try:
+        host = config.get(section, 'host')
+        port = config.get(section, 'port')
+        user = config.get(section, 'user')
+        password = config.get(section, 'password')
+        dbname = config.get(section, 'dbname')
+        return {
+            'host': host,
+            'port': port,
+            'user': user,
+            'password': password,
+            'dbname': dbname
+        }
+    except (configparser.NoSectionError, configparser.NoOptionError) as e:
+        click.echo(f"Error: {e}", err=True)
+        return None
