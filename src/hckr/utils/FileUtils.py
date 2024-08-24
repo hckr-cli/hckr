@@ -2,6 +2,8 @@ import logging
 import os
 from pathlib import Path
 
+from pyarrow._dataset import FileFormat
+
 from hckr.utils.MessageUtils import error, info, colored, warning
 
 from enum import Enum
@@ -17,7 +19,7 @@ class FileFormat(str, Enum):
     INVALID = "invalid"
 
     @staticmethod
-    def fileExtToFormat(file_path, file_extension):
+    def fileExtToFormat(file_path, file_extension) -> FileFormat:
         file_type_extension_map = {
             ".txt": FileFormat.TXT,
             ".text": FileFormat.TXT,
@@ -120,7 +122,7 @@ def validate_file_extension(file_path, expected_extensions):
 
 
 # validate if file extension is one of given
-def get_file_format_from_extension(file_path):
+def get_file_format_from_extension(file_path) -> FileFormat:
     if not file_path:
         return FileFormat.INVALID
     # Extract the extension from the file path

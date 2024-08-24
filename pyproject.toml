@@ -46,9 +46,10 @@ dependencies = [
 
     # SQL Support
     "sqlalchemy", # for SQL ORM
-    "psycopg2", # for Postgres
+    "psycopg2-binary", # for Postgres
     "pymysql", # for MySQL
-    "sqlite", # for SQLITE
+#    "sqlite", # for SQLITE
+    "snowflake-sqlalchemy",  # For Snowflake
 ]
 
 [project.urls]

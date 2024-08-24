@@ -22,7 +22,7 @@ def db():
 
 @db.command()
 @common_config_options
-@click.argument('query')
+@click.argument("query")
 @click.pass_context
 def query(ctx, config, query):
     """Execute a SQL query."""

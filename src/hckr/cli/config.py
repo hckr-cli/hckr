@@ -15,7 +15,8 @@ from ..utils.ConfigUtils import (
     configMessage,
     list_config,
     set_config_value,
-    get_config_value, db_type_mapping,
+    get_config_value,
+    db_type_mapping,
 )
 
 

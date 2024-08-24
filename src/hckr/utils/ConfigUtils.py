@@ -22,6 +22,9 @@ class DBType(str, Enum):
     SQLite = ("SQLite",)
     Snowflake = ("Snowflake",)
 
+    def __str__(self):
+        return self.value
+
 
 db_type_mapping = {
     "1": DBType.PostgreSQL,
