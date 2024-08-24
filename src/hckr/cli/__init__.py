@@ -58,9 +58,9 @@ pass_info = click.make_pass_decorator(Info, ensure=True)
 @click.pass_context
 @pass_info
 def cli(
-        _info: Info,
-        ctx: click.Context,
-        verbose: int,
+    _info: Info,
+    ctx: click.Context,
+    verbose: int,
 ):
     if verbose > 0:
         logging.basicConfig(

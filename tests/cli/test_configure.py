@@ -8,7 +8,7 @@ from hckr.cli.configure import set, get
 
 def _get_random_string(length):
     letters = string.ascii_lowercase
-    result_str = ''.join(random.choice(letters) for i in range(length))
+    result_str = "".join(random.choice(letters) for i in range(length))
     return result_str
 
 
@@ -21,8 +21,5 @@ def test_configure_get_set_default():
     assert result.exit_code == 0
     print(result.output)
 
-    assert (
-        f"Set [DEFAULT] {_key} = {_value}"
-        in result.output
-    )
+    assert f"Set [DEFAULT] {_key} = {_value}" in result.output
     result = runner.invoke(get, [_key, _value])

@@ -40,12 +40,12 @@ def ensure_config_file():
         config_path.touch(exist_ok=True)
         default_config = {
             DEFAULT_CONFIG: {
-                'version': f"{__version__}",
+                "version": f"{__version__}",
             },
         }
         config = configparser.ConfigParser()
         config.read_dict(default_config)
-        with config_path.open('w') as config_file:
+        with config_path.open("w") as config_file:
             config.write(config_file)
         MessageUtils.info(f"Creating default config file {config_path}")
     else:
@@ -76,7 +76,7 @@ def set_config_value(section, key, value):
         logging.debug(f"Adding section {section}")
         config.add_section(section)
     config.set(section, key, value)
-    with config_path.open('w') as config_file:
+    with config_path.open("w") as config_file:
         config.write(config_file)
 
 
@@ -100,8 +100,13 @@ def show_config(config, section):
     if section == DEFAULT_CONFIG:
         rich.print(
             Panel(
-                "\n".join([f"{key} = {value}" for key, value in config.items('DEFAULT')]) if config.items(
-                    'DEFAULT') else "NOTHING FOUND",
+                (
+                    "\n".join(
+                        [f"{key} = {value}" for key, value in config.items("DEFAULT")]
+                    )
+                    if config.items("DEFAULT")
+                    else "NOTHING FOUND"
+                ),
                 expand=True,
                 title=f"\[DEFAULT]",
             )
@@ -109,8 +114,13 @@ def show_config(config, section):
     elif config.has_section(section):
         rich.print(
             Panel(
-                "\n".join([f"{key} = {value}" for key, value in config.items(section)]) if config.items(
-                    section) else "NOTHING FOUND",
+                (
+                    "\n".join(
+                        [f"{key} = {value}" for key, value in config.items(section)]
+                    )
+                    if config.items(section)
+                    else "NOTHING FOUND"
+                ),
                 expand=True,
                 title=f"\[{section}]",
             )
@@ -123,6 +133,7 @@ def show_config(config, section):
                 title="Error",
             )
         )
+
 
 def list_config(section, all=False):
     """
@@ -155,17 +166,17 @@ def configMessage(config):
 def get_db_creds(section):
     config = load_config()
     try:
-        host = config.get(section, 'host')
-        port = config.get(section, 'port')
-        user = config.get(section, 'user')
-        password = config.get(section, 'password')
-        dbname = config.get(section, 'dbname')
+        host = config.get(section, "host")
+        port = config.get(section, "port")
+        user = config.get(section, "user")
+        password = config.get(section, "password")
+        dbname = config.get(section, "dbname")
         return {
-            'host': host,
-            'port': port,
-            'user': user,
-            'password': password,
-            'dbname': dbname
+            "host": host,
+            "port": port,
+            "user": user,
+            "password": password,
+            "dbname": dbname,
         }
     except (configparser.NoSectionError, configparser.NoOptionError) as e:
         click.echo(f"Error: {e}", err=True)

@@ -43,9 +43,12 @@ dependencies = [
     "kubernetes", # for k8s commands
     "yaspin",
     "speedtest-cli", # for net speed command
-    # YAML config support
-    "click-config-file",
-    "pyyaml",
+
+    # SQL Support
+    "sqlalchemy", # for SQL ORM
+    "psycopg2", # for Postgres
+    "pymysql", # for MySQL
+    "sqlite", # for SQLITE
 ]
 
 [project.urls]

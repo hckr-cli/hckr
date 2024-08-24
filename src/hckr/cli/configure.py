@@ -6,8 +6,17 @@ import rich
 from cron_descriptor import get_description  # type: ignore
 from rich.panel import Panel
 
-from ..utils.ConfigUtils import load_config, config_path, ensure_config_file, DEFAULT_CONFIG, configMessage, \
-    list_config, set_config_value, get_config_value
+from ..utils import MessageUtils
+from ..utils.ConfigUtils import (
+    load_config,
+    config_path,
+    ensure_config_file,
+    DEFAULT_CONFIG,
+    configMessage,
+    list_config,
+    set_config_value,
+    get_config_value,
+)
 
 
 @click.group(
@@ -23,14 +32,19 @@ def configure(ctx):
 
 
 def common_config_options(func):
-    func = click.option("-c", "--config", help="Config instance, default: DEFAULT", default=DEFAULT_CONFIG)(func)
+    func = click.option(
+        "-c",
+        "--config",
+        help="Config instance, default: DEFAULT",
+        default=DEFAULT_CONFIG,
+    )(func)
     return func
 
 
 @configure.command()
 @common_config_options
-@click.argument('key')
-@click.argument('value')
+@click.argument("key")
+@click.argument("value")
 def set(config, key, value):
     """
     Sets a configuration value.
@@ -56,7 +70,7 @@ def set(config, key, value):
 
 @configure.command()
 @common_config_options
-@click.argument('key')
+@click.argument("key")
 def get(config, key):
     """Get a configuration value."""
     configMessage(config)
@@ -86,25 +100,34 @@ def get(config, key):
     "--all",
     default=False,
     is_flag=True,
-    help="Whether to show all configs (default: False)"
+    help="Whether to show all configs (default: False)",
 )
 def show(config, all):
     """List configuration values."""
     list_config(config, all)
 
 
-@configure.command('db')
-@click.option('--host', prompt=True, help='Database host')
-@click.option('--port', prompt=True, help='Database port')
-@click.option('--user', prompt=True, help='Database user')
-@click.option('--password', prompt=True, hide_input=True, confirmation_prompt=True, help='Database password')
-@click.option('--dbname', prompt=True, help='Database name')
-@click.pass_context
-def configure_db(ctx, host, port, user, password, dbname):
+@configure.command("db")
+@click.option("--config_name", prompt=True, help="Name of the config instance")
+@click.option("--host", prompt=True, help="Database host")
+@click.option("--port", prompt=True, help="Database port")
+@click.option("--user", prompt=True, help="Database user")
+@click.option(
+    "--password",
+    prompt=True,
+    hide_input=True,
+    confirmation_prompt=True,
+    help="Database password",
+)
+@click.option("--dbname", prompt=True, help="Database name")
+def configure_db(config_name, host, port, user, password, dbname):
     """Configure database credentials."""
-    set_config_value('database', 'host', host)
-    set_config_value('database', 'port', port)
-    set_config_value('database', 'user', user)
-    set_config_value('database', 'password', password)
-    set_config_value('database', 'dbname', dbname)
-    click.echo("Database configuration saved successfully.")
+    set_config_value(config_name, "host", host)
+    set_config_value(config_name, "port", port)
+    set_config_value(config_name, "user", user)
+    set_config_value(config_name, "password", password)
+    set_config_value(config_name, "dbname", dbname)
+    MessageUtils.success(
+        f"Database configuration saved successfully in config instance  {config_name}"
+    )
+    list_config(config_name)
