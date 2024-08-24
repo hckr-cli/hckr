@@ -6,6 +6,7 @@ import rich
 from cron_descriptor import get_description  # type: ignore
 from rich.panel import Panel
 
+from .config import common_config_options
 from ..utils import MessageUtils
 from ..utils.ConfigUtils import (
     load_config,
@@ -15,12 +16,12 @@ from ..utils.ConfigUtils import (
     configMessage,
     list_config,
     set_config_value,
-    get_config_value,
+    get_config_value, db_type_mapping,
 )
 
 
 @click.group(
-    help="Config commands",
+    help="easy configurations for other commands (eg. db)",
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 @click.pass_context
@@ -31,103 +32,36 @@ def configure(ctx):
     ensure_config_file()
 
 
-def common_config_options(func):
-    func = click.option(
-        "-c",
-        "--config",
-        help="Config instance, default: DEFAULT",
-        default=DEFAULT_CONFIG,
-    )(func)
-    return func
-
-
-@configure.command()
-@common_config_options
-@click.argument("key")
-@click.argument("value")
-def set(config, key, value):
-    """
-    Sets a configuration value.
-
-    Args:
-        config (str): The configuration instance name. Default is defined by DEFAULT_CONFIG.
-        key (str): The key of the config setting to change.
-        value (str): The value to set for the specified key.
-
-    Example:
-        $ cli_tool configure set database_host 127.0.0.1
-    """
-    configMessage(config)
-    set_config_value(config, key, value)
-    rich.print(
-        Panel(
-            f"[{config}] {key} <- {value}",
-            expand=True,
-            title="Success",
-        )
-    )
-
-
-@configure.command()
-@common_config_options
-@click.argument("key")
-def get(config, key):
-    """Get a configuration value."""
-    configMessage(config)
-    try:
-        value = get_config_value(config, key)
-        rich.print(
-            Panel(
-                f"[{config}] {key} = {value}",
-                expand=True,
-                title="Success",
-            )
-        )
-    except ValueError as e:
-        rich.print(
-            Panel(
-                f"{e}",
-                expand=True,
-                title="Error",
-            )
-        )
-
-
-@configure.command()
-@common_config_options
-@click.option(
-    "-a",
-    "--all",
-    default=False,
-    is_flag=True,
-    help="Whether to show all configs (default: False)",
-)
-def show(config, all):
-    """List configuration values."""
-    list_config(config, all)
-
-
 @configure.command("db")
-@click.option("--config_name", prompt=True, help="Name of the config instance")
-@click.option("--host", prompt=True, help="Database host")
-@click.option("--port", prompt=True, help="Database port")
-@click.option("--user", prompt=True, help="Database user")
+@click.option("--config_name", prompt="Enter a name for this database configuration",
+              help="Name of the config instance")
+@click.option(
+    "--db_type",
+    prompt="Select the type of database (1=PostgreSQL, 2=MySQL, 3=SQLite, 4=Snowflake)",
+    type=click.Choice(["1", "2", "3", "4"]),
+    help="Database type",
+)
+@click.option("--host", prompt="Enter the database host (e.g., localhost, 127.0.0.1)", help="Database host")
+@click.option("--port", prompt="Enter the database port (e.g., 5432)", help="Database port")
+@click.option("--user", prompt="Enter the database user (e.g., root)", help="Database user")
 @click.option(
     "--password",
-    prompt=True,
+    prompt="Enter the database password (input hidden)",
     hide_input=True,
     confirmation_prompt=True,
     help="Database password",
 )
-@click.option("--dbname", prompt=True, help="Database name")
-def configure_db(config_name, host, port, user, password, dbname):
+@click.option("--dbname", prompt="Enter the name of the database", help="Database name")
+def configure_db(config_name, db_type, host, port, user, password, dbname):
     """Configure database credentials."""
+
+    set_config_value(config_name, "db_type", db_type_mapping[db_type])
     set_config_value(config_name, "host", host)
     set_config_value(config_name, "port", port)
     set_config_value(config_name, "user", user)
     set_config_value(config_name, "password", password)
     set_config_value(config_name, "dbname", dbname)
-    MessageUtils.success(
-        f"Database configuration saved successfully in config instance  {config_name}"
-    )
+
+    MessageUtils.success(f"Database configuration saved successfully in config instance '{config_name}'")
     list_config(config_name)
+    MessageUtils.success(f"Now you can use config {config_name}, using -c/--config in hckr db commands")

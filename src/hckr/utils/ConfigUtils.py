@@ -1,5 +1,6 @@
 import configparser
 import logging
+from enum import Enum
 from pathlib import Path
 from readline import set_completer
 
@@ -13,6 +14,21 @@ from ..__about__ import __version__
 # Define the default configuration file path, this can't be changed, although user can have multile instances using --config
 config_path = Path.home() / ".hckrcfg"
 DEFAULT_CONFIG = "DEFAULT"
+
+
+class DBType(str, Enum):
+    PostgreSQL = ("PostgreSQL",)
+    MySQL = ("MySQL",)
+    SQLite = ("SQLite",)
+    Snowflake = ("Snowflake",)
+
+
+db_type_mapping = {
+    "1": DBType.PostgreSQL,
+    "2": DBType.MySQL,
+    "3": DBType.SQLite,
+    "4": DBType.Snowflake,
+}
 
 
 def load_config():

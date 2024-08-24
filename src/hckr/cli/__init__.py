@@ -7,6 +7,7 @@ import click
 from click_repl import register_repl  # type: ignore
 
 from hckr.cli.configure import configure
+from hckr.cli.config import config
 from hckr.cli.k8s.context import context
 from hckr.cli.k8s.namespace import namespace
 from hckr.cli.k8s.pod import pod
@@ -105,6 +106,7 @@ k8s.add_command(context)
 cli.add_command(net)
 
 # config
+cli.add_command(config)
 cli.add_command(configure)
 
 # implementing this so that if the user just uses `hckr` we show them something
