@@ -27,6 +27,13 @@ class DBType(str, Enum):
         return self.value
 
 
+class ConfigType(str, Enum):
+    DATABASE = ("database",)
+
+    def __str__(self):
+        return self.value
+
+
 db_type_mapping = {
     "1": DBType.PostgreSQL,
     "2": DBType.MySQL,
@@ -41,8 +48,9 @@ def load_config():
     if not check_config():
         PWarn(
             f"Config file [magenta]{config_path}[/magenta] doesn't exists, Please run init command to create one \n "
-            f"[bold green]hckr config init")
-        exit(0)
+            "[bold green]hckr config init"
+        )
+        exit(1)
     config.read(config_path)
     return config
 
@@ -70,6 +78,7 @@ def init_config(overwrite):
         default_config = {
             DEFAULT_CONFIG: {
                 "version": f"{__version__}",
+                "config_type": "default",
             },
             "CUSTOM": {
                 "key": f"value",
@@ -81,13 +90,17 @@ def init_config(overwrite):
             config.write(config_file)
         PSuccess(f"Config file created at {config_path}")
     elif overwrite:
-        PInfo(f"Config file already exists at {config_path}, [magenta]-o/--overwrite[/magenta] passed \n"
-              f"[yellow]Deleting existing file")
+        PInfo(
+            f"Config file already exists at {config_path}, [magenta]-o/--overwrite[/magenta] passed \n"
+            "[yellow]Deleting existing file"
+        )
         config_path.unlink()
         init_config(overwrite=False)
     else:
-        PWarn(f"Config file already exists at [yellow]{config_path}[/yellow],"
-              f" please pass [magenta]-o/--overwrite[/magenta] to recreate")
+        PWarn(
+            f"Config file already exists at [yellow]{config_path}[/yellow],"
+            " please pass [magenta]-o/--overwrite[/magenta] to recreate"
+        )
 
 
 def set_config_value(section, key, value):
@@ -200,22 +213,3 @@ def configMessage(config):
         MessageUtils.info(f"Using config: [magenta]{config}")
 
 
-# Function to retrieve database credentials
-def get_db_creds(section):
-    config = load_config()
-    try:
-        host = config.get(section, "host")
-        port = config.get(section, "port")
-        user = config.get(section, "user")
-        password = config.get(section, "password")
-        dbname = config.get(section, "dbname")
-        return {
-            "host": host,
-            "port": port,
-            "user": user,
-            "password": password,
-            "dbname": dbname,
-        }
-    except (configparser.NoSectionError, configparser.NoOptionError) as e:
-        click.echo(f"Error: {e}", err=True)
-        return None

@@ -6,6 +6,7 @@ import logging
 import click
 from click_repl import register_repl  # type: ignore
 
+from hckr.cli.db import db
 from hckr.cli.configure import configure
 from hckr.cli.config import config
 from hckr.cli.k8s.context import context
@@ -108,6 +109,10 @@ cli.add_command(net)
 # config
 cli.add_command(config)
 cli.add_command(configure)
+
+# database
+cli.add_command(db)
+
 
 # implementing this so that if the user just uses `hckr` we show them something
 if __name__ == "__main__":

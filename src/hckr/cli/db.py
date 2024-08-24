@@ -1,15 +1,11 @@
 import click
-import rich
-import speedtest  # type: ignore
-from rich.panel import Panel
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
 from yaspin import yaspin  # type: ignore
 
-from hckr.cli.configure import common_config_options
-from hckr.utils import NetUtils, MessageUtils
+from hckr.cli.config import common_config_options
 from hckr.utils.DbUtils import get_db_url
-from hckr.utils.NetUtils import get_ip_addresses
+from hckr.utils.MessageUtils import PError
 
 
 @click.group(
@@ -35,6 +31,6 @@ def query(ctx, config, query):
                 for row in result:
                     click.echo(row)
         except SQLAlchemyError as e:
-            click.echo(f"Error executing query: {e}", err=True)
+            PError(f"Error executing query: {e}")
     else:
-        click.echo("Database credentials are not properly configured.", err=True)
+        PError("Database credentials are not properly configured.")

@@ -1,27 +1,13 @@
-# from ..utils.MessageUtils import *
-import logging
-from symbol import assert_stmt
-
 import click
-import rich
-from cron_descriptor import get_description  # type: ignore
-from rich.panel import Panel
 
-from .config import common_config_options
 from ..utils import MessageUtils
 from ..utils.ConfigUtils import (
-    load_config,
-    config_path,
-    init_config,
-    DEFAULT_CONFIG,
-    configMessage,
     list_config,
     set_config_value,
-    get_config_value,
     db_type_mapping,
-    DBType,
-    check_config,
+    DBType, ConfigType,
 )
+from ..utils.MessageUtils import PSuccess
 
 
 @click.group(
@@ -58,24 +44,30 @@ def configure(ctx):
     confirmation_prompt=True,
     help="Database password",
 )
-@click.option("--dbname", prompt="Enter the name of the database", help="Database name")
-@click.pass_context
-def configure_db(ctx, config_name, db_type, host, port, user, password, dbname):
+@click.option("--dbname", prompt=False, help="Database name")
+@click.option("--schema", prompt=False, help="Database schema")
+@click.option("--account", prompt=False, help="Snowflake Account Id")
+@click.option("--warehouse", prompt=False, help="Snowflake warehouse")
+@click.option("--role", prompt=False, help="Snowflake role")
+def configure_db(
+    config_name, db_type, host, port, user, password, dbname, schema, warehouse, role
+):
     """Configure database credentials based on the selected database type."""
+    set_config_value(config_name, "config_type", ConfigType.DATABASE)
     selected_db_type = db_type_mapping[db_type]
-    set_config_value(config_name, "type", selected_db_type)
+    set_config_value(config_name, "database_type", selected_db_type)
 
-    if selected_db_type in [DBType.PostgreSQL, DBType.MySQL, DBType.Snowflake]:
+    if selected_db_type in [DBType.PostgreSQL, DBType.MySQL]:
         if not host:
             host = click.prompt("Enter the database host (e.g., localhost, 127.0.0.1)")
         if not port:
             port = click.prompt("Enter the database port (e.g., 5432 for PostgreSQL)")
         if not user:
-            user = click.prompt("Enter the database user (e.g., root, admin, user)")
+            user = click.prompt("Enter the database user (e.g., root)")
         if not password:
             password = click.prompt(
                 "Enter the database password (input hidden)",
-                hide_input=False,
+                hide_input=True,
                 confirmation_prompt=True,
             )
 
@@ -83,16 +75,40 @@ def configure_db(ctx, config_name, db_type, host, port, user, password, dbname):
         set_config_value(config_name, "port", port)
         set_config_value(config_name, "user", user)
         set_config_value(config_name, "password", password)
+        set_config_value(config_name, "dbname", dbname)
 
-    if selected_db_type == "SQLite":
-        # SQLite only requires a database file path
+    elif selected_db_type == DBType.SQLite:
         if not dbname:
             dbname = click.prompt("Enter the path to the SQLite database file")
         set_config_value(config_name, "dbname", dbname)
-    else:
-        set_config_value(config_name, "dbname", dbname)
 
-    MessageUtils.success(
+    elif selected_db_type == DBType.Snowflake:
+        if not user:
+            user = click.prompt("Enter your Snowflake username")
+        if not password:
+            password = click.prompt(
+                "Enter your Snowflake password",
+                hide_input=True,
+                confirmation_prompt=True,
+            )
+        if not dbname:
+            dbname = click.prompt("Enter the Snowflake database name")
+        if not schema:
+            schema = click.prompt("Enter the Snowflake schema name")
+        if not warehouse:
+            warehouse = click.prompt("Enter the Snowflake warehouse name")
+        if not role:
+            role = click.prompt("Enter the Snowflake role")
+
+        set_config_value(config_name, "user", user)
+        set_config_value(config_name, "password", password)
+        set_config_value(config_name, "account", account)
+        set_config_value(config_name, "warehouse", warehouse)
+        set_config_value(config_name, "dbname", dbname)
+        set_config_value(config_name, "schema", schema)
+        set_config_value(config_name, "role", role)
+
+    PSuccess(
         f"Database configuration saved successfully in config instance '{config_name}'"
     )
     list_config(config_name)

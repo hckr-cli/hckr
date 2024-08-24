@@ -13,7 +13,7 @@ def _get_random_string(length):
 
 
 # CONFIG GET AND SET
-def test_configure_get_set_default():
+def test_config_get_set_default():
     runner = CliRunner()
     _key = f"key_{_get_random_string(5)}"
     _value = f"value_{_get_random_string(5)}"
@@ -27,52 +27,51 @@ def test_configure_get_set_default():
     assert f"[DEFAULT] {_key} = {_value}" in result.output
 
 
-def test_configure_get_set_custom_config():
+def test_config_get_set_custom_config():
     runner = CliRunner()
     _key = f"key_{_get_random_string(5)}"
     _value = f"value_{_get_random_string(5)}"
     _CONFIG = "CUSTOM"
-    result = runner.invoke(set, ['--config', _CONFIG, _key, _value])
+    result = runner.invoke(set, ["--config", _CONFIG, _key, _value])
     assert result.exit_code == 0
     assert f"[{_CONFIG}] {_key} <- {_value}" in result.output
 
     # testing get
-    result = runner.invoke(get, ['--config', _CONFIG, _key])
+    result = runner.invoke(get, ["--config", _CONFIG, _key])
     assert result.exit_code == 0
     assert f"[{_CONFIG}] {_key} = {_value}" in result.output
 
 
-def test_configure_show():
+def test_config_show():
     runner = CliRunner()
     _CONFIG = "CUSTOM"
     result = runner.invoke(show)
     assert result.exit_code == 0
-    assert f"[DEFAULT]" in result.output
+    assert "[DEFAULT]" in result.output
 
-    result = runner.invoke(show, ['--all'])
-    assert f"[DEFAULT]" in result.output
-    assert f"[CUSTOM]" in result.output
+    result = runner.invoke(show, ["--all"])
+    assert "[DEFAULT]" in result.output
+    assert "[CUSTOM]" in result.output
 
 
-
-# NAGATIVE USE CASES
-def test_configure_get_set_missing_key():
+# NEGATIVE USE CASES
+def test_config_get_set_missing_key():
     runner = CliRunner()
     result = runner.invoke(set, [])
     print(result.output)
     assert result.exit_code != 0
-    assert f"Error: Missing argument 'KEY'" in result.output
+    assert "Error: Missing argument 'KEY'" in result.output
 
     runner = CliRunner()
     result = runner.invoke(get, [])
     print(result.output)
     assert result.exit_code != 0
-    assert f"Error: Missing argument 'KEY'" in result.output
+    assert "Error: Missing argument 'KEY'" in result.output
 
 
-def test_configure_set_missing_value():
+def test_config_set_missing_value():
     runner = CliRunner()
-    result = runner.invoke(set, ['key'])
+    result = runner.invoke(set, ["key"])
     print(result.output)
     assert result.exit_code != 0
-    assert f"Error: Missing argument 'VALUE'" in result.output
+    assert "Error: Missing argument 'VALUE'" in result.output
