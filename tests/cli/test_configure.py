@@ -49,7 +49,9 @@ def test_configure_show():
     assert result.exit_code == 0
     assert f"[DEFAULT]" in result.output
 
-    result = runner.invoke(show, ['-all'])
+    result = runner.invoke(show, ['--all'])
+    assert f"[DEFAULT]" in result.output
+    assert f"[CUSTOM]" in result.output
 
 
 

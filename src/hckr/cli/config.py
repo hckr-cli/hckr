@@ -26,6 +26,7 @@ def config(ctx):
     """
     pass
 
+
 def common_config_options(func):
     func = click.option(
         "-c",
@@ -101,11 +102,19 @@ def show(config, all):
     """List configuration values."""
     list_config(config, all)
 
+
 @config.command()
-def init():
+@click.option(
+    "-o",
+    "--overwrite",
+    default=False,
+    is_flag=True,
+    help="Whether to delete and recreate .hckrcfg file (default: False)",
+)
+def init(overwrite):
     """
-    Creates configuration file ~/.hckrcfg if it does not exist
+    Initializes the configuration for the application.
 
     :return: None
     """
-    init_config()
+    init_config(overwrite)

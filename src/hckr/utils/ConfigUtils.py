@@ -7,11 +7,12 @@ from readline import set_completer
 import click
 import rich
 from rich.panel import Panel
-
 from . import MessageUtils
+from .MessageUtils import PWarn, PMsg, PError, PSuccess, PInfo
 from ..__about__ import __version__
 
-# Define the default configuration file path, this can't be changed, although user can have multile instances using --config
+# Define the default configuration file path, this can't be changed, although user can have multile instances using
+# --config
 config_path = Path.home() / ".hckrcfg"
 DEFAULT_CONFIG = "DEFAULT"
 
@@ -37,6 +38,11 @@ db_type_mapping = {
 def load_config():
     """Load the INI configuration file."""
     config = configparser.ConfigParser()
+    if not check_config():
+        PWarn(
+            f"Config file [magenta]{config_path}[/magenta] doesn't exists, Please run init command to create one \n "
+            f"[bold green]hckr config init")
+        exit(0)
     config.read(config_path)
     return config
 
@@ -45,7 +51,7 @@ def check_config() -> bool:
     return config_path.exists()
 
 
-def init_config():
+def init_config(overwrite):
     """
     Ensures the existence of a configuration file at the specified path.
 
@@ -73,9 +79,15 @@ def init_config():
         config.read_dict(default_config)
         with config_path.open("w") as config_file:
             config.write(config_file)
-        MessageUtils.info(f"Creating default config file {config_path}")
+        PSuccess(f"Config file created at {config_path}")
+    elif overwrite:
+        PInfo(f"Config file already exists at {config_path}, [magenta]-o/--overwrite[/magenta] passed \n"
+              f"[yellow]Deleting existing file")
+        config_path.unlink()
+        init_config(overwrite=False)
     else:
-        logging.debug(f"Config file {config_path} already exists ")
+        PWarn(f"Config file already exists at [yellow]{config_path}[/yellow],"
+              f" please pass [magenta]-o/--overwrite[/magenta] to recreate")
 
 
 def set_config_value(section, key, value):

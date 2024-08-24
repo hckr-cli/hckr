@@ -1,7 +1,10 @@
 import logging
 
+import rich
 from rich import print
 import random
+
+from rich.panel import Panel
 
 
 def colored(msg, color, bold=True):
@@ -27,6 +30,32 @@ def warning(msg, color=None):
         print(f"{warn_emoji()} [bold {color}] {msg}[/bold {color}]")
     else:
         print(f"{warn_emoji()} [bold yellow]{msg}[/bold yellow]")
+
+
+def PMsg(msg, title):
+    rich.print(
+        Panel(
+            msg,
+            expand=False,
+            title=title,
+        )
+    )
+
+
+def PWarn(msg, title="[yellow]Warning"):
+    PMsg(msg, title)
+
+
+def PSuccess(msg, title="[green]Success"):
+    PMsg(msg, title)
+
+
+def PInfo(msg, title="[blue]Info"):
+    PMsg(msg, title)
+
+
+def PError(msg, title="[red]Error"):
+    PMsg(msg, title)
 
 
 def info(msg, color=None):

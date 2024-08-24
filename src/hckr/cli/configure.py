@@ -1,5 +1,6 @@
 # from ..utils.MessageUtils import *
 import logging
+from symbol import assert_stmt
 
 import click
 import rich
@@ -17,7 +18,9 @@ from ..utils.ConfigUtils import (
     list_config,
     set_config_value,
     get_config_value,
-    db_type_mapping, DBType, check_config,
+    db_type_mapping,
+    DBType,
+    check_config,
 )
 
 
@@ -30,14 +33,15 @@ def configure(ctx):
     """
     Defines a command group for configuration-related commands.
     """
-    if not check_config():
-        MessageUtils.warning("Config file doesn't exists, Please run \n hckr config init "
-                             "\n to create one")
+    pass
 
 
 @configure.command("db")
-@click.option("--config_name", prompt="Enter a name for this database configuration",
-              help="Name of the config instance")
+@click.option(
+    "--config_name",
+    prompt="Enter a name for this database configuration",
+    help="Name of the config instance",
+)
 @click.option(
     "--db_type",
     prompt="Select the type of database (1=PostgreSQL, 2=MySQL, 3=SQLite, 4=Snowflake)",
@@ -69,8 +73,11 @@ def configure_db(ctx, config_name, db_type, host, port, user, password, dbname):
         if not user:
             user = click.prompt("Enter the database user (e.g., root, admin, user)")
         if not password:
-            password = click.prompt("Enter the database password (input hidden)", hide_input=False,
-                                    confirmation_prompt=True)
+            password = click.prompt(
+                "Enter the database password (input hidden)",
+                hide_input=False,
+                confirmation_prompt=True,
+            )
 
         set_config_value(config_name, "host", host)
         set_config_value(config_name, "port", port)
@@ -85,5 +92,7 @@ def configure_db(ctx, config_name, db_type, host, port, user, password, dbname):
     else:
         set_config_value(config_name, "dbname", dbname)
 
-    MessageUtils.success(f"Database configuration saved successfully in config instance '{config_name}'")
+    MessageUtils.success(
+        f"Database configuration saved successfully in config instance '{config_name}'"
+    )
     list_config(config_name)
