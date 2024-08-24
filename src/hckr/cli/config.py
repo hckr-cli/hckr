@@ -1,22 +1,17 @@
 # from ..utils.MessageUtils import *
-import logging
 
 import click
 import rich
 from cron_descriptor import get_description  # type: ignore
 from rich.panel import Panel
 
-from ..utils import MessageUtils
 from ..utils.ConfigUtils import (
-    load_config,
-    config_path,
-    ensure_config_file,
+    init_config,
     DEFAULT_CONFIG,
     configMessage,
     list_config,
     set_config_value,
     get_config_value,
-    db_type_mapping,
 )
 
 
@@ -29,8 +24,7 @@ def config(ctx):
     """
     Defines a command group for configuration-related commands.
     """
-    ensure_config_file()
-
+    pass
 
 def common_config_options(func):
     func = click.option(
@@ -106,3 +100,12 @@ def get(config, key):
 def show(config, all):
     """List configuration values."""
     list_config(config, all)
+
+@config.command()
+def init():
+    """
+    Creates configuration file ~/.hckrcfg if it does not exist
+
+    :return: None
+    """
+    init_config()

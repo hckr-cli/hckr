@@ -11,13 +11,13 @@ from ..utils import MessageUtils
 from ..utils.ConfigUtils import (
     load_config,
     config_path,
-    ensure_config_file,
+    init_config,
     DEFAULT_CONFIG,
     configMessage,
     list_config,
     set_config_value,
     get_config_value,
-    db_type_mapping, DBType,
+    db_type_mapping, DBType, check_config,
 )
 
 
@@ -30,57 +30,9 @@ def configure(ctx):
     """
     Defines a command group for configuration-related commands.
     """
-    ensure_config_file()
-
-
-# @configure.command("db")
-# @click.option(
-#     "--config_name",
-#     prompt="Enter a name for this database configuration",
-#     help="Name of the config instance",
-# )
-# @click.option(
-#     "--db_type",
-#     prompt="Select the type of database (1=PostgreSQL, 2=MySQL, 3=SQLite, 4=Snowflake)",
-#     type=click.Choice(["1", "2", "3", "4"]),
-#     help="Database type",
-# )
-# @click.option(
-#     "--host",
-#     prompt="Enter the database host (e.g., localhost, 127.0.0.1)",
-#     help="Database host",
-# )
-# @click.option(
-#     "--port", prompt="Enter the database port (e.g., 5432)", help="Database port"
-# )
-# @click.option(
-#     "--user", prompt="Enter the database user (e.g., root)", help="Database user"
-# )
-# @click.option(
-#     "--password",
-#     prompt="Enter the database password (input hidden)",
-#     hide_input=True,
-#     confirmation_prompt=True,
-#     help="Database password",
-# )
-# @click.option("--dbname", prompt="Enter the name of the database", help="Database name")
-# def configure_db(config_name, db_type, host, port, user, password, dbname):
-#     """Configure database credentials."""
-#
-#     set_config_value(config_name, "db_type", db_type_mapping[db_type])
-#     set_config_value(config_name, "host", host)
-#     set_config_value(config_name, "port", port)
-#     set_config_value(config_name, "user", user)
-#     set_config_value(config_name, "password", password)
-#     set_config_value(config_name, "dbname", dbname)
-#
-#     MessageUtils.success(
-#         f"Database configuration saved successfully in config instance '{config_name}'"
-#     )
-#     list_config(config_name)
-#     MessageUtils.success(
-#         f"Now you can use config {config_name}, using -c/--config in hckr db commands"
-#     )
+    if not check_config():
+        MessageUtils.warning("Config file doesn't exists, Please run \n hckr config init "
+                             "\n to create one")
 
 
 @configure.command("db")
@@ -97,7 +49,7 @@ def configure(ctx):
 @click.option("--user", prompt=False, help="Database user")
 @click.option(
     "--password",
-    prompt=False,
+    prompt=False,  # we will get this value later if it is not provided
     hide_input=True,
     confirmation_prompt=True,
     help="Database password",
@@ -107,7 +59,6 @@ def configure(ctx):
 def configure_db(ctx, config_name, db_type, host, port, user, password, dbname):
     """Configure database credentials based on the selected database type."""
     selected_db_type = db_type_mapping[db_type]
-    # set_config_value(config_name, "db_type", str(selected_db_type))
     set_config_value(config_name, "type", selected_db_type)
 
     if selected_db_type in [DBType.PostgreSQL, DBType.MySQL, DBType.Snowflake]:
@@ -116,9 +67,9 @@ def configure_db(ctx, config_name, db_type, host, port, user, password, dbname):
         if not port:
             port = click.prompt("Enter the database port (e.g., 5432 for PostgreSQL)")
         if not user:
-            user = click.prompt("Enter the database user (e.g., root)")
+            user = click.prompt("Enter the database user (e.g., root, admin, user)")
         if not password:
-            password = click.prompt("Enter the database password (input hidden)", hide_input=True,
+            password = click.prompt("Enter the database password (input hidden)", hide_input=False,
                                     confirmation_prompt=True)
 
         set_config_value(config_name, "host", host)

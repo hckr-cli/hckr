@@ -41,7 +41,11 @@ def load_config():
     return config
 
 
-def ensure_config_file():
+def check_config() -> bool:
+    return config_path.exists()
+
+
+def init_config():
     """
     Ensures the existence of a configuration file at the specified path.
 
@@ -60,6 +64,9 @@ def ensure_config_file():
         default_config = {
             DEFAULT_CONFIG: {
                 "version": f"{__version__}",
+            },
+            "CUSTOM": {
+                "key": f"value",
             },
         }
         config = configparser.ConfigParser()
@@ -108,7 +115,7 @@ def get_config_value(section, key) -> str:
     """
     logging.debug(f"Getting [{section}] {key} ")
     config = load_config()
-    if not config.has_section(section):
+    if section != DEFAULT_CONFIG and not config.has_section(section):
         raise ValueError(f"Section '{section}' not found in the configuration.")
     if not config.has_option(section, key):
         raise ValueError(f"Key '{key}' not found in section '{section}'.")
