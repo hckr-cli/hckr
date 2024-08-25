@@ -32,7 +32,7 @@ def query(ctx, config, query):
             with engine.connect() as connection:
                 # Execute the query and convert the result to a DataFrame
                 df = pd.read_sql_query(text(query), connection)
-                print_df_as_table(df)
+                print_df_as_table(df, title=query, count=10, col_count=10)
         except SQLAlchemyError as e:
             PError(f"Error executing query: {e}")
     else:
