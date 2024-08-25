@@ -21,8 +21,22 @@ def db():
 @db.command()
 @common_config_options
 @click.argument("query")
+@click.option(
+    "-nr",
+    "--num-rows",
+    default=10,
+    help="Number of rows to show.",
+    required=False,
+)
+@click.option(
+    "-nc",
+    "--num-cols",
+    default=10,
+    help="Number of cols to show.",
+    required=False,
+)
 @click.pass_context
-def query(ctx, config, query):
+def query(ctx, config, query, num_rows, num_cols):
     """Execute a SQL query on Snowflake and return a DataFrame."""
     db_url = get_db_url(section=config)
 
@@ -32,7 +46,7 @@ def query(ctx, config, query):
             with engine.connect() as connection:
                 # Execute the query and convert the result to a DataFrame
                 df = pd.read_sql_query(text(query), connection)
-                print_df_as_table(df, title=query, count=10, col_count=10)
+                print_df_as_table(df, title=query, count=num_rows, col_count=num_cols)
         except SQLAlchemyError as e:
             PError(f"Error executing query: {e}")
     else:
