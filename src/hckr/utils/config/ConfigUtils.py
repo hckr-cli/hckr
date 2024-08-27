@@ -1,53 +1,25 @@
 import configparser
 import logging
-from enum import Enum
-from pathlib import Path
-from readline import set_completer
 
-import click
 import rich
 from rich.panel import Panel
-from . import MessageUtils
-from .MessageUtils import PWarn, PMsg, PError, PSuccess, PInfo
-from ..__about__ import __version__
+
+from .. import MessageUtils
+from ..MessageUtils import PWarn, PSuccess, PInfo, PError
+from ...__about__ import __version__
+from .Constants import config_path, DBType, DEFAULT_CONFIG
 
 # Define the default configuration file path, this can't be changed, although user can have multile instances using
 # --config
-config_path = Path.home() / ".hckrcfg"
-DEFAULT_CONFIG = "DEFAULT"
-
-
-class DBType(str, Enum):
-    PostgreSQL = ("PostgreSQL",)
-    MySQL = ("MySQL",)
-    SQLite = ("SQLite",)
-    Snowflake = ("Snowflake",)
-
-    def __str__(self):
-        return self.value
-
-
-class ConfigType(str, Enum):
-    DATABASE = ("database",)
-
-    def __str__(self):
-        return self.value
-
-
-db_type_mapping = {
-    "1": DBType.PostgreSQL,
-    "2": DBType.MySQL,
-    "3": DBType.SQLite,
-    "4": DBType.Snowflake,
-}
 
 
 def load_config():
     """Load the INI configuration file."""
     config = configparser.ConfigParser()
-    if not check_config():
+    if not config_exists():
         PWarn(
-            f"Config file [magenta]{config_path}[/magenta] doesn't exists, Please run init command to create one \n "
+            f"Config file [magenta]{config_path}[/magenta] doesn't exists or empty,"
+            f" Please run init command to create one \n "
             "[bold green]hckr config init"
         )
         exit(1)
@@ -55,8 +27,22 @@ def load_config():
     return config
 
 
-def check_config() -> bool:
-    return config_path.exists()
+def config_exists() -> bool:
+    """
+    Check if config file exists and is not empty.
+
+    :return: True if config file exists and is not empty, False otherwise.
+    :rtype: bool
+    """
+    if not config_path.exists():
+        return False
+    if config_path.stat().st_size == 0:
+        return False
+    with config_path.open("r") as file:
+        content = file.read().strip()
+        if not content:
+            return False
+    return True
 
 
 def init_config(overwrite):
@@ -103,7 +89,7 @@ def init_config(overwrite):
         )
 
 
-def set_config_value(section, key, value):
+def set_config_value(section, key, value, override=False):
     """
     Sets a configuration value in a configuration file.
 
@@ -124,8 +110,9 @@ def set_config_value(section, key, value):
     logging.debug(f"Setting [{section}] {key} = {value}")
     config = load_config()
     if not config.has_section(section) and section != DEFAULT_CONFIG:
-        logging.debug(f"Adding section {section}")
+        PInfo(f"Config \[{section}] doesn't exist, Adding")
         config.add_section(section)
+
     config.set(section, key, value)
     with config_path.open("w") as config_file:
         config.write(config_file)
@@ -211,5 +198,3 @@ def configMessage(config):
         MessageUtils.info(f"Using default config: [magenta]{DEFAULT_CONFIG}")
     else:
         MessageUtils.info(f"Using config: [magenta]{config}")
-
-

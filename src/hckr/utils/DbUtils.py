@@ -1,13 +1,23 @@
 import logging
-from configparser import NoSectionError, NoOptionError
+from configparser import NoOptionError
 
-from sqlalchemy import create_engine, text
-from sqlalchemy.exc import SQLAlchemyError
-import click
-
-from hckr.utils import ConfigUtils
-from hckr.utils.ConfigUtils import ConfigType, DBType, load_config
 from hckr.utils.MessageUtils import PError
+from hckr.utils.config import ConfigUtils
+from hckr.utils.config.Constants import (
+    ConfigType,
+    DBType,
+    DB_NAME,
+    DB_USER,
+    CONFIG_TYPE,
+    DB_TYPE,
+    DB_PASSWORD,
+    DB_HOST,
+    DB_PORT,
+    DB_ACCOUNT,
+    DB_WAREHOUSE,
+    DB_ROLE,
+    DB_SCHEMA,
+)
 
 
 def get_db_url(section):
@@ -18,16 +28,18 @@ def get_db_url(section):
     """
     config = ConfigUtils.load_config()
     try:
-        config_type = config.get(section, "config_type")
+        config_type = config.get(section, CONFIG_TYPE)
         if config_type != ConfigType.DATABASE:
-            PError(f"The configuration {section} is not database type\n"
-                   " Please use [magenta]hckr configure db[/magenta] to configure database.")
+            PError(
+                f"The configuration {section} is not database type\n"
+                " Please use [magenta]hckr configure db[/magenta] to configure database."
+            )
             exit(1)
-        db_type = config.get(section, "database_type")
+        db_type = config.get(section, DB_TYPE)
 
         if db_type == DBType.SQLite:
-            dbname = config.get(section, "dbname")
-            return f"sqlite:///{dbname}"
+            database_name = config.get(section, DB_NAME)
+            return f"sqlite:///{database_name}"
 
         elif db_type in [DBType.PostgreSQL, DBType.MySQL]:
             return _get_jdbc_url(config, section, db_type)
@@ -41,15 +53,15 @@ def get_db_url(section):
 
 
 def _get_jdbc_url(config, section, db_type):
-    user = config.get(section, "user")
-    password = config.get(section, "password")
-    host = config.get(section, "host")
-    port = config.get(section, "port")
-    dbname = config.get(section, "dbname")
+    user = config.get(section, DB_USER)
+    password = config.get(section, DB_PASSWORD)
+    host = config.get(section, DB_HOST)
+    port = config.get(section, DB_PORT)
+    database_name = config.get(section, DB_NAME)
     if db_type == DBType.PostgreSQL:
-        return f"postgresql://{user}:{password}@{host}:{port}/{dbname}"
+        return f"postgresql://{user}:{password}@{host}:{port}/{database_name}"
     elif db_type == DBType.MySQL:
-        return f"mysql+pymysql://{user}:{password}@{host}:{port}/{dbname}"
+        return f"mysql+pymysql://{user}:{password}@{host}:{port}/{database_name}"
     else:
         logging.debug(f"Invalid db_type: {db_type} in get_jdbc_url()")
         PError("Error occured while creating JDBC Url")
@@ -57,14 +69,14 @@ def _get_jdbc_url(config, section, db_type):
 
 
 def _get_snowflake_url(config, section):
-    user = config.get(section, "user")
-    password = config.get(section, "password")
-    account = config.get(section, "account")
-    warehouse = config.get(section, "warehouse")
-    role = config.get(section, "role")
-    dbname = config.get(section, "dbname")
-    schema = config.get(section, 'schema')
+    user = config.get(section, DB_USER)
+    password = config.get(section, DB_PASSWORD)
+    account = config.get(section, DB_ACCOUNT)
+    warehouse = config.get(section, DB_WAREHOUSE)
+    role = config.get(section, DB_ROLE)
+    database_name = config.get(section, DB_NAME)
+    schema = config.get(section, DB_SCHEMA)
     return (
-        f"snowflake://{user}:{password}@{account}/{dbname}/{schema}"
+        f"snowflake://{user}:{password}@{account}/{database_name}/{schema}"
         f"?warehouse={warehouse}&role={role}"
     )

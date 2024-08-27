@@ -18,13 +18,16 @@ def test_hckr():
   -h, --help     Show this message and exit.
 
 Commands:
-  cron    cron commands
-  crypto  crypto commands
-  data    data related commands
-  hash    hash commands
-  info    info commands
-  k8s     Kubernetes commands
-  net     network commands
-  repl    Start an interactive shell"""
+  config     Config commands
+  configure  easy configurations for other commands (eg.
+  cron       cron commands
+  crypto     crypto commands
+  data       data related commands
+  db         Database commands
+  hash       hash commands
+  info       info commands
+  k8s        Kubernetes commands
+  net        network commands
+  repl       Start an interactive shell."""
         in result.output
     )

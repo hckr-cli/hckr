@@ -3,9 +3,9 @@
 import click
 import rich
 from cron_descriptor import get_description  # type: ignore
-from rich.panel import Panel
 
-from ..utils.ConfigUtils import (
+from ..utils.MessageUtils import PError, PSuccess
+from ..utils.config.ConfigUtils import (
     init_config,
     DEFAULT_CONFIG,
     configMessage,
@@ -55,13 +55,7 @@ def set(config, key, value):
     """
     configMessage(config)
     set_config_value(config, key, value)
-    rich.print(
-        Panel(
-            f"[{config}] {key} <- {value}",
-            expand=True,
-            title="Success",
-        )
-    )
+    PSuccess(f"[{config}] {key} <- {value}")
 
 
 @config.command()
@@ -72,21 +66,9 @@ def get(config, key):
     configMessage(config)
     try:
         value = get_config_value(config, key)
-        rich.print(
-            Panel(
-                f"[{config}] {key} = {value}",
-                expand=True,
-                title="Success",
-            )
-        )
+        PSuccess(f"[{config}] {key} = {value}")
     except ValueError as e:
-        rich.print(
-            Panel(
-                f"{e}",
-                expand=True,
-                title="Error",
-            )
-        )
+        PError(f"{e}")
 
 
 @config.command()
