@@ -21,10 +21,9 @@ def safe_faker_method(faker_instance, method_name, *args):
         raise ValueError(f"No such Faker method: {method_name}")
 
 
-def print_df_as_table(df, title="Data Sample", count=3):
-    MAX_COLS_TO_SHOW = 10
+def print_df_as_table(df, title="Data Sample", count=3, col_count=10):
     ROWS_TO_SHOW = min(count, df.shape[0])
-    COLS_TO_SHOW = min(MAX_COLS_TO_SHOW, df.shape[1])
+    COLS_TO_SHOW = min(col_count, df.shape[1])
     table = Table(
         show_header=True,
         title=title,
@@ -36,14 +35,14 @@ def print_df_as_table(df, title="Data Sample", count=3):
     for column in df.columns[:COLS_TO_SHOW]:
         table.add_column(column, no_wrap=False, overflow="fold")
     msg = f"Data has total {colored(df.shape[0], 'yellow')} rows and {colored(df.shape[1], 'yellow')} columns, showing first {colored(ROWS_TO_SHOW, 'yellow')} rows"
-    if len(df.columns) > MAX_COLS_TO_SHOW:
+    if len(df.columns) > col_count:
         warning(f"{msg} and {colored(COLS_TO_SHOW, 'yellow')} columns")
     else:
         info(msg)
     # Add rows to the table
     for index, row in df.head(count).iterrows():
         # Convert each row to string format, necessary to handle different data types
-        table.add_row(*[str(item) for item in row.values[:MAX_COLS_TO_SHOW]])
+        table.add_row(*[str(item) for item in row.values[:col_count]])
     rich.print(table)
 
 

@@ -6,14 +6,17 @@ import logging
 import click
 from click_repl import register_repl  # type: ignore
 
+from hckr.cli.db import db
+from hckr.cli.configure import configure
+from hckr.cli.config import config
 from hckr.cli.k8s.context import context
 from hckr.cli.k8s.namespace import namespace
 from hckr.cli.k8s.pod import pod
-from .net import net
 from .crypto.fernet import fernet
 from .data import data
 from .info import info
 from .k8s import k8s
+from .net import net
 from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.crypto import crypto
@@ -102,6 +105,14 @@ k8s.add_command(context)
 
 # NETWORK command
 cli.add_command(net)
+
+# config
+cli.add_command(config)
+cli.add_command(configure)
+
+# database
+cli.add_command(db)
+
 
 # implementing this so that if the user just uses `hckr` we show them something
 if __name__ == "__main__":

@@ -120,7 +120,7 @@ def validate_file_extension(file_path, expected_extensions):
 
 
 # validate if file extension is one of given
-def get_file_format_from_extension(file_path):
+def get_file_format_from_extension(file_path) -> FileFormat:
     if not file_path:
         return FileFormat.INVALID
     # Extract the extension from the file path

@@ -39,11 +39,17 @@ dependencies = [
     "pyarrow", # For saving data in Parquet format.
     "fastavro", # For handling Avro file format.
     "requests",
-#    "tomli",
     "packaging",
-    "kubernetes",
+    "kubernetes", # for k8s commands
     "yaspin",
-    "speedtest-cli"
+    "speedtest-cli", # for net speed command
+
+    # SQL Support
+    "sqlalchemy", # for SQL ORM
+    "psycopg2-binary", # for Postgres
+    "pymysql", # for MySQL
+#    "sqlite", # for SQLITE
+    "snowflake-sqlalchemy",  # For Snowflake
 ]
 
 [project.urls]

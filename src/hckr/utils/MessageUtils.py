@@ -1,7 +1,11 @@
 import logging
 
+import click
+import rich
 from rich import print
 import random
+
+from rich.panel import Panel
 
 
 def colored(msg, color, bold=True):
@@ -27,6 +31,37 @@ def warning(msg, color=None):
         print(f"{warn_emoji()} [bold {color}] {msg}[/bold {color}]")
     else:
         print(f"{warn_emoji()} [bold yellow]{msg}[/bold yellow]")
+
+
+def _PMsg(msg, title, desc=None):
+    if desc:
+        title = f"{title}: {desc}"
+
+    click.echo("\n")
+    rich.print(
+        Panel(
+            msg,
+            expand=True,
+            title=title,
+        )
+    )
+
+
+def PWarn(msg, title="[yellow]Warning", desc=None):
+    _PMsg(msg, title, desc)
+
+
+def PSuccess(msg, desc=None, title="[green]Success[/green]"):
+    _PMsg(msg, title, desc)
+
+
+def PInfo(msg, desc=None, title="[blue]Info"):
+    _PMsg(msg, title, desc)
+
+
+def PError(msg, desc=None, title="[red]Error"):
+    _PMsg(msg, title, desc)
+    exit(1)
 
 
 def info(msg, color=None):

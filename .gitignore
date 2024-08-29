@@ -118,3 +118,4 @@ output/
 !output/.gitkeep
 _build/
 out/
+*.sqlite
