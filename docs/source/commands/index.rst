@@ -36,6 +36,13 @@ hckr
 
 .. toctree::
    :maxdepth: 2
+   :caption: Database
+   :hidden:
+
+   database/index
+
+.. toctree::
+   :maxdepth: 2
    :caption: Hash
    :hidden:
 

@@ -36,7 +36,41 @@ def db():
 )
 @click.pass_context
 def query(ctx, config, query, num_rows=None, num_cols=None):
-    """Execute a SQL query on Snowflake and return a DataFrame or handle non-data-returning queries."""
+    """
+    This command executes a SQL query on your configured database and show you result in a table format ( in
+    ``SELECT/SHOW/DESC`` queries )
+
+    **Example Usage**:
+
+    * Running a simple query on your configured database
+
+    .. code-block:: shell
+
+        $ hckr db query "select 1 as key, 'one' as value" -c testdb_sqlite
+
+    .. table:: Output
+       :widths: auto
+
+       =====    =========
+       key      value
+       =====    =========
+       1        one
+       =====    =========
+
+
+    .. note::
+       here, we have configured ``Sqlite`` database with in a config 'testdb_sqlite'
+       using :ref:`Configuring your databases <configuration>`
+
+
+    * Additionally, we can also limit number of records and columns returned by the query using ``-nr/--num-rows`` and ``-nc/--num-cols`` options
+
+    .. code-block:: shell
+
+        $ hckr db query "select 1 as key, 'one' as value" -c testdb_sqlite -nr 1 -nc 1
+
+    **Command Reference**:
+    """
     db_url = get_db_url(section=config)
     if not db_url:
         PError("Database credentials are not properly configured.")
