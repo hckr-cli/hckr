@@ -1,15 +1,9 @@
-from configparser import NoOptionError
-
 import click
 
 from .ConfigUtils import set_config_value
 from .Constants import (
-    ConfigType,
     DBType,
-    DB_NAME,
     DB_USER,
-    CONFIG_TYPE,
-    DB_TYPE,
     DB_PASSWORD,
     DB_HOST,
     DB_PORT,
@@ -18,8 +12,6 @@ from .Constants import (
     DB_ROLE,
     DB_SCHEMA,
 )
-from ..DbUtils import _get_jdbc_url, _get_snowflake_url
-from ..MessageUtils import PError
 
 
 def configure_host(

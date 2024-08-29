@@ -4,25 +4,21 @@ import logging
 import rich
 from rich.panel import Panel
 
+from .Constants import config_path, DEFAULT_CONFIG
 from .. import MessageUtils
 from ..MessageUtils import PWarn, PSuccess, PInfo, PError
 from ...__about__ import __version__
-from .Constants import config_path, DBType, DEFAULT_CONFIG
-
-# Define the default configuration file path, this can't be changed, although user can have multile instances using
-# --config
 
 
 def load_config():
     """Load the INI configuration file."""
     config = configparser.ConfigParser()
     if not config_exists():
-        PWarn(
+        PError(
             f"Config file [magenta]{config_path}[/magenta] doesn't exists or empty,"
             f" Please run init command to create one \n "
             "[bold green]hckr config init"
         )
-        exit(1)
     config.read(config_path)
     return config
 
@@ -30,9 +26,6 @@ def load_config():
 def config_exists() -> bool:
     """
     Check if config file exists and is not empty.
-
-    :return: True if config file exists and is not empty, False otherwise.
-    :rtype: bool
     """
     if not config_path.exists():
         return False
@@ -80,20 +73,6 @@ def init_config(overwrite):
 def set_config_value(section, key, value, override=False):
     """
     Sets a configuration value in a configuration file.
-
-    :param section: The name of the configuration section.
-    :param key: The key of the configuration value.
-    :param value: The value to set.
-    :return: None
-
-    This function sets a configuration value in a configuration file. It first logs the action using the `logging.debug()` function. Then, it loads the configuration file using the `load_config()` function. If the configuration file does not have the specified section and the section is not the default section, it adds the section to the configuration file. Next, it sets the value for the key in the specified section. Finally, it writes the updated configuration file to disk.
-
-    After setting the configuration value, the function displays an information message using the `MessageUtils.info()` function.
-
-    Note: This function assumes that the `logging` and `MessageUtils` modules are imported and configured properly.
-
-    Example Usage:
-    set_config_value("database", "username", "admin")
     """
     logging.debug(f"Setting [{section}] {key} = {value}")
     config = load_config()
@@ -107,12 +86,6 @@ def set_config_value(section, key, value, override=False):
 
 
 def get_config_value(section, key) -> str:
-    """
-    :param section: The section of the configuration file where the desired value is located.
-    :param key: The key of the value within the specified section.
-    :return: The value corresponding to the specified key within the specified section of the configuration file.
-
-    """
     logging.debug(f"Getting [{section}] {key} ")
     config = load_config()
     if section != DEFAULT_CONFIG and not config.has_section(section):
@@ -134,7 +107,7 @@ def show_config(config, section):
                     else "NOTHING FOUND"
                 ),
                 expand=True,
-                title=f"\[DEFAULT]",
+                title="\[DEFAULT]",
             )
         )
     elif config.has_section(section):
@@ -162,14 +135,6 @@ def show_config(config, section):
 
 
 def list_config(section, all=False):
-    """
-    List Config
-
-    This function takes a section parameter and lists the configuration values for that section from the loaded configuration file. If the section is found in the configuration file, it will print the section name and all key-value pairs associated with that section. If the section is not found, it will display an error message.
-
-    :param section: The section name for which the configuration values should be listed.
-    :return: None
-    """
     config = load_config()
     if all:
         MessageUtils.info("Listing all config")

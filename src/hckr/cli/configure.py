@@ -1,26 +1,17 @@
 import click
 
+from ..utils.MessageUtils import PSuccess
 from ..utils.config.ConfigUtils import (
     list_config,
     set_config_value,
-    DBType,
 )
-from ..utils.MessageUtils import PSuccess
 from ..utils.config.ConfigureUtils import configure_host, configure_creds
 from ..utils.config.Constants import (
     CONFIG_TYPE,
     DB_TYPE,
     ConfigType,
     db_type_mapping,
-    DB_HOST,
-    DB_PORT,
-    DB_ACCOUNT,
-    DB_WAREHOUSE,
-    DB_SCHEMA,
-    DB_ROLE,
-    DB_PASSWORD,
     DB_NAME,
-    DB_USER,
 )
 
 
