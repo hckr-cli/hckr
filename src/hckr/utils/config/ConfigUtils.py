@@ -46,18 +46,6 @@ def config_exists() -> bool:
 
 
 def init_config(overwrite):
-    """
-    Ensures the existence of a configuration file at the specified path.
-
-    :param config_path: The path to the configuration file.
-    :return: None
-
-    This function creates a configuration file at the specified path if it does not already exist. It also creates any necessary parent directories. The configuration file is empty initially, but a default configuration is written to it using configparser. The default configuration includes a 'DEFAULT' section with a 'version' option that contains the value of the __version__ global variable.
-
-    Example Usage:
-    --------------
-    ensure_config_file(Path('/path/to/config.ini'))
-    """
     if not config_path.exists():
         config_path.parent.mkdir(parents=True, exist_ok=True)
         config_path.touch(exist_ok=True)

@@ -34,7 +34,6 @@ def get_db_url(section):
                 f"The configuration {section} is not database type\n"
                 " Please use [magenta]hckr configure db[/magenta] to configure database."
             )
-            exit(1)
         db_type = config.get(section, DB_TYPE)
 
         if db_type == DBType.SQLite:
@@ -49,7 +48,6 @@ def get_db_url(section):
 
     except NoOptionError as e:
         PError(f"Config {section} is not configured correctly\n {e}")
-        exit(1)
 
 
 def _get_jdbc_url(config, section, db_type):
@@ -65,7 +63,6 @@ def _get_jdbc_url(config, section, db_type):
     else:
         logging.debug(f"Invalid db_type: {db_type} in get_jdbc_url()")
         PError("Error occured while creating JDBC Url")
-        exit(1)
 
 
 def _get_snowflake_url(config, section):

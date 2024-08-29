@@ -1,8 +1,6 @@
 # from ..utils.MessageUtils import *
 
 import click
-import rich
-from cron_descriptor import get_description  # type: ignore
 
 from ..utils.MessageUtils import PError, PSuccess
 from ..utils.config.ConfigUtils import (
@@ -43,16 +41,25 @@ def common_config_options(func):
 @click.argument("value")
 def set(config, key, value):
     """
-    Sets a configuration value.
+    This command adds a new entry to the config file with key and value
 
-    Args:
-        config (str): The configuration instance name. Default is defined by DEFAULT_CONFIG.
-        key (str): The key of the config setting to change.
-        value (str): The value to set for the specified key.
+    **Example Usage**:
 
-    Example:
-        $ cli_tool configure set database_host 127.0.0.1
+    * Setting a value inside DEFAULT config
+    Note - DEFAULT config is parent of all other configurations and others will inherit its values if not overridden
+
+    .. code-block:: shell
+
+        $ hckr config set database_host 127.0.0.1
+
+    * Similarly, we can also set a value in specific configuration, configuration will be created if not exists
+
+    .. code-block:: shell
+        $ hckr config set database_host 127.0.0.1 --config MY_DATABASE
+
+    **Command Reference**:
     """
+
     configMessage(config)
     set_config_value(config, key, value)
     PSuccess(f"[{config}] {key} <- {value}")
@@ -62,7 +69,27 @@ def set(config, key, value):
 @common_config_options
 @click.argument("key")
 def get(config, key):
-    """Get a configuration value."""
+    """
+    This command returns value for a key in a configuration
+
+    **Example Usage**:
+
+    * Getting a value for key in DEFAULT config
+
+    Note - DEFAULT config is parent of all other configurations and others will inherit its values if not overridden
+
+    .. code-block:: shell
+
+        $ hckr config get database_host
+
+    * Similarly, we can also get a value in specific configuration
+
+    .. code-block:: shell
+        $ hckr config get database_host --config MY_DATABASE
+
+    **Command Reference**:
+    """
+
     configMessage(config)
     try:
         value = get_config_value(config, key)
@@ -81,7 +108,32 @@ def get(config, key):
     help="Whether to show all configs (default: False)",
 )
 def show(config, all):
-    """List configuration values."""
+    """
+    This command show list of all keys available in given configuration,
+    we can also see values in all configurations by providing -a/--all flag
+
+    **Example Usage**:
+
+    * Getting values for keys in DEFAULT config
+
+    Note - DEFAULT config is parent of all other configurations and others will inherit its values if not overridden
+
+    .. code-block:: shell
+
+        $ hckr config show
+
+    * Similarly, we can also get all values in a specific configuration using -c/--config flag
+
+    .. code-block:: shell
+        $ hckr config show -c MY_DATABASE
+
+    * Additionally, we can also see all configurations using -a/--all flag
+
+    .. code-block:: shell
+        $ hckr config show --all
+
+    **Command Reference**:
+    """
     list_config(config, all)
 
 
@@ -95,8 +147,22 @@ def show(config, all):
 )
 def init(overwrite):
     """
-    Initializes the configuration for the application.
+     This command Initializes the configuration for the application,
+    we can also use this option to overwrite existing config and reinitialize.
 
-    :return: None
+    **Example Usage**:
+
+    * Initialising config file .hckrcfg with default settings
+
+    .. code-block:: shell
+
+        $ hckr config init
+
+    * Similarly, we can also delete existing file and recreate using -o/--overwrite flag
+
+    .. code-block:: shell
+        $ hckr config init --overwrite
+
+    **Command Reference**:
     """
     init_config(overwrite)
