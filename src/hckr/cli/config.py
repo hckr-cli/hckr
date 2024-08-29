@@ -22,7 +22,7 @@ from ..utils.config.ConfigUtils import (
 @click.pass_context
 def config(ctx):
     """
-    Defines a command group for configuration-related commands.
+    Defines a command group for managing application configurations. This group includes commands to set, get, show, and initialize configuration values.
     """
     pass
 
