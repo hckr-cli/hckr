@@ -44,7 +44,6 @@ def set(config, key, value):
     **Example Usage**:
 
     * Setting a value inside DEFAULT config
-    Note - DEFAULT config is parent of all other configurations and others will inherit its values if not overridden
 
     .. code-block:: shell
 
@@ -53,6 +52,7 @@ def set(config, key, value):
     * Similarly, we can also set a value in specific configuration, configuration will be created if not exists
 
     .. code-block:: shell
+
         $ hckr config set database_host 127.0.0.1 --config MY_DATABASE
 
     **Command Reference**:
@@ -83,6 +83,7 @@ def get(config, key):
     * Similarly, we can also get a value in specific configuration
 
     .. code-block:: shell
+
         $ hckr config get database_host --config MY_DATABASE
 
     **Command Reference**:
@@ -123,11 +124,13 @@ def show(config, all):
     * Similarly, we can also get all values in a specific configuration using -c/--config flag
 
     .. code-block:: shell
+
         $ hckr config show -c MY_DATABASE
 
     * Additionally, we can also see all configurations using -a/--all flag
 
     .. code-block:: shell
+
         $ hckr config show --all
 
     **Command Reference**:
@@ -159,6 +162,7 @@ def init(overwrite):
     * Similarly, we can also delete existing file and recreate using -o/--overwrite flag
 
     .. code-block:: shell
+
         $ hckr config init --overwrite
 
     **Command Reference**:

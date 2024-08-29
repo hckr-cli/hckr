@@ -7,6 +7,13 @@ hckr
 
 .. toctree::
    :maxdepth: 2
+   :caption: Configure
+   :hidden:
+
+   config/index
+
+.. toctree::
+   :maxdepth: 2
    :caption: Cron
    :hidden:
 

@@ -67,7 +67,47 @@ def configure_db(
     warehouse,
     role,
 ):
-    """Configure database credentials based on the selected database type."""
+    """
+    This command configures database credentials based on the selected database type.
+
+    .. hint::
+       We currently support ``Postgres``, ``MySql``, ``Sqlite`` and  ``Snowflake``,
+       Please feel free to raise an issue or Pull request if additional databases are needed.
+
+    .. table:: Database Options mapping
+       :widths: auto
+
+       =====    =====
+       1        Postgres
+       2        Mysql
+       3        Sqlite
+       4        Snowflake
+       =====    =====
+
+    **Example Usage**:
+
+    * Setting up your database configuration using Prompt values
+
+
+    .. code-block:: shell
+
+        $ hckr configure db
+
+    .. note::
+       Using this cli will ask for information like database ``host``, ``port``, ``username`` etc. as per the database type selected.
+
+    * Similarly, we can also provide all values using flag
+
+    .. code-block:: shell
+
+        $  hckr configure db --config-name test-config --database-type 3  --database-name mydb.sqlite
+
+    .. note::
+       here, we have configured ``Sqlite`` database with a name 'mydb.sqlite' by providing both flags in command line,
+       for other database types, we will have to provide required flags accordingly.
+
+    **Command Reference**:
+    """
 
     set_config_value(config_name, CONFIG_TYPE, ConfigType.DATABASE)
     selected_db_type = db_type_mapping[database_type]
