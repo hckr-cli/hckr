@@ -37,7 +37,7 @@ def _PMsg(msg, title, desc=None):
     if desc:
         title = f"{title}: {desc}"
 
-    click.echo("\n")
+    # click.echo("\n")
     rich.print(
         Panel(
             msg,
@@ -72,13 +72,15 @@ def info(msg, color=None):
 
 
 def info_emoji():
-    emoji = random.choice(["information", "slightly_smiling_face", "smiley_cat"])
+    # emoji = random.choice(["information", "slightly_smiling_face", "smiley_cat"])
+    emoji = random.choice(["information"])
     return f":{emoji}:"
 
 
 def success_emoji():
     emoji = random.choice(
-        ["sparkles", "money_with_wings", "white_check_mark", "party_popper", "tada"]
+        # ["sparkles", "money_with_wings", "white_check_mark", "party_popper", "tada"]
+        ["white_check_mark"]
     )
     return f":{emoji}:"
 

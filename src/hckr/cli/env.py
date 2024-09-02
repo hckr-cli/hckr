@@ -1,16 +1,10 @@
+import os
+
 import click
 
 from ..utils import MessageUtils
 from ..utils.EnvUtils import list_env, set_env
-from ..utils.MessageUtils import PError, PSuccess
-from ..utils.config.ConfigUtils import (
-    init_config,
-    DEFAULT_CONFIG,
-    configMessage,
-    list_config,
-    set_config_value,
-    get_config_value,
-)
+from ..utils.MessageUtils import PSuccess, PError
 
 
 @click.group(
@@ -28,7 +22,7 @@ def env():
 @env.command()
 @click.argument('variable_name')
 @click.argument('variable_value')
-@click.option('--shell', type=click.Choice(['bash', 'zsh']), default='bash', help='Shell type')
+@click.option('--shell', type=click.Choice(['bash', 'zsh']), help='Shell type')
 def set(variable_name, variable_value, shell):
     """
     This command adds a new entry to the config file with key and value
@@ -50,39 +44,36 @@ def set(variable_name, variable_value, shell):
     **Command Reference**:
     """
     set_env(variable_name, variable_value, shell)
-    PSuccess(f"{variable_name} <- {variable_value}")
 
 
-# @env.command()
-# @click.argument("variable")
-# def get(variable):
-#     """
-#     This command returns value for a env variable
-#     **Example Usage**:
-#
-#     * Getting a value for key in DEFAULT config
-#
-#     Note - DEFAULT config is parent of all other configurations and others will inherit its values if not overridden
-#
-#     .. code-block:: shell
-#
-#         $ hckr config get database_host
-#
-#     * Similarly, we can also get a value in specific configuration
-#
-#     .. code-block:: shell
-#
-#         $ hckr config get database_host --config MY_DATABASE
-#
-#     **Command Reference**:
-#     """
-#
-#     configMessage(config)
-#     try:
-#         value = get_config_value(config, key)
-#         PSuccess(f"[{config}] {key} = {value}")
-#     except ValueError as e:
-#         PError(f"{e}")
+@env.command()
+@click.argument("variable")
+def get(variable):
+    """
+    This command returns value for a env variable
+    **Example Usage**:
+
+    * Getting a value for key in DEFAULT config
+
+    Note - DEFAULT config is parent of all other configurations and others will inherit its values if not overridden
+
+    .. code-block:: shell
+
+        $ hckr config get database_host
+
+    * Similarly, we can also get a value in specific configuration
+
+    .. code-block:: shell
+
+        $ hckr config get database_host --config MY_DATABASE
+
+    **Command Reference**:
+    """
+    value = os.environ.get(variable)
+    if value is None:
+        PError(f"Environment variable '{variable}' is not set.")
+    else:
+        PSuccess(f"[magenta]{variable}[/magenta] = [green]{value}")
 
 
 @env.command("list")
