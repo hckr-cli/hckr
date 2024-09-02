@@ -9,6 +9,7 @@ from click_repl import register_repl  # type: ignore
 from hckr.cli.db import db
 from hckr.cli.configure import configure
 from hckr.cli.config import config
+from hckr.cli.env import env
 from hckr.cli.k8s.context import context
 from hckr.cli.k8s.namespace import namespace
 from hckr.cli.k8s.pod import pod
@@ -112,6 +113,9 @@ cli.add_command(configure)
 
 # database
 cli.add_command(db)
+
+#environment
+cli.add_command(env)
 
 
 # implementing this so that if the user just uses `hckr` we show them something
