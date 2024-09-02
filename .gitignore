@@ -119,3 +119,4 @@ output/
 _build/
 out/
 *.sqlite
+!docs/source/commands/env

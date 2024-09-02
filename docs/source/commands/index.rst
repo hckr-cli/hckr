@@ -43,10 +43,18 @@ hckr
 
 .. toctree::
    :maxdepth: 2
+   :caption: Env
+   :hidden:
+
+   env/index
+
+.. toctree::
+   :maxdepth: 2
    :caption: Hash
    :hidden:
 
    hash/index
+
 
 
 .. toctree::
