@@ -109,7 +109,7 @@ def env_list(pattern, ignore_case):
 
     .. code-block:: shell
 
-        $ hckr config show --all
+        $ hckr config list --all
 
     **Command Reference**:
     """

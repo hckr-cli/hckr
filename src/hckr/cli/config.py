@@ -119,19 +119,19 @@ def list(config, all):
 
     .. code-block:: shell
 
-        $ hckr config show
+        $ hckr config list
 
     * Similarly, we can also get all values in a specific configuration using -c/--config flag
 
     .. code-block:: shell
 
-        $ hckr config show -c MY_DATABASE
+        $ hckr config list -c MY_DATABASE
 
     * Additionally, we can also see all configurations using -a/--all flag
 
     .. code-block:: shell
 
-        $ hckr config show --all
+        $ hckr config list --all
 
     **Command Reference**:
     """

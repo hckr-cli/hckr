@@ -3,7 +3,7 @@ import string
 
 from click.testing import CliRunner
 
-from hckr.cli.config import set, get, show
+from hckr.cli.config import set, get, list
 
 
 def _get_random_string(length):
@@ -40,13 +40,13 @@ def test_config_get_set_custom_config(cli_runner):
     assert f"[{_CONFIG}] {_key} = {_value}" in result.output
 
 
-def test_config_show(cli_runner):
+def test_config_list(cli_runner):
     _CONFIG = "CUSTOM"
-    result = cli_runner.invoke(show)
+    result = cli_runner.invoke(list)
     assert result.exit_code == 0
     assert "[DEFAULT]" in result.output
 
-    result = cli_runner.invoke(show, ["--all"])
+    result = cli_runner.invoke(list, ["--all"])
     assert "[DEFAULT]" in result.output
     assert "[CUSTOM]" in result.output
 
