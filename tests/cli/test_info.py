@@ -18,6 +18,7 @@ def test_info_python():
     assert result.exit_code == 0
     assert f"Python Version:" in result.output
 
+
 # TODO: failing in gh-actions
 # def test_info_shell():
 #     runner = CliRunner()
