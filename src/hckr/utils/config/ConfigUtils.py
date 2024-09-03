@@ -46,7 +46,6 @@ def init_config(overwrite):
             DEFAULT_CONFIG: {
                 "version": f"{__version__}",
                 "config_type": "default",
-                "shell_type": "bash",
             },
             "CUSTOM": {
                 "key": f"value",
