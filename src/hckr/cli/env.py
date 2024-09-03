@@ -1,14 +1,9 @@
 import os
-import platform
-import shutil
-import site
-import subprocess
-import sys
 
 import click
 
 from ..utils import MessageUtils
-from ..utils.EnvUtils import list_env, set_env, get_shell_profile
+from ..utils.EnvUtils import list_env, set_env
 from ..utils.MessageUtils import PSuccess, PError
 
 
@@ -24,12 +19,12 @@ def env():
 
 
 @env.command()
-@click.argument('variable_name')
-@click.argument('variable_value')
-@click.option('--shell', type=click.Choice(['bash', 'zsh']), help='Shell type')
+@click.argument("variable_name")
+@click.argument("variable_value")
+@click.option("--shell", type=click.Choice(["bash", "zsh"]), help="Shell type")
 def set(variable_name, variable_value, shell):
     """
-    This command adds a new entry to the your environment variables
+    This command adds a new entry to your environment variables by updating your profile ( ~/.zshrc or ~/.bashrc etc.)
 
     **Example Usage**:
 
@@ -65,11 +60,14 @@ def set(variable_name, variable_value, shell):
 @click.argument("variable")
 def get(variable):
     """
-    This command returns value for an environment variable for all available environment variables
+    This command returns value for an environment variable from all available environment variables
 
     **Example Usage**:
 
     * Getting a value for GITHUB_USER env variable
+
+    .. tip::
+       If your environment variable is not set you will get an ``error`` message.
 
     .. code-block:: shell
 
@@ -86,8 +84,8 @@ def get(variable):
 
 
 @env.command("list")
-@click.option('-p', '--pattern', required=False, default='.*')
-@click.option('-i', '--ignore-case', is_flag=True, help='Ignore case distinctions.')
+@click.option("-p", "--pattern", required=False, default=".*")
+@click.option("-i", "--ignore-case", is_flag=True, help="Ignore case distinctions.")
 def env_list(pattern, ignore_case):
     """
     This command show list all environment variables, we can also filter them by regex pattern using ``-p/--pattern`` option
@@ -117,5 +115,3 @@ def env_list(pattern, ignore_case):
     """
     MessageUtils.info("Listing all environment variables")
     list_env(pattern, ignore_case)
-
-

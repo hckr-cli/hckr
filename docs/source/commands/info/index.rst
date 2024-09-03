@@ -4,8 +4,8 @@
    contain the root `toctree` directive.
 
 
-Others
-===============
+Setup and docs info
+===================
 ``hckr`` also supports various of info/debug related commands
 
 .. tip::

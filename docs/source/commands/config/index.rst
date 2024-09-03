@@ -4,8 +4,8 @@
    contain the root `toctree` directive.
 
 
-Configuration
-===============
+Hckr Configuration
+==================
 ``hckr`` supports various of config commands which helps in configuring other commands, eg. ``hckr db`` command.
 
 .. important::

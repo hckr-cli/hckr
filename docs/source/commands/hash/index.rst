@@ -4,8 +4,8 @@
    contain the root `toctree` directive.
 
 
-Hash
-===============
+Hashing Algorithms
+==================
 ``hckr`` supports various of hashing commands.
 
 .. tip::

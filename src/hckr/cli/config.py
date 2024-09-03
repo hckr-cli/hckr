@@ -104,9 +104,9 @@ def get(config, key):
     "--all",
     default=False,
     is_flag=True,
-    help="Whether to show all configs (default: False)",
+    help="Whether to shows a list of all configs (default: False)",
 )
-def show(config, all):
+def list(config, all):
     """
     This command show list of all keys available in given configuration,
     we can also see values in all configurations by providing -a/--all flag

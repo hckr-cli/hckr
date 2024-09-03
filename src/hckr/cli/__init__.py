@@ -114,7 +114,7 @@ cli.add_command(configure)
 # database
 cli.add_command(db)
 
-#environment
+# environment
 cli.add_command(env)
 
 

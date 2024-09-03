@@ -76,4 +76,4 @@ hckr
    :caption: Info
    :hidden:
 
-   others/index
+   info/index

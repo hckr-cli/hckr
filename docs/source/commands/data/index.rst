@@ -4,8 +4,8 @@
    contain the root `toctree` directive.
 
 
-Data
-===============
+Data view and generation
+========================
 ``hckr`` supports various of data commands.
 
 .. tip::

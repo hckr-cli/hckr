@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 
-Environment
+Environment Variables
 ===============
 ``hckr`` supports various of environment commands.
 

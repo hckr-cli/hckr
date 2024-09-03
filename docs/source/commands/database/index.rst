@@ -1,4 +1,4 @@
-Database
+Database query
 ===============
 ``hckr`` supports various of database commands.
 
