@@ -37,7 +37,7 @@ def list_env(pattern, ignore_case):
 
 def get_shell_profile(shell=None):
     if shell is None:
-        logging.info(f"Shell is not provided trying to infer from current shell")
+        logging.info("Shell is not provided trying to infer from current shell")
         shell = os.path.basename(os.environ.get("SHELL"))
         MessageUtils.info(f"Inferred from current shell as [yellow]{shell}")
     home = os.path.expanduser("~")

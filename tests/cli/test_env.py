@@ -1,6 +1,6 @@
 from click.testing import CliRunner
 
-from hckr.cli.env import get, set, list_env, env_list
+from hckr.cli.env import get, set, env_list
 
 
 def test_env_set():
