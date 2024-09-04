@@ -24,8 +24,8 @@ def test_info_python():
 # TODO: failing in gh-actions
 def test_info_shell():
     runner = CliRunner()
-    result = runner.invoke(shell)
     os.environ["SHELL"] = "/bin/bash" # setting as in Github Actions, this is coming as '' even though $SHELL is present
+    result = runner.invoke(shell)
     print(result.output)
     assert result.exit_code == 0
     assert f"Current shell:" in result.output

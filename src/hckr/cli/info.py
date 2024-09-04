@@ -162,7 +162,9 @@ def shell():
     **Command Reference**:
     """
     shell_path = os.environ.get("SHELL")
-    shell_name = os.path.basename(shell_path) if shell_path else "Unknown"
+    if not shell_path:
+        PError("$SHELL variable is not set inside python env, please check if this is available.")
+    shell_name = os.path.basename(shell_path)
     PSuccess(
         f"Current shell: [magenta]{shell_name}[/magenta]\n [yellow]{get_shell_profile()}",
         title=f"Shell [green]\[{shell_name}]",
