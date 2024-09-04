@@ -162,9 +162,7 @@ def shell():
     **Command Reference**:
     """
     shell_path = os.environ.get("SHELL")
-    MessageUtils.error(shell_path)
     shell_name = os.path.basename(shell_path) if shell_path else "Unknown"
-    MessageUtils.error(shell_name)
     PSuccess(
         f"Current shell: [magenta]{shell_name}[/magenta]\n [yellow]{get_shell_profile()}",
         title=f"Shell [green]\[{shell_name}]",
