@@ -38,6 +38,16 @@ jobs:
           python -m pip install --upgrade pip 
           pip install hatch
 
+      - name: Debug environment
+        run: |
+          echo "HOME=/home/runner" >> $GITHUB_ENV
+          chsh -s /bin/bash
+          echo "Home Directory: $HOME"
+          echo "Current Shell: $SHELL"
+          python --version
+          which python
+          env
+
       - name: Run Checks
         run: make checks
 
