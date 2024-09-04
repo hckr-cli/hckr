@@ -20,12 +20,12 @@ def test_info_python():
 
 
 # TODO: failing in gh-actions
-# def test_info_shell():
-#     runner = CliRunner()
-#     result = runner.invoke(shell)
-#     print(result.output)
-#     assert result.exit_code == 0
-#     assert f"Current shell:" in result.output
+def test_info_shell():
+    runner = CliRunner()
+    result = runner.invoke(shell)
+    print(result.output)
+    assert result.exit_code == 0
+    assert f"Current shell:" in result.output
 
 
 def test_info_disk():
