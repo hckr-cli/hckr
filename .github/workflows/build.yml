@@ -38,12 +38,6 @@ jobs:
           python -m pip install --upgrade pip 
           pip install hatch
 
-#      - name: Debug environment
-#        run: |
-#          echo "HOME=/home/runner" >> $GITHUB_ENV
-#          echo "Home Directory: $HOME"
-#          ls -la $HOME | grep rc
-
       - name: Run Checks
         run: make checks
 

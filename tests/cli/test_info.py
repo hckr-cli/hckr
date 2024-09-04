@@ -10,7 +10,7 @@ def test_info_java():
     result = runner.invoke(java)
     print(result.output)
     assert result.exit_code == 0
-    assert f"Java Version:" in result.output
+    assert "Java Version:" in result.output
 
 
 def test_info_python():
@@ -18,19 +18,19 @@ def test_info_python():
     result = runner.invoke(python)
     print(result.output)
     assert result.exit_code == 0
-    assert f"Python Version:" in result.output
+    assert "Python Version:" in result.output
 
 
 # TODO: failing in gh-actions
 def test_info_shell():
     runner = CliRunner()
     os.environ["SHELL"] = (
-        "/bin/bash"  # setting as in Github Actions, this is coming as '' even though $SHELL is present
+        "/bin/bash"  # setting as in GitHub Actions, this is coming as '' even though $SHELL is present
     )
     result = runner.invoke(shell)
     print(result.output)
     assert result.exit_code == 0
-    assert f"Current shell:" in result.output
+    assert "Current shell:" in result.output
 
 
 def test_info_disk():
@@ -38,4 +38,4 @@ def test_info_disk():
     result = runner.invoke(disk)
     print(result.output)
     assert result.exit_code == 0
-    assert f"Disk Space" in result.output
+    assert "Disk Space" in result.output

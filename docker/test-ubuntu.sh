@@ -1,4 +1,6 @@
+#!/bin/bash
 IMAGE='hckr-ubuntu'
+
 
 docker build -t $IMAGE .
 
