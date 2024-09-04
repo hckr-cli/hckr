@@ -1,3 +1,5 @@
+import os
+
 from click.testing import CliRunner
 
 from hckr.cli.env import get, set, env_list
@@ -5,6 +7,9 @@ from hckr.cli.env import get, set, env_list
 
 def test_env_set():
     runner = CliRunner()
+    os.environ["SHELL"] = (
+        "/bin/bash"  # setting as in GitHub Actions, this is coming as '' even though $SHELL is present
+    )
     result = runner.invoke(set, ["KEY1", "VALUE1"])
     print(result.output)
     assert result.exit_code == 0
