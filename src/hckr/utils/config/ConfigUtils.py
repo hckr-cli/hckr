@@ -95,7 +95,7 @@ def get_config_value(section, key) -> str:
     return config.get(section, key)
 
 
-def show_config(config, section):
+def _list_config_util(config, section):
     if section == DEFAULT_CONFIG:
         rich.print(
             Panel(
@@ -111,6 +111,7 @@ def show_config(config, section):
             )
         )
     elif config.has_section(section):
+        # TODO: replace these with PSuccess()
         rich.print(
             Panel(
                 (
@@ -138,12 +139,12 @@ def list_config(section, all=False):
     config = load_config()
     if all:
         MessageUtils.info("Listing all config")
-        show_config(config, DEFAULT_CONFIG)
+        _list_config_util(config, DEFAULT_CONFIG)
         for section in config.sections():
-            show_config(config, section)
+            _list_config_util(config, section)
     else:
         configMessage(section)
-        show_config(config, section)
+        _list_config_util(config, section)
 
 
 def configMessage(config):

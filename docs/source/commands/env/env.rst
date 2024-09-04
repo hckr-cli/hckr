@@ -3,16 +3,6 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-
-Hashing Algorithms
-==================
-``hckr`` supports various of hashing commands.
-
-.. tip::
-   More commands will be added in future updates. Stay tuned!
-
-commands
----------------
-.. toctree::
-    hash
-
+.. click:: hckr.cli.env:env
+   :prog: hckr env
+   :nested: full

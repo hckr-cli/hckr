@@ -4,8 +4,8 @@
    contain the root `toctree` directive.
 
 
-Kubernetes
-===============
+Kubernetes Commands
+===================
 
 
 Kubernetes is a popular open-source container orchestration system. This section contains guides for several common Kubernetes commands you will use in daily development.

@@ -4,8 +4,8 @@
    contain the root `toctree` directive.
 
 
-Network
-===============
+Network Commands
+================
 ``hckr`` supports various of networking commands.
 
 .. tip::

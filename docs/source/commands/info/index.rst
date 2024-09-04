@@ -4,9 +4,9 @@
    contain the root `toctree` directive.
 
 
-Data view and generation
-========================
-``hckr`` supports various of data commands.
+Setup and docs info
+===================
+``hckr`` also supports various of info/debug related commands
 
 .. tip::
    More commands will be added in future updates. Stay tuned!
@@ -14,5 +14,5 @@ Data view and generation
 commands
 ---------------
 .. toctree::
-    data
+    info
 

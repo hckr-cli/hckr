@@ -4,8 +4,8 @@
    contain the root `toctree` directive.
 
 
-Cryptography
-===============
+Cryptography Utilities
+======================
 ``hckr`` supports a variety of cryptographic commands to ensure the security and authenticity of communication and data. Following are some of the commands we support:
 
 * **fernet**: It is an implementation of symmetric (also known as “secret key”) authenticated cryptography.

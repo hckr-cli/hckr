@@ -4,9 +4,9 @@
    contain the root `toctree` directive.
 
 
-Others
+Environment Variables
 ===============
-``hckr`` also supports various of info/debug related commands
+``hckr`` supports various of environment commands.
 
 .. tip::
    More commands will be added in future updates. Stay tuned!
@@ -14,5 +14,5 @@ Others
 commands
 ---------------
 .. toctree::
-    info
+    env
 

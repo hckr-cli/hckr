@@ -24,6 +24,7 @@ Commands:
   crypto     crypto commands
   data       data related commands
   db         Database commands
+  env        Environment commands
   hash       hash commands
   info       info commands
   k8s        Kubernetes commands

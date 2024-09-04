@@ -104,9 +104,9 @@ def get(config, key):
     "--all",
     default=False,
     is_flag=True,
-    help="Whether to show all configs (default: False)",
+    help="Whether to shows a list of all configs (default: False)",
 )
-def show(config, all):
+def list(config, all):
     """
     This command show list of all keys available in given configuration,
     we can also see values in all configurations by providing -a/--all flag
@@ -119,19 +119,19 @@ def show(config, all):
 
     .. code-block:: shell
 
-        $ hckr config show
+        $ hckr config list
 
     * Similarly, we can also get all values in a specific configuration using -c/--config flag
 
     .. code-block:: shell
 
-        $ hckr config show -c MY_DATABASE
+        $ hckr config list -c MY_DATABASE
 
     * Additionally, we can also see all configurations using -a/--all flag
 
     .. code-block:: shell
 
-        $ hckr config show --all
+        $ hckr config list --all
 
     **Command Reference**:
     """
