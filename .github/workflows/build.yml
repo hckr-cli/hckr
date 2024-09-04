@@ -42,10 +42,7 @@ jobs:
         run: |
           echo "HOME=/home/runner" >> $GITHUB_ENV
           echo "Home Directory: $HOME"
-          echo "Current Shell: $SHELL"
-          python --version
-          which python
-          env
+          ls -la $HOME | grep rc 
 
       - name: Run Checks
         run: make checks
