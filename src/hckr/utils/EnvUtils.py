@@ -5,6 +5,8 @@ import re
 from . import MessageUtils
 from .MessageUtils import PError, PSuccess, PWarn
 
+DEFAULT_PATTERN = ".*"
+
 
 def list_env(pattern, ignore_case):
     """List all environment variables, optionally filtering by a pattern."""
