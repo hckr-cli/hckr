@@ -6,6 +6,7 @@ from packaging import version
 from rich.panel import Panel
 
 from .MessageUtils import colored, success, warning
+from .config.Constants import SENTRY_DSN
 from ..__about__ import __version__
 import platform
 
@@ -79,7 +80,7 @@ def check_update(show_no_update=False):
 def sentry_init():
     import sentry_sdk
     sentry_sdk.init(
-        dsn="https://b549c324ba6054fc68c4e3cd3bb146e4@o4507910058213376.ingest.us.sentry.io/4507910060572672",
+        dsn=SENTRY_DSN,
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for tracing.
         traces_sample_rate=1.0,
