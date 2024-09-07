@@ -53,7 +53,8 @@ jobs:
           else
           # simple version are created manually from code edits.
           echo "This is a simple version: $VERSION, we have released it, converting into next dev."
-          hatch version patch
+          #hatch version patch
+          hatch version minor # TODO: we are using MINOR and increasing minor versions until v1.0
           hatch version dev
           fi
           NEW_VERSION=`hatch version`
