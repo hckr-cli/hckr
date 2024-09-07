@@ -13,6 +13,7 @@ from hckr.cli.env import env
 from hckr.cli.k8s.context import context
 from hckr.cli.k8s.namespace import namespace
 from hckr.cli.k8s.pod import pod
+from hckr.utils import CliUtils
 from .crypto.fernet import fernet
 from .data import data
 from .info import info
@@ -22,7 +23,7 @@ from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.crypto import crypto
 from ..cli.hash import hash
-from ..utils.CliUtils import check_update
+from ..utils.CliUtils import check_update, Info
 from ..utils.MessageUtils import warning
 
 LOGGING_LEVELS = {
@@ -33,15 +34,7 @@ LOGGING_LEVELS = {
     2: logging.DEBUG,
 }  #: a mapping of `verbose` option counts to logging levels
 
-
-# Define a format for the console handler
-class Info:
-    """An information object to pass data between CLI functions."""
-
-    def __init__(self):  # Note: This object must have an empty constructor.
-        """Create a new instance."""
-        self.verbose: int = 0
-
+CliUtils.sentry_init()
 
 # pass_info is a decorator for functions that pass 'Info' objects.
 pass_info = click.make_pass_decorator(Info, ensure=True)

@@ -57,3 +57,25 @@ def check_update(show_no_update=False):
         success(
             f"Success: You are using latest version {colored(__version__, 'magenta')}"
         )
+
+
+def sentry_init():
+    import sentry_sdk
+    sentry_sdk.init(
+        dsn="https://b549c324ba6054fc68c4e3cd3bb146e4@o4507910058213376.ingest.us.sentry.io/4507910060572672",
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for tracing.
+        traces_sample_rate=1.0,
+        # Set profiles_sample_rate to 1.0 to profile 100%
+        # of sampled transactions.
+        # We recommend adjusting this value in production.
+        profiles_sample_rate=1.0,
+    )
+
+# Define a format for the console handler
+class Info:
+    """An information object to pass data between CLI functions."""
+
+    def __init__(self):  # Note: This object must have an empty constructor.
+        """Create a new instance."""
+        self.verbose: int = 0
