@@ -10,6 +10,23 @@ from ..__about__ import __version__
 import platform
 
 
+LOGGING_LEVELS = {
+    0: logging.NOTSET,
+    # 1: logging.ERROR,
+    # 2: logging.WARN,
+    1: logging.INFO,
+    2: logging.DEBUG,
+}  #: a mapping of `verbose` option counts to logging levels
+
+# Define a format for the console handler
+class Info:
+    """An information object to pass data between CLI functions."""
+
+    def __init__(self):  # Note: This object must have an empty constructor.
+        """Create a new instance."""
+        self.verbose: int = 0
+
+
 def check_latest_version():
     current_version = __version__
     try:
@@ -71,11 +88,3 @@ def sentry_init():
         # We recommend adjusting this value in production.
         profiles_sample_rate=1.0,
     )
-
-# Define a format for the console handler
-class Info:
-    """An information object to pass data between CLI functions."""
-
-    def __init__(self):  # Note: This object must have an empty constructor.
-        """Create a new instance."""
-        self.verbose: int = 0

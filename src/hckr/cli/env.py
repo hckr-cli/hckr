@@ -1,5 +1,4 @@
 import os
-from filecmp import DEFAULT_IGNORES
 
 import click
 

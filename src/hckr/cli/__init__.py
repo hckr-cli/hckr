@@ -23,17 +23,11 @@ from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.crypto import crypto
 from ..cli.hash import hash
-from ..utils.CliUtils import check_update, Info
+from ..utils.CliUtils import check_update, Info, LOGGING_LEVELS
 from ..utils.MessageUtils import warning
 
-LOGGING_LEVELS = {
-    0: logging.NOTSET,
-    # 1: logging.ERROR,
-    # 2: logging.WARN,
-    1: logging.INFO,
-    2: logging.DEBUG,
-}  #: a mapping of `verbose` option counts to logging levels
 
+# sentry logging and monitoring
 CliUtils.sentry_init()
 
 # pass_info is a decorator for functions that pass 'Info' objects.
