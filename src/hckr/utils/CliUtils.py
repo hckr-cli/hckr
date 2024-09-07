@@ -19,6 +19,7 @@ LOGGING_LEVELS = {
     2: logging.DEBUG,
 }  #: a mapping of `verbose` option counts to logging levels
 
+
 # Define a format for the console handler
 class Info:
     """An information object to pass data between CLI functions."""
@@ -79,6 +80,7 @@ def check_update(show_no_update=False):
 
 def sentry_init():
     import sentry_sdk
+
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         # Set traces_sample_rate to 1.0 to capture 100%
