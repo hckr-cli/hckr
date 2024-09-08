@@ -47,3 +47,6 @@ DB_SCHEMA = "schema"
 DB_ACCOUNT = "account"
 DB_ROLE = "role"
 DB_WAREHOUSE = "warehouse"
+
+# SENTRY
+SENTRY_DSN = "https://b549c324ba6054fc68c4e3cd3bb146e4@o4507910058213376.ingest.us.sentry.io/4507910060572672"

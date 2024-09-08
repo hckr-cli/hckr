@@ -45,16 +45,17 @@ jobs:
           # current version
           VERSION=`hatch version`
           if [[ $VERSION == *dev* ]]; then
-          echo "This is a dev version: $VERSION"
-          hatch version dev
+              echo "This is a dev version: $VERSION"
+              hatch version dev
           elif [[ $VERSION == *rc* ]]; then
-          echo "This is a RC version: $VERSION,\n only use dev and release ones"
-          exit 1
+              echo "This is a RC version: $VERSION,\n only use dev and release ones"
+              exit 1
           else
-          # simple version are created manually from code edits.
-          echo "This is a simple version: $VERSION, we have released it, converting into next dev."
-          hatch version patch
-          hatch version dev
+              # simple version are created manually from code edits.
+              echo "This is a simple version: $VERSION, we have released it, converting into next dev."
+              #hatch version patch
+              hatch version minor # TODO: we are using MINOR and increasing minor versions until v1.0
+              hatch version dev
           fi
           NEW_VERSION=`hatch version`
           git add src/hckr/__about__.py

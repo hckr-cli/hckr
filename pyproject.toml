@@ -49,7 +49,10 @@ dependencies = [
     "psycopg2-binary", # for Postgres
     "pymysql", # for MySQL
 #    "sqlite", # for SQLITE
-    "snowflake-sqlalchemy",  # For Snowflake
+    "snowflake-sqlalchemy",  # For Snowflake,
+
+    # Error and debugging
+    "sentry-sdk"
 ]
 
 [project.urls]

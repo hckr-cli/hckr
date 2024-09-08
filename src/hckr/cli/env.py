@@ -3,7 +3,7 @@ import os
 import click
 
 from ..utils import MessageUtils
-from ..utils.EnvUtils import list_env, set_env
+from ..utils.EnvUtils import list_env, set_env, DEFAULT_PATTERN
 from ..utils.MessageUtils import PSuccess, PError
 
 
@@ -84,7 +84,7 @@ def get(variable):
 
 
 @env.command("list")
-@click.option("-p", "--pattern", required=False, default=".*")
+@click.option("-p", "--pattern", required=False, default=DEFAULT_PATTERN)
 @click.option("-i", "--ignore-case", is_flag=True, help="Ignore case distinctions.")
 def env_list(pattern, ignore_case):
     """
@@ -113,5 +113,10 @@ def env_list(pattern, ignore_case):
 
     **Command Reference**:
     """
-    MessageUtils.info("Listing all environment variables")
+    if pattern == DEFAULT_PATTERN:
+        MessageUtils.info("Listing all environment variables")
+    else:
+        MessageUtils.info(
+            f"Listing environment variables, filtering with regex pattern '[green]{pattern}[/green]'"
+        )
     list_env(pattern, ignore_case)
