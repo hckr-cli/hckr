@@ -97,47 +97,34 @@ def get_config_value(section, key) -> str:
 
 def _list_config_util(config, section):
     if section == DEFAULT_CONFIG:
-        rich.print(
-            Panel(
-                (
-                    "\n".join(
-                        [f"{key} = {value}" for key, value in config.items("DEFAULT")]
-                    )
-                    if config.items("DEFAULT")
-                    else "NOTHING FOUND"
-                ),
-                expand=True,
-                title="\[DEFAULT]",
-            )
+        PSuccess(
+            (
+                "\n".join(
+                    [f"{key} = {value}" for key, value in config.items("DEFAULT")]
+                )
+                if config.items(section)
+                else "NOTHING FOUND"
+            ),
+            title=f"[green]\[DEFAULT]",
         )
     elif config.has_section(section):
-        # TODO: replace these with PSuccess()
-        rich.print(
-            Panel(
-                (
-                    "\n".join(
-                        [f"{key} = {value}" for key, value in config.items(section)]
-                    )
-                    if config.items(section)
-                    else "NOTHING FOUND"
-                ),
-                expand=True,
-                title=f"\[{section}]",
-            )
+        PSuccess(
+            (
+                "\n".join([f"{key} = {value}" for key, value in config.items(section)])
+                if config.items(section)
+                else "NOTHING FOUND"
+            ),
+            title=f"[green]\[{section}]",
         )
     else:
-        rich.print(
-            Panel(
-                f"config {section} not found",
-                expand=True,
-                title="Error",
-            )
+        PError(
+            f"Config [yellow]\[{section}][/yellow] not found\nAvailable configs: [yellow]{config.sections()}"
         )
 
 
-def list_config(section, all=False):
+def list_config(section=DEFAULT_CONFIG, _all=False):
     config = load_config()
-    if all:
+    if _all:
         MessageUtils.info("Listing all config")
         _list_config_util(config, DEFAULT_CONFIG)
         for section in config.sections():

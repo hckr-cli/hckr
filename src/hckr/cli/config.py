@@ -97,19 +97,29 @@ def get(config, key):
         PError(f"{e}")
 
 
+@config.command("list")
+def list_configs():
+    """
+    This command show list of all keys available in all configurations
+
+    **Example Usage**:
+
+    * We can also see all configuration list command
+
+    .. code-block:: shell
+
+        $ hckr config list
+
+    **Command Reference**:
+    """
+    list_config(_all=True)
+
+
 @config.command()
 @common_config_options
-@click.option(
-    "-a",
-    "--all",
-    default=False,
-    is_flag=True,
-    help="Whether to shows a list of all configs (default: False)",
-)
-def list(config, all):
+def show(config):
     """
-    This command show list of all keys available in given configuration,
-    we can also see values in all configurations by providing -a/--all flag
+    This command show list of all keys available in the given configuration,
 
     **Example Usage**:
 
@@ -119,23 +129,17 @@ def list(config, all):
 
     .. code-block:: shell
 
-        $ hckr config list
+        $ hckr config show
 
     * Similarly, we can also get all values in a specific configuration using -c/--config flag
 
     .. code-block:: shell
 
-        $ hckr config list -c MY_DATABASE
-
-    * Additionally, we can also see all configurations using -a/--all flag
-
-    .. code-block:: shell
-
-        $ hckr config list --all
+        $ hckr config show -c MY_DATABASE
 
     **Command Reference**:
     """
-    list_config(config, all)
+    list_config(config)
 
 
 @config.command()

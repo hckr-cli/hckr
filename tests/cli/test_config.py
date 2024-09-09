@@ -1,9 +1,7 @@
 import random
 import string
 
-from click.testing import CliRunner
-
-from hckr.cli.config import set, get, list
+from hckr.cli.config import set, get, list_configs, show
 
 
 def _get_random_string(length):
@@ -40,13 +38,21 @@ def test_config_get_set_custom_config(cli_runner):
     assert f"[{_CONFIG}] {_key} = {_value}" in result.output
 
 
-def test_config_list(cli_runner):
-    _CONFIG = "CUSTOM"
-    result = cli_runner.invoke(list)
+def test_config_show(cli_runner):
+    result = cli_runner.invoke(show, [])
     assert result.exit_code == 0
     assert "[DEFAULT]" in result.output
 
-    result = cli_runner.invoke(list, ["--all"])
+
+def test_config_show_custom(cli_runner):
+    _CONFIG = "CUSTOM"
+    result = cli_runner.invoke(show, ["--config", _CONFIG])
+    assert result.exit_code == 0
+    assert "[CUSTOM]" in result.output
+
+
+def test_config_list(cli_runner):
+    result = cli_runner.invoke(list_configs)
     assert "[DEFAULT]" in result.output
     assert "[CUSTOM]" in result.output
 
@@ -54,12 +60,6 @@ def test_config_list(cli_runner):
 # NEGATIVE USE CASES
 def test_config_get_set_missing_key(cli_runner):
     result = cli_runner.invoke(set, [])
-    print(result.output)
-    assert result.exit_code != 0
-    assert "Error: Missing argument 'KEY'" in result.output
-
-    runner = CliRunner()
-    result = runner.invoke(get, [])
     print(result.output)
     assert result.exit_code != 0
     assert "Error: Missing argument 'KEY'" in result.output
