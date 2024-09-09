@@ -3,7 +3,7 @@ import click
 from ..utils.MessageUtils import PSuccess
 from ..utils.config.ConfigUtils import (
     list_config,
-    set_config_value,
+    set_config_value, set_default_config,
 )
 from ..utils.config.ConfigureUtils import configure_host, configure_creds
 from ..utils.config.Constants import (
@@ -25,6 +25,16 @@ def configure(ctx):
     Defines a command group for configuration-related commands.
     """
     pass
+
+
+@configure.command()
+@click.argument('service', type=click.Choice(
+    [str(ConfigType.DATABASE)]
+))
+@click.argument('config_name')
+def set_default(service, config_name):
+    """Set the default configuration for a service configured via ``hckr configure``"""
+    set_default_config(service, config_name)
 
 
 @configure.command("db")
@@ -55,17 +65,17 @@ def configure(ctx):
 @click.option("--warehouse", prompt=False, help="Snowflake warehouse")
 @click.option("--role", prompt=False, help="Snowflake role")
 def configure_db(
-    config_name,
-    database_type,
-    host,
-    port,
-    user,
-    password,
-    database_name,
-    schema,
-    account,
-    warehouse,
-    role,
+        config_name,
+        database_type,
+        host,
+        port,
+        user,
+        password,
+        database_name,
+        schema,
+        account,
+        warehouse,
+        role,
 ):
     """
     This command configures database credentials based on the selected database type.

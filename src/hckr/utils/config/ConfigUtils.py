@@ -44,11 +44,10 @@ def init_config(overwrite):
         config_path.touch(exist_ok=True)
         default_config = {
             DEFAULT_CONFIG: {
-                "version": f"{__version__}",
                 "config_type": "default",
             },
             "CUSTOM": {
-                "key": f"value",
+                "key": "value",
             },
         }
         config = configparser.ConfigParser()
@@ -83,6 +82,19 @@ def set_config_value(section, key, value, override=False):
     config.set(section, key, value)
     with config_path.open("w") as config_file:
         config.write(config_file)
+
+
+def set_default_config(service, config_name):
+    config = load_config()
+    if config.has_section(config_name):
+         if get_config_value(config_name, "config_type") == service:
+            set_config_value(DEFAULT_CONFIG, service, config_name)
+            PSuccess(f"[{DEFAULT_CONFIG}] [yellow]{service} = {config_name}", title="[green]Default config for "
+                                                                    f"[magenta]{service}[/magenta] configured")
+         else:
+            PError(f"Config [red]\[{config_name}][/red] is not of config type [yellow]{service}")
+    else:
+        PError(f"Config [red]\[{config_name}][/red] doesn't exists.")
 
 
 def get_config_value(section, key) -> str:

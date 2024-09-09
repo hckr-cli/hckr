@@ -1,7 +1,8 @@
 import logging
 from configparser import NoOptionError
 
-from hckr.utils.MessageUtils import PError
+from hckr.utils import MessageUtils
+from hckr.utils.MessageUtils import PError, PInfo
 from hckr.utils.config import ConfigUtils
 from hckr.utils.config.Constants import (
     ConfigType,
@@ -16,7 +17,7 @@ from hckr.utils.config.Constants import (
     DB_ACCOUNT,
     DB_WAREHOUSE,
     DB_ROLE,
-    DB_SCHEMA,
+    DB_SCHEMA, DEFAULT_CONFIG,
 )
 
 
@@ -26,6 +27,16 @@ def get_db_url(section):
     :param section: The name of the configuration section to retrieve the database URL from.
     :return: The database URL.
     """
+    # Load the default config file to get the default section if none is provided
+    if section == DEFAULT_CONFIG:
+        section = ConfigUtils.get_config_value(DEFAULT_CONFIG, ConfigType.DATABASE)
+        if section is None:
+            PError(
+                "No configuration section provided, and no default is set. Please configure a default using 'hckr "
+                "configure set-default db'.")
+        else:
+            MessageUtils.info(f"No configuration section provided, Using default set [yellow]{section}")
+
     config = ConfigUtils.load_config()
     try:
         config_type = config.get(section, CONFIG_TYPE)
