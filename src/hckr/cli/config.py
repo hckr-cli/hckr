@@ -3,7 +3,6 @@ import click
 from ..utils.MessageUtils import PError, PSuccess
 from ..utils.config.ConfigUtils import (
     init_config,
-    DEFAULT_CONFIG,
     configMessage,
     list_config,
     set_config_value,
@@ -11,7 +10,6 @@ from ..utils.config.ConfigUtils import (
     common_config_options,
     config_file_path_option,
 )
-from ..utils.config.Constants import DEFAULT_CONFIG_PATH
 
 
 @click.group(
@@ -94,7 +92,7 @@ def get(config, config_path, key):
 @config_file_path_option
 def list_configs(config_path):
     """
-    This command show list of all keys available in all configurations
+    This command show list all configurations and their key values
 
     **Example Usage**:
 

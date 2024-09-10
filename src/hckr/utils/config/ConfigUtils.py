@@ -13,7 +13,7 @@ def config_file_path_option(func):
     func = click.option(
         "-f",
         "--config-path",
-        help=f"Config file path, default: {DEFAULT_CONFIG_PATH}",
+        help=f"Config file path, default: ``~/.hckrcfg``",
         default=DEFAULT_CONFIG_PATH,
     )(func)
     return func
@@ -23,7 +23,7 @@ def common_config_options(func):
     func = click.option(
         "-c",
         "--config",
-        help=f"Config instance, default: {DEFAULT_CONFIG}",
+        help=f"Config instance, default: ``{DEFAULT_CONFIG}``",
         default=DEFAULT_CONFIG,
     )(func)
     return config_file_path_option(func)

@@ -19,7 +19,7 @@ from ..utils.config.Constants import (
 
 
 @click.group(
-    help="easy configurations for other commands (eg. db)",
+    help="Easy configurations for other commands (eg. db)",
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 @click.pass_context
@@ -35,7 +35,27 @@ def configure(ctx):
 @click.argument("service", type=click.Choice([str(ConfigType.DATABASE)]))
 @click.argument("config_name")
 def set_default(service, config_name, config_path):
-    """Set the default configuration for a service configured via ``hckr configure``"""
+    """Set the default configuration for a service configured via ``hckr configure``
+    This command configures database credentials based on the selected database type.
+
+    .. hint::
+       We currently support ``database`` default configuration which corresponds to ``hckr configure``,
+
+    **Example Usage**:
+
+    * Setting up your default database configuration in [DEFAULT] configuration
+
+
+    .. code-block:: shell
+
+        $ hckr configure set-default db MY_DB_CONFIG
+
+    .. note::
+       Please note that the ``MY_DB_CONFIG`` config must be configured before running this using ``hckr configure db`` command
+
+    **Command Reference**:
+    """
+
     set_default_config(service, config_name, config_path)
 
 
