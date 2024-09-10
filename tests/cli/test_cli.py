@@ -19,7 +19,7 @@ def test_hckr():
 
 Commands:
   config     Config commands
-  configure  easy configurations for other commands (eg.
+  configure  Easy configurations for other commands (eg.
   cron       cron commands
   crypto     crypto commands
   data       data related commands
