@@ -35,7 +35,7 @@ def db():
     required=False,
 )
 @click.pass_context
-def query(ctx, config, query, num_rows=None, num_cols=None):
+def query(ctx, config, config_path, query, num_rows=None, num_cols=None):
     """
     This command executes a SQL query on your configured database and show you result in a table format ( in
     ``SELECT/SHOW/DESC`` queries )
@@ -71,7 +71,7 @@ def query(ctx, config, query, num_rows=None, num_cols=None):
 
     **Command Reference**:
     """
-    db_url = get_db_url(section=config)
+    db_url = get_db_url(section=config, config_path=config_path)
     if not db_url:
         PError("Database credentials are not properly configured.")
 

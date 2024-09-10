@@ -8,7 +8,10 @@ from ..utils.config.ConfigUtils import (
     list_config,
     set_config_value,
     get_config_value,
+    common_config_options,
+    config_file_path_option,
 )
+from ..utils.config.Constants import DEFAULT_CONFIG_PATH
 
 
 @click.group(
@@ -23,21 +26,11 @@ def config(ctx):
     pass
 
 
-def common_config_options(func):
-    func = click.option(
-        "-c",
-        "--config",
-        help="Config instance, default: DEFAULT",
-        default=DEFAULT_CONFIG,
-    )(func)
-    return func
-
-
 @config.command()
 @common_config_options
 @click.argument("key")
 @click.argument("value")
-def set(config, key, value):
+def set(config, config_path, key, value):
     """
     This command adds a new entry to the config file with key and value
 
@@ -59,14 +52,14 @@ def set(config, key, value):
     """
 
     configMessage(config)
-    set_config_value(config, key, value)
+    set_config_value(config, config_path, key, value)
     PSuccess(f"[{config}] {key} <- {value}")
 
 
 @config.command()
 @common_config_options
 @click.argument("key")
-def get(config, key):
+def get(config, config_path, key):
     """
     This command returns value for a key in a configuration
 
@@ -91,14 +84,15 @@ def get(config, key):
 
     configMessage(config)
     try:
-        value = get_config_value(config, key)
+        value = get_config_value(config, config_path, key)
         PSuccess(f"[{config}] {key} = {value}")
     except ValueError as e:
         PError(f"{e}")
 
 
 @config.command("list")
-def list_configs():
+@config_file_path_option
+def list_configs(config_path):
     """
     This command show list of all keys available in all configurations
 
@@ -112,12 +106,12 @@ def list_configs():
 
     **Command Reference**:
     """
-    list_config(_all=True)
+    list_config(config_path, _all=True)
 
 
 @config.command()
 @common_config_options
-def show(config):
+def show(config, config_path):
     """
     This command show list of all keys available in the given configuration,
 
@@ -139,7 +133,10 @@ def show(config):
 
     **Command Reference**:
     """
-    list_config(config)
+    list_config(
+        config_path,
+        config,
+    )
 
 
 @config.command()

@@ -3,7 +3,9 @@ import click
 from ..utils.MessageUtils import PSuccess
 from ..utils.config.ConfigUtils import (
     list_config,
-    set_config_value, set_default_config,
+    set_config_value,
+    set_default_config,
+    config_file_path_option,
 )
 from ..utils.config.ConfigureUtils import configure_host, configure_creds
 from ..utils.config.Constants import (
@@ -12,6 +14,7 @@ from ..utils.config.Constants import (
     ConfigType,
     db_type_mapping,
     DB_NAME,
+    DEFAULT_CONFIG_PATH,
 )
 
 
@@ -28,13 +31,12 @@ def configure(ctx):
 
 
 @configure.command()
-@click.argument('service', type=click.Choice(
-    [str(ConfigType.DATABASE)]
-))
-@click.argument('config_name')
-def set_default(service, config_name):
+@config_file_path_option
+@click.argument("service", type=click.Choice([str(ConfigType.DATABASE)]))
+@click.argument("config_name")
+def set_default(service, config_name, config_path):
     """Set the default configuration for a service configured via ``hckr configure``"""
-    set_default_config(service, config_name)
+    set_default_config(service, config_name, config_path)
 
 
 @configure.command("db")
@@ -64,18 +66,20 @@ def set_default(service, config_name):
 @click.option("--account", prompt=False, help="Snowflake Account Id")
 @click.option("--warehouse", prompt=False, help="Snowflake warehouse")
 @click.option("--role", prompt=False, help="Snowflake role")
+@config_file_path_option
 def configure_db(
-        config_name,
-        database_type,
-        host,
-        port,
-        user,
-        password,
-        database_name,
-        schema,
-        account,
-        warehouse,
-        role,
+    config_name,
+    config_path,
+    database_type,
+    host,
+    port,
+    user,
+    password,
+    database_name,
+    schema,
+    account,
+    warehouse,
+    role,
 ):
     """
     This command configures database credentials based on the selected database type.
@@ -119,21 +123,29 @@ def configure_db(
     **Command Reference**:
     """
 
-    set_config_value(config_name, CONFIG_TYPE, ConfigType.DATABASE)
+    set_config_value(config_name, config_path, CONFIG_TYPE, ConfigType.DATABASE)
     selected_db_type = db_type_mapping[database_type]
-    set_config_value(config_name, DB_TYPE, selected_db_type)
+    set_config_value(config_name, config_path, DB_TYPE, selected_db_type)
 
-    configure_creds(config_name, password, selected_db_type, user)
+    configure_creds(config_name, config_path, password, selected_db_type, user)
 
     if not database_name:
         database_name = click.prompt("Enter the database name")
-    set_config_value(config_name, DB_NAME, database_name)
+    set_config_value(config_name, config_path, DB_NAME, database_name)
 
     configure_host(
-        account, config_name, host, port, role, schema, selected_db_type, warehouse
+        config_name,
+        config_path,
+        account,
+        host,
+        port,
+        role,
+        schema,
+        selected_db_type,
+        warehouse,
     )
 
     PSuccess(
         f"Database configuration saved successfully in config instance '{config_name}'"
     )
-    list_config(config_name)
+    list_config(config_path, config_name)

@@ -15,7 +15,15 @@ from .Constants import (
 
 
 def configure_host(
-    account, config_name, host, port, role, schema, selected_db_type, warehouse
+    config_name,
+    config_path,
+    account,
+    host,
+    port,
+    role,
+    schema,
+    selected_db_type,
+    warehouse,
 ):
     if selected_db_type in [DBType.PostgreSQL, DBType.MySQL]:
         if not host:
@@ -23,8 +31,8 @@ def configure_host(
         if not port:
             port = click.prompt("Enter the database port (e.g., 5432 for PostgreSQL)")
 
-        set_config_value(config_name, DB_HOST, host)
-        set_config_value(config_name, DB_PORT, port)
+        set_config_value(config_name, config_path, DB_HOST, host)
+        set_config_value(config_name, config_path, DB_PORT, port)
 
     elif selected_db_type == DBType.Snowflake:
         if not account:
@@ -35,13 +43,13 @@ def configure_host(
             warehouse = click.prompt("Enter the Snowflake warehouse name")
         if not role:
             role = click.prompt("Enter the Snowflake role")
-        set_config_value(config_name, DB_ACCOUNT, account)
-        set_config_value(config_name, DB_WAREHOUSE, warehouse)
-        set_config_value(config_name, DB_SCHEMA, schema)
-        set_config_value(config_name, DB_ROLE, role)
+        set_config_value(config_name, config_path, DB_ACCOUNT, account)
+        set_config_value(config_name, config_path, DB_WAREHOUSE, warehouse)
+        set_config_value(config_name, config_path, DB_SCHEMA, schema)
+        set_config_value(config_name, config_path, DB_ROLE, role)
 
 
-def configure_creds(config_name, password, selected_db_type, user):
+def configure_creds(config_name, config_path, password, selected_db_type, user):
     if selected_db_type != DBType.SQLite:
         if not user:
             user = click.prompt("Enter the database user (e.g., root)")
@@ -52,5 +60,5 @@ def configure_creds(config_name, password, selected_db_type, user):
                 confirmation_prompt=True,
             )
         # common values
-        set_config_value(config_name, DB_USER, user)
-        set_config_value(config_name, DB_PASSWORD, password)
+        set_config_value(config_name, config_path, DB_USER, user)
+        set_config_value(config_name, config_path, DB_PASSWORD, password)

@@ -32,8 +32,3 @@ def test_configure_sqlite(cli_runner, sqlite_options):
     assert result.exit_code == 0
     assert "Database configuration saved successfully" in result.output
     assert "[testdb_sqlite]" in result.output
-
-
-def test_test():
-    hi = "ashish"
-    PInfo(f"hello {hi}")

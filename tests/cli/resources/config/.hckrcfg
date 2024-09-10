@@ -1,0 +1,40 @@
+[DEFAULT]
+config_type = default
+
+[CUSTOM]
+key = value
+
+[testdb_postgres]
+config_type = database
+type = PostgreSQL
+username = user
+password = password
+database = defaultdb
+host = host.postgres
+port = 11143
+
+[testdb_mysql]
+config_type = database
+type = MySQL
+username = user
+password = password
+database = defaultdb
+host = host
+port = 123
+
+[testdb_snowflake]
+config_type = database
+type = Snowflake
+username = user
+password = password
+database = database
+account = account-id
+warehouse = COMPUTE_WH
+schema = PUBLIC
+role = ACCOUNTADMIN
+
+[testdb_sqlite]
+config_type = database
+type = SQLite
+database = /Users/ashishpatel/pateash/hckr-cli/hckr/tests/cli/resources/db/test_db.sqlite
+

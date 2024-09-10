@@ -17,11 +17,12 @@ from hckr.utils.config.Constants import (
     DB_ACCOUNT,
     DB_WAREHOUSE,
     DB_ROLE,
-    DB_SCHEMA, DEFAULT_CONFIG,
+    DB_SCHEMA,
+    DEFAULT_CONFIG,
 )
 
 
-def get_db_url(section):
+def get_db_url(section, config_path):
     """
     This function retrieves a database URL based on the given configuration section.
     :param section: The name of the configuration section to retrieve the database URL from.
@@ -29,15 +30,20 @@ def get_db_url(section):
     """
     # Load the default config file to get the default section if none is provided
     if section == DEFAULT_CONFIG:
-        section = ConfigUtils.get_config_value(DEFAULT_CONFIG, ConfigType.DATABASE)
+        section = ConfigUtils.get_config_value(
+            DEFAULT_CONFIG, config_path, ConfigType.DATABASE
+        )
         if section is None:
             PError(
                 "No configuration section provided, and no default is set. Please configure a default using 'hckr "
-                "configure set-default db'.")
+                "configure set-default db'."
+            )
         else:
-            MessageUtils.info(f"No configuration section provided, Using default set [yellow]{section}")
+            MessageUtils.info(
+                f"No configuration section provided, Using default set [yellow]{section}"
+            )
 
-    config = ConfigUtils.load_config()
+    config = ConfigUtils.load_config(config_path)
     try:
         config_type = config.get(section, CONFIG_TYPE)
         if config_type != ConfigType.DATABASE:
