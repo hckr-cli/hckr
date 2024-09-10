@@ -1,8 +1,7 @@
 from hckr.cli.configure import configure_db, set_default
 from hckr.cli.db import query
 from hckr.utils.config.ConfigUtils import list_config
-from testUtils import TEST_HCKRCFG_FILE
-from tests.testUtils import _get_args_with_config_path
+from tests.testUtils import _get_args_with_config_path, TEST_HCKRCFG_FILE
 
 
 def test_configure_postgres(cli_runner, postgres_options):
