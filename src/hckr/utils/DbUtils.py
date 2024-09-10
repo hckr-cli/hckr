@@ -1,10 +1,10 @@
 import logging
 from configparser import NoOptionError
-import pandas as pd
-from sqlalchemy import create_engine, text
-from sqlalchemy.exc import SQLAlchemyError
 
+import pandas as pd
 from sqlalchemy import create_engine
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 
 from hckr.utils import MessageUtils
 from hckr.utils.DataUtils import print_df_as_table

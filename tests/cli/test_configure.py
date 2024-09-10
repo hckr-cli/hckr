@@ -1,8 +1,6 @@
-from cli.test_db import _run_query_and_assert
 from hckr.cli.configure import configure_db, set_default
 from hckr.cli.db import query
 from hckr.utils.config.ConfigUtils import list_config
-from hckr.utils.config.Constants import DEFAULT_CONFIG_PATH
 from testUtils import TEST_HCKRCFG_FILE
 from tests.testUtils import _get_args_with_config_path
 
