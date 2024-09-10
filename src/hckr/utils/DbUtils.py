@@ -117,6 +117,7 @@ def _get_snowflake_url(config, section):
         f"?warehouse={warehouse}&role={role}"
     )
 
+
 def execute_query(db_url, query, num_rows, num_cols):
     try:
         query = query.strip()

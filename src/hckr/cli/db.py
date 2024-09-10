@@ -13,6 +13,7 @@ warnings.filterwarnings("ignore", category=SAWarning, message=".*flatten.*")
 
 # Your SQLAlchemy code
 
+
 @click.group(
     help="Database commands",
     context_settings={"help_option_names": ["-h", "--help"]},
@@ -78,9 +79,6 @@ def query(ctx, config, config_path, query, num_rows=None, num_cols=None):
     db_url = get_db_url(section=config, config_path=config_path)
     if not db_url:
         PError("Database credentials are not properly configured.")
-    with yaspin(
-        text="Running query...", color="green", timer=True
-    ) as spinner:
+    with yaspin(text="Running query...", color="green", timer=True) as spinner:
         execute_query(db_url, query, num_rows, num_cols)
         spinner.ok("✔")
-
