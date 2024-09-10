@@ -99,7 +99,6 @@ def set_config_value(section, config_path, key, value):
     if not config.has_section(section) and section != DEFAULT_CONFIG:
         PInfo(f"Config [yellow]\[{section}][/yellow] doesn't exist, Adding a new one")
         config.add_section(section)
-    # scgcunb-iub34911
     config.set(section, key, value)
     with Path(config_path).open("w") as config_file:
         config.write(config_file)

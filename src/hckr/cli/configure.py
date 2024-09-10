@@ -14,7 +14,6 @@ from ..utils.config.Constants import (
     ConfigType,
     db_type_mapping,
     DB_NAME,
-    DEFAULT_CONFIG_PATH,
 )
 
 
