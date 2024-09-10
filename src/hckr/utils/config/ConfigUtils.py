@@ -32,7 +32,6 @@ def common_config_options(func):
 def load_config(config_path: str):
     """Load the INI configuration file."""
     config = configparser.ConfigParser()
-    # config_path = Path(config_path)
     if not config_exists(config_path):
         PError(
             f"Config file [magenta]{config_path}[/magenta] doesn't exists or empty,"
@@ -43,7 +42,7 @@ def load_config(config_path: str):
     return config
 
 
-def config_exists(config_path: Path) -> bool:
+def config_exists(config_path) -> bool:
     """
     Check if config file exists and is not empty.
     """

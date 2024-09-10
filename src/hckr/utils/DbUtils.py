@@ -4,6 +4,7 @@ from configparser import NoOptionError
 from hckr.utils import MessageUtils
 from hckr.utils.MessageUtils import PError, PInfo
 from hckr.utils.config import ConfigUtils
+from hckr.utils.config.ConfigUtils import list_config
 from hckr.utils.config.Constants import (
     ConfigType,
     DBType,
@@ -44,15 +45,19 @@ def get_db_url(section, config_path):
             )
 
     config = ConfigUtils.load_config(config_path)
+    if not config.has_section(section):
+        PError(
+            f"Config [yellow]{section}[/yellow] is not present in the config file [magenta]{config_path}"
+        )
+
     try:
         config_type = config.get(section, CONFIG_TYPE)
         if config_type != ConfigType.DATABASE:
             PError(
-                f"The configuration {section} is not database type\n"
+                f"The configuration [yellow]{section}[/yellow] is not database type\n"
                 " Please use [magenta]hckr configure db[/magenta] to configure database."
             )
         db_type = config.get(section, DB_TYPE)
-
         if db_type == DBType.SQLite:
             database_name = config.get(section, DB_NAME)
             return f"sqlite:///{database_name}"

@@ -1,8 +1,8 @@
 import random
 import string
 
-from conftest import TEST_HCKRCFG_FILE, _get_args_with_config_path
 from hckr.cli.config import set, get, list_configs, show
+from ..testUtils import _get_args_with_config_path
 
 
 def _get_random_string(length):

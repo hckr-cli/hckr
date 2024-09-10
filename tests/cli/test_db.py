@@ -2,10 +2,13 @@ from click.testing import CliRunner
 
 from hckr.cli.db import query
 from hckr.cli.configure import configure_db
+from testUtils import _get_args_with_config_path
 
 
 def _run_query_and_assert(cli_runner, sql_query, value_assert=None):
-    result = cli_runner.invoke(query, [sql_query, "-c", "testdb_sqlite"])
+    result = cli_runner.invoke(
+        query, _get_args_with_config_path([sql_query, "-c", "testdb_sqlite"])
+    )
     print(result.output)
     if value_assert:
         assert value_assert in result.output
@@ -42,17 +45,30 @@ def test_db_query_sqlite(cli_runner, sqlite_options):
 # NEGATIVE USE CASES
 
 
-def test_db_query_missing_or_invalid_config():
+def test_db_query_missing_config():
     runner = CliRunner()
-    result = runner.invoke(query, ["select 1"])
+    result = runner.invoke(
+        query, _get_args_with_config_path(["select 1", "-c", "INVALID"])
+    )
     print(result.output)
     assert result.exit_code != 0
-    assert "The configuration DEFAULT is not database type" in result.output
+    assert "Config INVALID is not present in the config file" in result.output
+
+
+def test_db_query_invalid_config():
+    runner = CliRunner()
+    result = runner.invoke(
+        query, _get_args_with_config_path(["select 1", "-c", "CUSTOM"])
+    )
+    # print(result.output)
+    print(result.stdout)
+    assert result.exit_code != 0
+    assert "The configuration CUSTOM is not database type" in result.output
 
 
 def test_db_query_missing_query():
     runner = CliRunner()
-    result = runner.invoke(query)
+    result = runner.invoke(query, _get_args_with_config_path([]))
     print(result.output)
     assert result.exit_code != 0
     assert "Error: Missing argument 'QUERY'" in result.output
