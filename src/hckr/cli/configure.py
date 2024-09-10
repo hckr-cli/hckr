@@ -53,6 +53,10 @@ def set_default(service, config_name, config_path):
     .. note::
        Please note that the ``MY_DB_CONFIG`` config must be configured before running this using ``hckr configure db`` command
 
+    .. important:: This command will add an entry in ``[DEFAULT]`` configuration like ``database = MY_DB_CONFIG`` and
+        if you run any database command like ``hckr db query <QUERY>`` without providing configuration using
+        ``-c/--config`` flag this config will be used.
+
     **Command Reference**:
     """
 
