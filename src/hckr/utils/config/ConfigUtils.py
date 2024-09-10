@@ -108,7 +108,7 @@ def set_config_value(section, config_path, key, value):
 def set_default_config(service, config_name, config_path):
     config = load_config(config_path=config_path)
     if config.has_section(config_name):
-        if get_config_value(config_name, config_path,"config_type") == service:
+        if get_config_value(config_name, config_path, "config_type") == service:
             set_config_value(DEFAULT_CONFIG, config_path, service, config_name)
             PSuccess(
                 f"[{DEFAULT_CONFIG}] [yellow]{service} = {config_name}",
