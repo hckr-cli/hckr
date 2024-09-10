@@ -1,5 +1,9 @@
+from cli.test_db import _run_query_and_assert
 from hckr.cli.configure import configure_db, set_default
 from hckr.cli.db import query
+from hckr.utils.config.ConfigUtils import list_config
+from hckr.utils.config.Constants import DEFAULT_CONFIG_PATH
+from testUtils import TEST_HCKRCFG_FILE
 from tests.testUtils import _get_args_with_config_path
 
 
@@ -52,11 +56,13 @@ def test_configure_set_default_db(cli_runner, sqlite_options):
     # query with default config
     result = cli_runner.invoke(query, _get_args_with_config_path(["select 1"]))
     print(result.output)
+    list_config(TEST_HCKRCFG_FILE, _all=True)
     assert result.exit_code == 0
     assert (
         "Default database config testdb_sqlite inferred from [DEFAULT] config"
         in result.output
     )
+
 
 
 def test_configure_set_default_missing_arg(cli_runner):
