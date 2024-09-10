@@ -64,7 +64,6 @@ def test_configure_set_default_db(cli_runner, sqlite_options):
     )
 
 
-
 def test_configure_set_default_missing_arg(cli_runner):
     result = cli_runner.invoke(set_default, _get_args_with_config_path([]))
     print(result.output)
