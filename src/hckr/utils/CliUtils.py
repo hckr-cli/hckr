@@ -26,7 +26,7 @@ class Info:
 
     def __init__(self):  # Note: This object must have an empty constructor.
         """Create a new instance."""
-        self.verbose: int = 0
+        self.verbose = 0
 
 
 def check_latest_version():

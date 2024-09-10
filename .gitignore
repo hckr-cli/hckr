@@ -120,3 +120,6 @@ _build/
 out/
 *.sqlite
 !docs/source/commands/env
+
+# config
+.hckrcfg

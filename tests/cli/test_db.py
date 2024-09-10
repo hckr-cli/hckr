@@ -2,7 +2,7 @@ from click.testing import CliRunner
 
 from hckr.cli.db import query
 from hckr.cli.configure import configure_db
-from testUtils import _get_args_with_config_path
+from tests.testUtils import _get_args_with_config_path
 
 
 def _run_query_and_assert(cli_runner, sql_query, value_assert=None):
