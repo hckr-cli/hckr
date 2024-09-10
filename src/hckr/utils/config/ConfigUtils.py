@@ -31,6 +31,7 @@ def common_config_options(func):
 
 def load_config(config_path: str):
     """Load the INI configuration file."""
+    logging.debug(f"Loading config from {config_path}")
     config = configparser.ConfigParser()
     if not config_exists(config_path):
         PError(
@@ -96,9 +97,9 @@ def set_config_value(section, config_path, key, value):
     logging.debug(f"Setting [{section}] {key} = {value}")
     config = load_config(config_path)
     if not config.has_section(section) and section != DEFAULT_CONFIG:
-        PInfo(f"Config \[{section}] doesn't exist, Adding")
+        PInfo(f"Config [yellow]\[{section}][/yellow] doesn't exist, Adding a new one")
         config.add_section(section)
-
+    # scgcunb-iub34911
     config.set(section, key, value)
     with Path(config_path).open("w") as config_file:
         config.write(config_file)
@@ -107,8 +108,8 @@ def set_config_value(section, config_path, key, value):
 def set_default_config(service, config_name, config_path):
     config = load_config(config_path=config_path)
     if config.has_section(config_name):
-        if get_config_value(config_name, "config_type") == service:
-            set_config_value(DEFAULT_CONFIG, service, config_name)
+        if get_config_value(config_name, config_path,"config_type") == service:
+            set_config_value(DEFAULT_CONFIG, config_path, service, config_name)
             PSuccess(
                 f"[{DEFAULT_CONFIG}] [yellow]{service} = {config_name}",
                 title="[green]Default config for "
@@ -126,9 +127,11 @@ def get_config_value(section, config_path, key) -> str:
     logging.debug(f"Getting [{section}] {key} ")
     config = load_config(config_path)
     if section != DEFAULT_CONFIG and not config.has_section(section):
-        raise ValueError(f"Section '{section}' not found in the configuration.")
+        PError(f"config '{section}' not found in the configuration.")
+        # raise ValueError(f"Section '{section}' not found in the configuration.")
     if not config.has_option(section, key):
-        raise ValueError(f"Key '{key}' not found in section '{section}'.")
+        PError(f"Key '{key}' not found in config '{section}'.")
+        # raise ValueError(f"Key '{key}' not found in section '{section}'.")
     return config.get(section, key)
 
 

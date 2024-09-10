@@ -4,7 +4,7 @@ from configparser import NoOptionError
 from hckr.utils import MessageUtils
 from hckr.utils.MessageUtils import PError, PInfo
 from hckr.utils.config import ConfigUtils
-from hckr.utils.config.ConfigUtils import list_config
+from hckr.utils.config.ConfigUtils import list_config, load_config
 from hckr.utils.config.Constants import (
     ConfigType,
     DBType,
@@ -31,18 +31,24 @@ def get_db_url(section, config_path):
     """
     # Load the default config file to get the default section if none is provided
     if section == DEFAULT_CONFIG:
-        section = ConfigUtils.get_config_value(
-            DEFAULT_CONFIG, config_path, ConfigType.DATABASE
-        )
-        if section is None:
+        MessageUtils.info("No config is provided, trying to fetch [yellow]default database config[/yellow]"
+                          " from [magenta]\[DEFAULT][/magenta] config")
+        config = load_config(config_path)
+        if not config.has_option(DEFAULT_CONFIG, str(ConfigType.DATABASE)):
+            list_config(config_path, DEFAULT_CONFIG)
             PError(
-                "No configuration section provided, and no default is set. Please configure a default using 'hckr "
-                "configure set-default db'."
+                f"No configuration provided, and no default is set inside [yellow]{DEFAULT_CONFIG}[/yellow] config"
+                "\nPlease provide a configuration using [yellow]-c/--config[/yellow] "
+                "or configure a default using [magenta]hckr configure set-default db"
             )
         else:
             MessageUtils.info(
                 f"No configuration section provided, Using default set [yellow]{section}"
             )
+        section = ConfigUtils.get_config_value(
+            DEFAULT_CONFIG, config_path, ConfigType.DATABASE
+        )
+        MessageUtils.info(f"Default database config '{section}' inferred from [DEFAULT] config")
 
     config = ConfigUtils.load_config(config_path)
     if not config.has_section(section):
