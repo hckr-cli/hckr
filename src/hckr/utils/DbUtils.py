@@ -1,6 +1,7 @@
 import logging
 from configparser import NoOptionError
 
+import click
 import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy import text
@@ -153,4 +154,5 @@ def execute_query(db_url, query, num_rows, num_cols):
                 else:
                     PInfo(query, f"[Success] Rows affected: {result.rowcount}")
     except SQLAlchemyError as e:
-        PError(f"Error executing query: {e}")
+        click.echo("\n")
+        PError(f"Error executing query: \n[red]{e}")

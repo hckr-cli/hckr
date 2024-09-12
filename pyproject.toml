@@ -52,7 +52,7 @@ dependencies = [
     "snowflake-sqlalchemy",  # For Snowflake,
 
     # Error and debugging
-    "sentry-sdk"
+    "sentry-sdk",
 ]
 
 [project.urls]
