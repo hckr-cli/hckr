@@ -4,6 +4,8 @@ from ..utils.MessageUtils import PSuccess
 from ..utils.config.ConfigUtils import (
     list_config,
     set_config_value,
+    set_default_config,
+    config_file_path_option,
 )
 from ..utils.config.ConfigureUtils import configure_host, configure_creds
 from ..utils.config.Constants import (
@@ -16,7 +18,7 @@ from ..utils.config.Constants import (
 
 
 @click.group(
-    help="easy configurations for other commands (eg. db)",
+    help="Easy configurations for other commands (eg. db)",
     context_settings={"help_option_names": ["-h", "--help"]},
 )
 @click.pass_context
@@ -25,6 +27,39 @@ def configure(ctx):
     Defines a command group for configuration-related commands.
     """
     pass
+
+
+@configure.command()
+@config_file_path_option
+@click.argument("service", type=click.Choice([str(ConfigType.DATABASE)]))
+@click.argument("config_name")
+def set_default(service, config_name, config_path):
+    """Set the default configuration for a service configured via ``hckr configure``
+    This command configures database credentials based on the selected database type.
+
+    .. hint::
+       We currently support ``database`` default configuration which corresponds to ``hckr configure``,
+
+    **Example Usage**:
+
+    * Setting up your default database configuration in [DEFAULT] configuration
+
+
+    .. code-block:: shell
+
+        $ hckr configure set-default db MY_DB_CONFIG
+
+    .. note::
+       Please note that the ``MY_DB_CONFIG`` config must be configured before running this using ``hckr configure db`` command
+
+    .. important:: This command will add an entry in ``[DEFAULT]`` configuration like ``database = MY_DB_CONFIG`` and
+        if you run any database command like ``hckr db query <QUERY>`` without providing configuration using
+        ``-c/--config`` flag this config will be used.
+
+    **Command Reference**:
+    """
+
+    set_default_config(service, config_name, config_path)
 
 
 @configure.command("db")
@@ -54,8 +89,10 @@ def configure(ctx):
 @click.option("--account", prompt=False, help="Snowflake Account Id")
 @click.option("--warehouse", prompt=False, help="Snowflake warehouse")
 @click.option("--role", prompt=False, help="Snowflake role")
+@config_file_path_option
 def configure_db(
     config_name,
+    config_path,
     database_type,
     host,
     port,
@@ -109,21 +146,29 @@ def configure_db(
     **Command Reference**:
     """
 
-    set_config_value(config_name, CONFIG_TYPE, ConfigType.DATABASE)
+    set_config_value(config_name, config_path, CONFIG_TYPE, ConfigType.DATABASE)
     selected_db_type = db_type_mapping[database_type]
-    set_config_value(config_name, DB_TYPE, selected_db_type)
+    set_config_value(config_name, config_path, DB_TYPE, selected_db_type)
 
-    configure_creds(config_name, password, selected_db_type, user)
+    configure_creds(config_name, config_path, password, selected_db_type, user)
 
     if not database_name:
         database_name = click.prompt("Enter the database name")
-    set_config_value(config_name, DB_NAME, database_name)
+    set_config_value(config_name, config_path, DB_NAME, database_name)
 
     configure_host(
-        account, config_name, host, port, role, schema, selected_db_type, warehouse
+        config_name,
+        config_path,
+        account,
+        host,
+        port,
+        role,
+        schema,
+        selected_db_type,
+        warehouse,
     )
 
     PSuccess(
         f"Database configuration saved successfully in config instance '{config_name}'"
     )
-    list_config(config_name)
+    list_config(config_path, config_name)

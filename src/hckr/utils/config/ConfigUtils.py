@@ -1,19 +1,39 @@
 import configparser
 import logging
+from pathlib import Path
 
-import rich
-from rich.panel import Panel
+import click
 
-from .Constants import config_path, DEFAULT_CONFIG
+from .Constants import DEFAULT_CONFIG, DEFAULT_CONFIG_PATH
 from .. import MessageUtils
 from ..MessageUtils import PWarn, PSuccess, PInfo, PError
-from ...__about__ import __version__
 
 
-def load_config():
+def config_file_path_option(func):
+    func = click.option(
+        "-f",
+        "--config-path",
+        help=f"Config file path, default: ``~/.hckrcfg``",
+        default=DEFAULT_CONFIG_PATH,
+    )(func)
+    return func
+
+
+def common_config_options(func):
+    func = click.option(
+        "-c",
+        "--config",
+        help=f"Config instance, default: ``{DEFAULT_CONFIG}``",
+        default=DEFAULT_CONFIG,
+    )(func)
+    return config_file_path_option(func)
+
+
+def load_config(config_path: str):
     """Load the INI configuration file."""
+    logging.debug(f"Loading config from {config_path}")
     config = configparser.ConfigParser()
-    if not config_exists():
+    if not config_exists(config_path):
         PError(
             f"Config file [magenta]{config_path}[/magenta] doesn't exists or empty,"
             f" Please run init command to create one \n "
@@ -23,32 +43,32 @@ def load_config():
     return config
 
 
-def config_exists() -> bool:
+def config_exists(config_path) -> bool:
     """
     Check if config file exists and is not empty.
     """
-    if not config_path.exists():
+    _config_path = Path(config_path)
+    if not _config_path.exists():
         return False
-    if config_path.stat().st_size == 0:
+    if _config_path.stat().st_size == 0:
         return False
-    with config_path.open("r") as file:
+    with _config_path.open("r") as file:
         content = file.read().strip()
         if not content:
             return False
     return True
 
 
-def init_config(overwrite):
+def init_config(config_path, overwrite):
     if not config_path.exists():
         config_path.parent.mkdir(parents=True, exist_ok=True)
         config_path.touch(exist_ok=True)
         default_config = {
             DEFAULT_CONFIG: {
-                "version": f"{__version__}",
                 "config_type": "default",
             },
             "CUSTOM": {
-                "key": f"value",
+                "key": "value",
             },
         }
         config = configparser.ConfigParser()
@@ -62,7 +82,7 @@ def init_config(overwrite):
             "[yellow]Deleting existing file"
         )
         config_path.unlink()
-        init_config(overwrite=False)
+        init_config(config_path, overwrite=False)
     else:
         PWarn(
             f"Config file already exists at [yellow]{config_path}[/yellow],"
@@ -70,74 +90,80 @@ def init_config(overwrite):
         )
 
 
-def set_config_value(section, key, value, override=False):
+def set_config_value(section, config_path, key, value):
     """
     Sets a configuration value in a configuration file.
     """
     logging.debug(f"Setting [{section}] {key} = {value}")
-    config = load_config()
+    config = load_config(config_path)
     if not config.has_section(section) and section != DEFAULT_CONFIG:
-        PInfo(f"Config \[{section}] doesn't exist, Adding")
+        PInfo(f"Config [yellow]\[{section}][/yellow] doesn't exist, Adding a new one")
         config.add_section(section)
-
     config.set(section, key, value)
-    with config_path.open("w") as config_file:
+    with Path(config_path).open("w") as config_file:
         config.write(config_file)
 
 
-def get_config_value(section, key) -> str:
+def set_default_config(service, config_name, config_path):
+    config = load_config(config_path=config_path)
+    if config.has_section(config_name):
+        if get_config_value(config_name, config_path, "config_type") == service:
+            set_config_value(DEFAULT_CONFIG, config_path, service, config_name)
+            PSuccess(
+                f"[{DEFAULT_CONFIG}] [yellow]{service} = {config_name}",
+                title="[green]Default config for "
+                f"[magenta]{service}[/magenta] configured",
+            )
+        else:
+            PError(
+                f"Config [red]\[{config_name}][/red] is not of config type [yellow]{service}"
+            )
+    else:
+        PError(f"Config [red]\[{config_name}][/red] doesn't exists.")
+
+
+def get_config_value(section, config_path, key) -> str:
     logging.debug(f"Getting [{section}] {key} ")
-    config = load_config()
+    config = load_config(config_path)
     if section != DEFAULT_CONFIG and not config.has_section(section):
-        raise ValueError(f"Section '{section}' not found in the configuration.")
+        PError(f"config '{section}' not found in the configuration.")
+        # raise ValueError(f"Section '{section}' not found in the configuration.")
     if not config.has_option(section, key):
-        raise ValueError(f"Key '{key}' not found in section '{section}'.")
+        PError(f"Key '{key}' not found in config '{section}'.")
+        # raise ValueError(f"Key '{key}' not found in section '{section}'.")
     return config.get(section, key)
 
 
 def _list_config_util(config, section):
     if section == DEFAULT_CONFIG:
-        rich.print(
-            Panel(
-                (
-                    "\n".join(
-                        [f"{key} = {value}" for key, value in config.items("DEFAULT")]
-                    )
-                    if config.items("DEFAULT")
-                    else "NOTHING FOUND"
-                ),
-                expand=True,
-                title="\[DEFAULT]",
-            )
+        PSuccess(
+            (
+                "\n".join(
+                    [f"{key} = {value}" for key, value in config.items("DEFAULT")]
+                )
+                if config.items(section)
+                else "NOTHING FOUND"
+            ),
+            title=f"[green]\[DEFAULT]",
         )
     elif config.has_section(section):
-        # TODO: replace these with PSuccess()
-        rich.print(
-            Panel(
-                (
-                    "\n".join(
-                        [f"{key} = {value}" for key, value in config.items(section)]
-                    )
-                    if config.items(section)
-                    else "NOTHING FOUND"
-                ),
-                expand=True,
-                title=f"\[{section}]",
-            )
+        PSuccess(
+            (
+                "\n".join([f"{key} = {value}" for key, value in config.items(section)])
+                if config.items(section)
+                else "NOTHING FOUND"
+            ),
+            title=f"[green]\[{section}]",
         )
     else:
-        rich.print(
-            Panel(
-                f"config {section} not found",
-                expand=True,
-                title="Error",
-            )
+        PError(
+            f"Config [yellow]\[{section}][/yellow] not found\nAvailable configs: [yellow]{config.sections()}"
         )
 
 
-def list_config(section, all=False):
-    config = load_config()
-    if all:
+def list_config(config_path, section=DEFAULT_CONFIG, _all=False):
+    config = load_config(config_path)
+    if _all:
         MessageUtils.info("Listing all config")
         _list_config_util(config, DEFAULT_CONFIG)
         for section in config.sections():

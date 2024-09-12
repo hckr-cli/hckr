@@ -1,7 +1,7 @@
 from enum import Enum
 from pathlib import Path
 
-config_path = Path.home() / ".hckrcfg"
+DEFAULT_CONFIG_PATH = Path.home() / ".hckrcfg"
 DEFAULT_CONFIG = "DEFAULT"
 
 

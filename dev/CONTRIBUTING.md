@@ -35,3 +35,7 @@ pre-commit install
 
 ## Homebrew formulae
 Please find contributing guide for `Homebrew formulae` here [HOMEBREW.md](HOMEBREW.md)
+
+
+## Senty integration -
+[Sentry console](https://hckr-cli.sentry.io/projects/hckr/?project=4507910060572672)

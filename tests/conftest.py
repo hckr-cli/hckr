@@ -7,9 +7,7 @@ import pytest
 from click.testing import CliRunner
 
 from hckr.utils.config.ConfigUtils import init_config
-
-current_directory = Path(__file__).parent
-SQLITE_DB = current_directory / "cli" / "resources" / "db" / "test_db.sqlite"
+from .testUtils import SQLITE_DB, TEST_HCKRCFG_FILE, _get_args_with_config_path
 
 
 @pytest.fixture(scope="package")
@@ -19,81 +17,89 @@ def local_sqlite_db():
 
 @pytest.fixture(scope="package")
 def cli_runner():
-    init_config(overwrite=True)  # recreate the config file
+    init_config(TEST_HCKRCFG_FILE, overwrite=True)  # recreate the config file
     return CliRunner()
 
 
 @pytest.fixture(scope="package")
 def postgres_options():
-    return [
-        "--config-name",
-        "testdb_postgres",
-        "--database-type",
-        "1",
-        "--user",
-        "user",
-        "--password",
-        "password",
-        "--host",
-        "host.postgres",
-        "--port",
-        "11143",
-        "--database-name",
-        "defaultdb",
-    ]
+    return _get_args_with_config_path(
+        [
+            "--config-name",
+            "testdb_postgres",
+            "--database-type",
+            "1",
+            "--user",
+            "user",
+            "--password",
+            "password",
+            "--host",
+            "host.postgres",
+            "--port",
+            "11143",
+            "--database-name",
+            "defaultdb",
+        ]
+    )
 
 
 @pytest.fixture(scope="package")
 def mysql_options():
-    return [
-        "--config-name",
-        "testdb_mysql",
-        "--database-type",
-        "2",
-        "--user",
-        "user",
-        "--password",
-        "password",
-        "--host",
-        "host",
-        "--port",
-        "123",
-        "--database-name",
-        "defaultdb",
-    ]
+    return _get_args_with_config_path(
+        [
+            "--config-name",
+            "testdb_mysql",
+            "--database-type",
+            "2",
+            "--user",
+            "user",
+            "--password",
+            "password",
+            "--host",
+            "host",
+            "--port",
+            "123",
+            "--database-name",
+            "defaultdb",
+        ]
+    )
 
 
 @pytest.fixture(scope="package")
 def snowflake_options():
-    return [
-        "--config-name",
-        "testdb_snowflake",
-        "--database-type",
-        "4",
-        "--user",
-        "user",
-        "--password",
-        "password",
-        "--database-name",
-        "database",
-        "--schema",
-        "PUBLIC",
-        "--account",
-        "account-id",
-        "--warehouse",
-        "COMPUTE_WH",
-        "--role",
-        "ACCOUNTADMIN",
-    ]
+    return _get_args_with_config_path(
+        [
+            "--config-name",
+            "testdb_snowflake",
+            "--database-type",
+            "4",
+            "--user",
+            "user",
+            "--password",
+            "password",
+            "--database-name",
+            "database",
+            "--schema",
+            "PUBLIC",
+            "--account",
+            "account-id",
+            "--warehouse",
+            "COMPUTE_WH",
+            "--role",
+            "ACCOUNTADMIN",
+        ]
+    )
 
 
 @pytest.fixture(scope="package")
 def sqlite_options():
-    return [
-        "--config-name",
-        "testdb_sqlite",
-        "--database-type",
-        "3",
-        "--database-name",
-        f"{SQLITE_DB}",
-    ]
+    return _get_args_with_config_path(
+        [
+            "--config-name",
+            "testdb_sqlite",
+            "--database-type",
+            "3",
+            "--database-name",
+            f"{SQLITE_DB}",
+        ]
+    )

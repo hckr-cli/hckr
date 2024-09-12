@@ -3,11 +3,12 @@ import click
 from ..utils.MessageUtils import PError, PSuccess
 from ..utils.config.ConfigUtils import (
     init_config,
-    DEFAULT_CONFIG,
     configMessage,
     list_config,
     set_config_value,
     get_config_value,
+    common_config_options,
+    config_file_path_option,
 )
 
 
@@ -23,21 +24,11 @@ def config(ctx):
     pass
 
 
-def common_config_options(func):
-    func = click.option(
-        "-c",
-        "--config",
-        help="Config instance, default: DEFAULT",
-        default=DEFAULT_CONFIG,
-    )(func)
-    return func
-
-
 @config.command()
 @common_config_options
 @click.argument("key")
 @click.argument("value")
-def set(config, key, value):
+def set(config, config_path, key, value):
     """
     This command adds a new entry to the config file with key and value
 
@@ -59,14 +50,14 @@ def set(config, key, value):
     """
 
     configMessage(config)
-    set_config_value(config, key, value)
+    set_config_value(config, config_path, key, value)
     PSuccess(f"[{config}] {key} <- {value}")
 
 
 @config.command()
 @common_config_options
 @click.argument("key")
-def get(config, key):
+def get(config, config_path, key):
     """
     This command returns value for a key in a configuration
 
@@ -91,25 +82,36 @@ def get(config, key):
 
     configMessage(config)
     try:
-        value = get_config_value(config, key)
+        value = get_config_value(config, config_path, key)
         PSuccess(f"[{config}] {key} = {value}")
     except ValueError as e:
         PError(f"{e}")
 
 
+@config.command("list")
+@config_file_path_option
+def list_configs(config_path):
+    """
+    This command show list all configurations and their key values
+
+    **Example Usage**:
+
+    * We can also see all configuration list command
+
+    .. code-block:: shell
+
+        $ hckr config list
+
+    **Command Reference**:
+    """
+    list_config(config_path, _all=True)
+
+
 @config.command()
 @common_config_options
-@click.option(
-    "-a",
-    "--all",
-    default=False,
-    is_flag=True,
-    help="Whether to shows a list of all configs (default: False)",
-)
-def list(config, all):
+def show(config, config_path):
     """
-    This command show list of all keys available in given configuration,
-    we can also see values in all configurations by providing -a/--all flag
+    This command show list of all keys available in the given configuration,
 
     **Example Usage**:
 
@@ -119,23 +121,20 @@ def list(config, all):
 
     .. code-block:: shell
 
-        $ hckr config list
+        $ hckr config show
 
     * Similarly, we can also get all values in a specific configuration using -c/--config flag
 
     .. code-block:: shell
 
-        $ hckr config list -c MY_DATABASE
-
-    * Additionally, we can also see all configurations using -a/--all flag
-
-    .. code-block:: shell
-
-        $ hckr config list --all
+        $ hckr config show -c MY_DATABASE
 
     **Command Reference**:
     """
-    list_config(config, all)
+    list_config(
+        config_path,
+        config,
+    )
 
 
 @config.command()

@@ -9,6 +9,7 @@
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=hckr-cli_hckr)
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=hckr-cli_hckr)](https://sonarcloud.io/summary/new_code?id=hckr-cli_hckr)
 
+
 [//]: # ([![GitHub commit activity]&#40;https://img.shields.io/github/commit-activity/m/hckr-cli/hckr&#41;]&#40;https://github.com/hckr-cli/hckr/graphs/commit-activity&#41;)
 
 ## Introduction

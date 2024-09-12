@@ -1,12 +1,17 @@
+import warnings
+
 import click
-import pandas as pd
-from sqlalchemy import create_engine, text
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SAWarning
+from yaspin import yaspin  # type: ignore
 
 from hckr.cli.config import common_config_options
-from hckr.utils.DataUtils import print_df_as_table
-from hckr.utils.DbUtils import get_db_url
-from hckr.utils.MessageUtils import PError, PInfo
+from hckr.utils.DbUtils import get_db_url, execute_query
+from hckr.utils.MessageUtils import PError
+
+# Suppress the specific SQLAlchemy warning
+warnings.filterwarnings("ignore", category=SAWarning, message=".*flatten.*")
+
+# Your SQLAlchemy code
 
 
 @click.group(
@@ -35,7 +40,7 @@ def db():
     required=False,
 )
 @click.pass_context
-def query(ctx, config, query, num_rows=None, num_cols=None):
+def query(ctx, config, config_path, query, num_rows=None, num_cols=None):
     """
     This command executes a SQL query on your configured database and show you result in a table format ( in
     ``SELECT/SHOW/DESC`` queries )
@@ -71,42 +76,9 @@ def query(ctx, config, query, num_rows=None, num_cols=None):
 
     **Command Reference**:
     """
-    db_url = get_db_url(section=config)
+    db_url = get_db_url(section=config, config_path=config_path)
     if not db_url:
         PError("Database credentials are not properly configured.")
-
-    query = query.strip()
-    engine = create_engine(db_url)
-    try:
-        with engine.connect() as connection:
-            # Normalize and determine the type of query
-            normalized_query = query.lower()
-            is_data_returning_query = normalized_query.startswith(
-                ("select", "desc", "describe", "show", "explain")
-            )
-            is_ddl_query = normalized_query.startswith(
-                ("create", "alter", "drop", "truncate")
-            )
-
-            if is_data_returning_query:
-                # Execute and fetch results for queries that return data
-                df = pd.read_sql_query(text(query), connection)
-
-                # Optionally limit rows and columns if specified
-                if num_rows is not None:
-                    df = df.head(num_rows)
-                if num_cols is not None:
-                    df = df.iloc[:, :num_cols]
-
-                print_df_as_table(df, title=query)
-                return df
-            else:
-                # Execute DDL or non-data-returning DML queries
-                with connection.begin():  # this will automatically commit at the end
-                    result = connection.execute(text(query))
-                if is_ddl_query:
-                    PInfo(query, "Success")
-                else:
-                    PInfo(query, f"[Success] Rows affected: {result.rowcount}")
-    except SQLAlchemyError as e:
-        PError(f"Error executing query: {e}")
+    with yaspin(text="Running query...", color="green", timer=True) as spinner:
+        execute_query(db_url, query, num_rows, num_cols)
+        spinner.ok("✔")
