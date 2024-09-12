@@ -37,7 +37,7 @@ def test_configure_sqlite(cli_runner, sqlite_options):
 
 
 def test_configure_set_default_db(cli_runner, sqlite_options):
-    # first we have to configure sqlite database
+    # first we have to configure a sqlite database
     result = cli_runner.invoke(configure_db, sqlite_options)
     assert result.exit_code == 0
     assert "Database configuration saved successfully" in result.output
