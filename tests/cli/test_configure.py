@@ -53,7 +53,6 @@ def test_configure_set_default_db(cli_runner, sqlite_options):
     # query with default config
     result = cli_runner.invoke(query, _get_args_with_config_path(["select 1"]))
     print(result.output)
-    list_config(TEST_HCKRCFG_FILE, _all=True)
     assert result.exit_code == 0
     assert (
         "Default database config testdb_sqlite inferred from [DEFAULT] config"
