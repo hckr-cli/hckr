@@ -53,6 +53,11 @@ dependencies = [
 
     # Error and debugging
     "sentry-sdk",
+
+    #datetime
+    "pytz",
+    "python-dateutil",
+    "humanize"
 ]
 
 [project.urls]
