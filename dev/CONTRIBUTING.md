@@ -14,6 +14,9 @@ Please feel free to provide any suggestion for new utility in [Issues](https://g
 
 ## Python 
 * Use python3.8 in development
+* use following command to step into hatch defined python venv
+  
+  `` hatch shell `` 
 
 ## Publishing to Pypi
 * Once we publish a release, Publish workflow [publish.yml](.github%2Fworkflows%2Fpublish.yml) automatically publishes a version to  [PyPi](https://pypi.org/p/hckr)
