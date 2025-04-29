@@ -1,3 +1,4 @@
+import logging
 import warnings
 
 import click
@@ -77,6 +78,7 @@ def query(ctx, config, config_path, query, num_rows=None, num_cols=None):
     **Command Reference**:
     """
     db_url = get_db_url(section=config, config_path=config_path)
+    logging.info(f"Connection URL: {db_url}")
     if not db_url:
         PError("Database credentials are not properly configured.")
     with yaspin(text="Running query...", color="green", timer=True) as spinner:
