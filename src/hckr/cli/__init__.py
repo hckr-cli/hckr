@@ -19,6 +19,7 @@ from .data import data
 from .info import info
 from .k8s import k8s
 from .net import net
+from .dt import dt
 from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.crypto import crypto
@@ -93,6 +94,7 @@ k8s.add_command(context)
 
 # NETWORK command
 cli.add_command(net)
+cli.add_command(dt)
 
 # config
 cli.add_command(config)

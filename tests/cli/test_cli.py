@@ -24,6 +24,7 @@ Commands:
   crypto     crypto commands
   data       data related commands
   db         Database commands
+  dt         datetime utilities
   env        Environment commands
   hash       hash commands
   info       info commands
