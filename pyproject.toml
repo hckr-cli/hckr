@@ -45,7 +45,6 @@ dependencies = [
     "kubernetes", # for k8s commands
     "yaspin",
     "speedtest-cli", # for net speed command
-    "backports.zoneinfo; python_version < '3.9'",
 
     # SQL Support
     "sqlalchemy", # for SQL ORM
