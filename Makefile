@@ -14,7 +14,7 @@ sync-default:
 	hatch run default:deps
 
 sync-dev:
-	hatch run dev:deps
+	PIP_ONLY_BINARY=psycopg2-binary hatch run dev:deps
 
 sync-docs:
 	hatch run docs:deps
