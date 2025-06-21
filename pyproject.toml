@@ -32,6 +32,8 @@ dependencies = [
     "cron-descriptor",
     "rich",
     "cryptography",
+    # timezone support for Python < 3.9
+    "backports.zoneinfo; python_version < '3.9'",
     "Faker",
     "pandas", #To manage data and save in CSV, Excel, and Parquet formats.
     "openpyxl", # For handling Excel files with Pandas.
