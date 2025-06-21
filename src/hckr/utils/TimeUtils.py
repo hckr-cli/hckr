@@ -1,5 +1,11 @@
+from __future__ import annotations
+
 from datetime import datetime
-from zoneinfo import ZoneInfo, available_timezones
+
+try:
+    from zoneinfo import ZoneInfo, available_timezones
+except ImportError:
+    from backports.zoneinfo import ZoneInfo, available_timezones
 from .MessageUtils import error
 
 
@@ -55,11 +61,6 @@ def display(dt_input: str | None, fmt: str, timezone: str | None) -> str:
             f"Invalid datetime format: {fmt}\n{e}\nSee https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes"
         )
         raise
-    from zoneinfo import ZoneInfo
-except ImportError:
-    from backports.zoneinfo import ZoneInfo
-
-from .MessageUtils import error, success
 
 
 def current_time(timezone: str = "UTC") -> datetime:
