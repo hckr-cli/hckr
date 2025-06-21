@@ -8,6 +8,8 @@ Datetime Commands
 =================
 ``hckr`` provides utilities to work with different timezones.
 
+For a list of valid timezones see `the IANA tz database <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>`_.
+
 .. tip::
    More commands will be added in future updates. Stay tuned!
 

@@ -1,15 +1,44 @@
 import click
 
 from hckr.utils.MessageUtils import success, error
-from hckr.utils.TimeUtils import current_time, convert
+from hckr.utils.TimeUtils import current_time, convert, display
+
+
+DEFAULT_FORMAT = "%d %B %Y, %H:%M:%S %Z UTC"
 
 
 @click.group(
     help="datetime utilities",
     context_settings={"help_option_names": ["-h", "--help"]},
+    invoke_without_command=True,
 )
-def dt():
-    pass
+@click.argument("date", required=False)
+@click.option(
+    "-d",
+    "--date",
+    "date_opt",
+    help="Datetime input string, default: Current Datetime, could also be passed through argument",
+)
+@click.option(
+    "-f",
+    "--format",
+    "fmt",
+    default=DEFAULT_FORMAT,
+    show_default=True,
+    help="Datetime format",
+)
+@click.option(
+    "-z",
+    "--timezone",
+    "timezone",
+    help="Timezone for Datetime parsing",
+)
+@click.pass_context
+def dt(ctx, date, date_opt, fmt, timezone):
+    if ctx.invoked_subcommand is not None:
+        return
+    output = display(date_opt or date, fmt, timezone)
+    success(output)
 
 
 @dt.command(help="show current time in the given timezone")
