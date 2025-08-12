@@ -77,3 +77,17 @@ hckr
    :hidden:
 
    info/index
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Datetime
+   :hidden:
+
+   dt/index
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Azure
+   :hidden:
+
+   azure/index

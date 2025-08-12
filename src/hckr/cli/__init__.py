@@ -10,6 +10,7 @@ from hckr.cli.db import db
 from hckr.cli.configure import configure
 from hckr.cli.config import config
 from hckr.cli.env import env
+from hckr.cli.azure import azure
 from hckr.cli.k8s.context import context
 from hckr.cli.k8s.namespace import namespace
 from hckr.cli.k8s.pod import pod
@@ -19,6 +20,7 @@ from .data import data
 from .info import info
 from .k8s import k8s
 from .net import net
+from .dt import dt
 from ..__about__ import __version__
 from ..cli.cron import cron
 from ..cli.crypto import crypto
@@ -93,6 +95,7 @@ k8s.add_command(context)
 
 # NETWORK command
 cli.add_command(net)
+cli.add_command(dt)
 
 # config
 cli.add_command(config)
@@ -103,6 +106,9 @@ cli.add_command(db)
 
 # environment
 cli.add_command(env)
+
+# azure
+cli.add_command(azure)
 
 
 # implementing this so that if the user just uses `hckr` we show them something

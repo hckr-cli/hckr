@@ -14,7 +14,7 @@ sync-default:
 	hatch run default:deps
 
 sync-dev:
-	hatch run dev:deps
+	PIP_ONLY_BINARY=psycopg2-binary hatch run dev:deps
 
 sync-docs:
 	hatch run docs:deps
@@ -57,7 +57,7 @@ lint:
 	hatch run dev:lint
 #	hatch fmt --check
 
-check:
+dev_checks:
 	hatch run dev:check
 
 # this checks for any error in local github action files, https://nektosact.com/
@@ -67,7 +67,7 @@ gha:
 
 
 # all checks
-checks: lint check test
+checks: lint dev_checks test
 
 fix:
 	hatch run dev:fix

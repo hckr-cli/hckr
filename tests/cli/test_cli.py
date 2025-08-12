@@ -18,12 +18,14 @@ def test_hckr():
   -h, --help     Show this message and exit.
 
 Commands:
+  azure      Azure commands
   config     Config commands
   configure  Easy configurations for other commands (eg.
   cron       cron commands
   crypto     crypto commands
   data       data related commands
   db         Database commands
+  dt         datetime utilities
   env        Environment commands
   hash       hash commands
   info       info commands
