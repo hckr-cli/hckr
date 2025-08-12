@@ -85,3 +85,9 @@ hckr
 
    dt/index
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Azure
+   :hidden:
+
+   azure/index
