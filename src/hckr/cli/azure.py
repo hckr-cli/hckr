@@ -2,7 +2,7 @@ import click
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
-from yaspin import yaspin
+from yaspin import yaspin  # type: ignore
 
 from hckr.utils.AzureUtils import test_azure_connection, AzureConnectionTester
 from hckr.utils.MessageUtils import PError

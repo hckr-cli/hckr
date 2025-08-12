@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 
 try:
-    from zoneinfo import ZoneInfo, available_timezones
+    from zoneinfo import ZoneInfo, available_timezones  # type: ignore
 except ImportError:
     from backports.zoneinfo import ZoneInfo, available_timezones
 from .MessageUtils import error, PError
