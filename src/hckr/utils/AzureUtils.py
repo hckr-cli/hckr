@@ -39,7 +39,7 @@ class AzureConnectionTester:
             Tuple of (success: bool, result: dict) where result contains
             connection details or error information
         """
-        result:dict = {"success": False, "message": "", "details": {}, "errors": []}
+        result: dict = {"success": False, "message": "", "details": {}, "errors": []}
 
         try:
             # Try to import Azure SDK
