@@ -8,6 +8,19 @@ from hckr.utils.AzureUtils import test_azure_connection, AzureConnectionTester
 from hckr.utils.MessageUtils import PError
 
 
+
+def common_azure_options(func):
+    func = click.option("-t", "--tenant-id", help="Azure tenant ID", required=True)(
+        func
+    )
+    func = click.option("-ci", "--client-id", help="Azure client ID (application ID)", required=True)(
+        func
+    )
+    func = click.option("-cs", "--client-secret", help="Azure client secret", required=True, hide_input=True, prompt=True)(
+        func
+    )
+    return func
+
 @click.group(
     help="Azure commands",
     context_settings={"help_option_names": ["-h", "--help"]},
@@ -18,35 +31,14 @@ def azure():
 
 
 @azure.command()
-@click.option(
-    "--tenant-id",
-    required=True,
-    help="Azure tenant ID",
-    envvar="AZURE_TENANT_ID"
-)
-@click.option(
-    "--client-id", 
-    required=True,
-    help="Azure client ID (application ID)",
-    envvar="AZURE_CLIENT_ID"
-)
-@click.option(
-    "--client-secret",
-    required=True,
-    help="Azure client secret",
-    envvar="AZURE_CLIENT_SECRET",
-    hide_input=True,
-    prompt=True
-)
+@common_azure_options
 @click.option(
     "--subscription-id",
     help="Azure subscription ID (optional)",
-    envvar="AZURE_SUBSCRIPTION_ID"
 )
 @click.option(
     "--resource-group",
     help="Resource group name to test (optional)",
-    envvar="AZURE_RESOURCE_GROUP"
 )
 @click.option(
     "--verbose", "-v",
@@ -73,15 +65,6 @@ def test_connection(tenant_id, client_id, client_secret, subscription_id, resour
     .. code-block:: shell
 
         $ hckr azure test-connection --tenant-id YOUR_TENANT_ID --client-id YOUR_CLIENT_ID --subscription-id YOUR_SUBSCRIPTION_ID --resource-group YOUR_RG
-
-    **Environment Variables**:
-    
-    You can also set credentials using environment variables:
-    - AZURE_TENANT_ID
-    - AZURE_CLIENT_ID  
-    - AZURE_CLIENT_SECRET
-    - AZURE_SUBSCRIPTION_ID
-    - AZURE_RESOURCE_GROUP
 
     **Command Reference**:
     """
@@ -173,29 +156,7 @@ def test_connection(tenant_id, client_id, client_secret, subscription_id, resour
 
 
 @azure.command()
-@click.option(
-    "-t",
-    "--tenant-id",
-    required=True,
-    help="Azure tenant ID",
-    envvar="AZURE_TENANT_ID"
-)
-@click.option(
-    "-ci",
-    "--client-id", 
-    required=True,
-    help="Azure client ID (application ID)",
-    envvar="AZURE_CLIENT_ID"
-)
-@click.option(
-    "-cs",
-    "--client-secret",
-    required=True,
-    help="Azure client secret",
-    envvar="AZURE_CLIENT_SECRET",
-    hide_input=True,
-    prompt=True
-)
+@common_azure_options
 def validate_credentials(tenant_id, client_id, client_secret):
     """
     Quick validation of Azure credentials (authentication only).
@@ -224,7 +185,7 @@ def validate_credentials(tenant_id, client_id, client_secret):
             
             if success:
                 spinner.ok("✔")
-                console.print("[green]✅ Credentials are valid![/green]")
+                console.print("[green] ✅  Credentials are valid![/green]")
                 console.print(f"Authentication method: {result['details'].get('auth_method', 'Service Principal')}")
                 if "token_expires" in result["details"]:
                     import datetime
