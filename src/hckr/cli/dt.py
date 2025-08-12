@@ -4,7 +4,7 @@ from hckr.utils.MessageUtils import success, error
 from hckr.utils.TimeUtils import current_time, convert, display
 
 
-DEFAULT_FORMAT = "%d %B %Y, %H:%M:%S %Z UTC"
+DEFAULT_FORMAT = "%d %B %Y, %I:%M:%S %p %Z"
 
 
 @click.group(
