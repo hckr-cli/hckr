@@ -18,6 +18,7 @@ def test_hckr():
   -h, --help     Show this message and exit.
 
 Commands:
+  azure      Azure commands
   config     Config commands
   configure  Easy configurations for other commands (eg.
   cron       cron commands
