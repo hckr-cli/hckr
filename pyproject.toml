@@ -55,6 +55,10 @@ dependencies = [
 
     # Error and debugging
     "sentry-sdk",
+
+    # azure
+     "azure-identity",
+    "azure-mgmt-resource",
 ]
 
 [project.urls]

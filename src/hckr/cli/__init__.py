@@ -10,6 +10,7 @@ from hckr.cli.db import db
 from hckr.cli.configure import configure
 from hckr.cli.config import config
 from hckr.cli.env import env
+from hckr.cli.azure import azure
 from hckr.cli.k8s.context import context
 from hckr.cli.k8s.namespace import namespace
 from hckr.cli.k8s.pod import pod
@@ -105,6 +106,9 @@ cli.add_command(db)
 
 # environment
 cli.add_command(env)
+
+# azure
+cli.add_command(azure)
 
 
 # implementing this so that if the user just uses `hckr` we show them something
