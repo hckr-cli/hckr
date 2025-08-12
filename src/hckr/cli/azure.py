@@ -47,10 +47,27 @@ def azure():
 )
 def test_connection(tenant_id, client_id, client_secret, subscription_id, resource_group, verbose):
     """
-    Test Azure connection with provided credentials.
+    Comprehensive Azure connection and permission testing.
     
-    This command tests authentication and optionally resource access permissions
-    using service principal credentials.
+    This command performs extensive validation including:
+    
+    **Authentication Validation**:
+    * Credential format validation
+    * Azure AD authentication test
+    * Access token acquisition and validity check
+    
+    **Resource Access Validation** (when subscription-id provided):
+    * Subscription access permissions
+    * Resource group enumeration capabilities
+    * Specific resource group access (when resource-group provided)
+    
+    **What is validated**:
+    - Service principal authentication with Azure AD
+    - Management API access permissions
+    - Subscription-level read permissions
+    - Resource group access permissions (if specified)
+    
+    Use `validate-credentials` for quick authentication-only testing.
 
     **Example Usage**:
 
@@ -89,11 +106,15 @@ def test_connection(tenant_id, client_id, client_secret, subscription_id, resour
                 table.add_column("Value", style="green")
                 
                 # Add basic info
-                table.add_row("Status", "✅ SUCCESS")
-                table.add_row("Message", result["message"])
+                table.add_row("Overall Status", "✅ SUCCESS")
+                table.add_row("Validation Summary", result["message"])
                 table.add_row("Tenant ID", result["details"].get("tenant_id", "N/A"))
                 table.add_row("Client ID", result["details"].get("client_id", "N/A"))
                 table.add_row("Auth Method", result["details"].get("auth_method", "N/A"))
+                
+                # Authentication validation details
+                table.add_row("─" * 20, "─" * 20)  # separator
+                table.add_row("Authentication Tests", "PERFORMED")
                 
                 if "token_acquired" in result["details"]:
                     table.add_row("Token Acquired", "✅ Yes")
@@ -159,10 +180,21 @@ def test_connection(tenant_id, client_id, client_secret, subscription_id, resour
 @common_azure_options
 def validate_credentials(tenant_id, client_id, client_secret):
     """
-    Quick validation of Azure credentials (authentication only).
+    Quick validation of Azure service principal credentials (authentication only).
     
-    This is a lightweight test that only validates if the credentials can
-    authenticate successfully without testing resource access permissions.
+    This command performs the following validation steps:
+    
+    * **Credential Format Validation**: Verifies that tenant ID, client ID, and client secret are provided
+    * **Azure AD Authentication**: Tests if the service principal can authenticate with Azure Active Directory
+    * **Token Acquisition**: Validates that an access token can be successfully obtained
+    * **Token Validity**: Confirms the token is valid and shows expiration time
+    
+    **What is NOT validated**:
+    - Subscription access permissions
+    - Resource group access permissions  
+    - Specific Azure service permissions
+    
+    Use `test-connection` command for comprehensive testing including resource access.
 
     **Example Usage**:
 
@@ -185,12 +217,28 @@ def validate_credentials(tenant_id, client_id, client_secret):
             
             if success:
                 spinner.ok("✔")
-                console.print("[green] ✅  Credentials are valid![/green]")
-                console.print(f"Authentication method: {result['details'].get('auth_method', 'Service Principal')}")
+                
+                # Create detailed validation results table
+                table = Table(title="Azure Credential Validation Results", show_header=True)
+                table.add_column("Validation Step", style="cyan", no_wrap=True)
+                table.add_column("Status", style="green")
+                table.add_column("Details", style="yellow")
+                
+                # Add validation steps
+                table.add_row("✅ Credential Format", "PASSED", "Tenant ID, Client ID, and Client Secret provided")
+                table.add_row("✅ Azure AD Authentication", "PASSED", f"Service principal authenticated successfully")
+                table.add_row("✅ Token Acquisition", "PASSED", "Access token obtained from Azure AD")
+                
                 if "token_expires" in result["details"]:
                     import datetime
                     expires = datetime.datetime.fromtimestamp(result["details"]["token_expires"])
-                    console.print(f"Token expires: {expires.strftime('%Y-%m-%d %H:%M:%S')}")
+                    table.add_row("✅ Token Validity", "PASSED", f"Token valid until {expires.strftime('%Y-%m-%d %H:%M:%S')}")
+                else:
+                    table.add_row("✅ Token Validity", "PASSED", "Token is valid")
+                
+                console.print(table)
+                console.print("\n[bold green]✅ All credential validation steps passed![/bold green]")
+                console.print("[dim]Note: This validates authentication only. Use 'test-connection' for resource access validation.[/dim]")
             else:
                 spinner.fail("✘")
                 console.print(f"[red]❌ Invalid credentials: {result['message']}[/red]")
