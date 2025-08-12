@@ -1,9 +1,11 @@
 # hckr — Publishing Guide
 
-* Once we publish a release, Publish workflow [publish.yml](.github%2Fworkflows%2Fpublish.yml)
+* Once we merge something to main (or push), Publish workflow [publish.yml](.github%2Fworkflows%2Fpublish.yml)
   automatically publishes a version to [PyPi](https://pypi.org/p/hckr)
   workflow will automatically create next tag using dynamic version defined in [__about
   __.py](src%2Fhckr%2F__about__.py)
+* the workflow automatically release a version whenever a push happens to **main** branch, and increment **DEV** version, for publishing prod version
+we edit **__about__.py** file manually to a version eg. *1.0.0* which releases this and updates version to *1.0.1.dev0*.
 
 ## Pre-commits
 
